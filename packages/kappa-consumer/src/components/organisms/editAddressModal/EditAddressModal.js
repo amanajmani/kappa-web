@@ -11,7 +11,6 @@ import Box from '@kappa/components/src/atoms/box';
 import Checkbox from '../../atoms/checkbox';
 import useStyles from './editAddressModal.styles';
 
-
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction='up' ref={ref} {...props} />
 ));
