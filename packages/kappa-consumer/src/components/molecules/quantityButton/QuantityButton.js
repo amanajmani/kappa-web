@@ -14,29 +14,17 @@ import AddIcon from '../../../assets/images/add';
 import useStyles from './quantityButton.styles';
 
 const QuantityButton = (props) => {
-  const { quantity, setQuantity } = props;
-
-  const addProduct = () => {
-    if (quantity < 10) {
-      setQuantity((prevQuantity) => prevQuantity + 1);
-    }
-  };
-
-  const removeProduct = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
+  const { quantity, incrementProduct, decrementProduct } = props;
 
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <IconButton onClick={removeProduct} className={classes.button}>
+      <IconButton onClick={decrementProduct} className={classes.button}>
         <RemoveIcon color='primary' fontSize='small' />
       </IconButton>
       <Typography color='primary'>{quantity}</Typography>
 
-      <IconButton onClick={addProduct} className={classes.button}>
+      <IconButton onClick={incrementProduct} className={classes.button}>
         <AddIcon color='primary' fontSize='small' />
       </IconButton>
     </div>

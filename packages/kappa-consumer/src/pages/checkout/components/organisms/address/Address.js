@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 /* COMPONENTS */
+import AddressCard from '../../../../../components/organisms/addressCard';
+import EditAddressModal from '../../../../../components/organisms/editAddressModal';
 
 // atoms
 
 import Button from '@kappa/components/src/atoms/button';
 import Typography from '@kappa/components/src/atoms/typography';
-import EditAddressModal from '../../../../../components/organisms/editAddressModal';
-import AddressCard from '../../../../../components/organisms/addressCard';
 
 /* STYLES */
 

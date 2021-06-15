@@ -23,36 +23,30 @@ import QuantityButton from '../../../../../components/molecules/quantityButton';
 
 import useStyles from './review.styles';
 
-const Review = () => {
-  let URL = 'http://localhost:5000';
+const Review = ({ setOrderCalculation }) => {
+  const URL = 'http://localhost:5000';
   const classes = useStyles();
 
   const [data, setData] = useState([]);
   const [countUpdate, setCountUpdate] = useState(false);
-  const [calculation, setCalculation] = useState({ subTotal: 0, discount: 0 });
 
   useEffect(() => {
     let subTotal = 0;
     let discount = 0;
 
     axios.get(`${URL}/api/v1/cart/60b91c696807c4197c691214`).then((res) => {
-      console.log(res.data.items, 'res');
       setData(res.data.items);
 
       // calculate
       res.data.items.forEach((elem) => {
-        let subTotalTemp = elem.product.price * elem.quantity;
-
-        let discountTemp =
-          subTotalTemp - subTotalTemp * (elem.product.discount / 100);
+        const subTotalTemp = elem.product.price * elem.quantity;
+        const discountTemp = subTotalTemp * (elem.product.discount / 100);
 
         subTotal += subTotalTemp;
         discount += discountTemp;
       });
 
-      setCalculation({ subTotal, discount });
-      console.log(subTotal, 'subTotal', discount, 'discount');
-
+      setOrderCalculation({ subTotal, discount });
       setCountUpdate(false);
     });
   }, [countUpdate]);
@@ -67,7 +61,6 @@ const Review = () => {
         })
         .then((response) => {
           setCountUpdate(true);
-          console.log(response, 'response');
         });
     }
   };
@@ -82,40 +75,52 @@ const Review = () => {
         })
         .then((response) => {
           setCountUpdate(true);
-          console.log(response, 'response');
         });
     }
   };
 
+  const deleteProduct = (id) => {
+    axios.put(`${URL}/api/v1/cart/${id}`).then((response) => {
+      setCountUpdate(true);
+    });
+  };
+
   return (
-    <List width='100%' className={classes.scrollable} subheader={<li />}>
-      {data.map((item) => {
-        return (
-          <Card key={item._id} className={classes.root}>
-            <CardMedia
-              className={classes.media}
-              image={`${URL}/api/v1/files/${item.product.images[0]}`}
+    <List width="100%" className={classes.scrollable} subheader={<li />}>
+      {data.map((item) => (
+        <Card key={item._id} className={classes.root}>
+          <CardMedia
+            className={classes.media}
+            image={`${URL}/api/v1/files/${item.product.images[0]}`}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="body1" display="block">
+              {item.product.title}
+            </Typography>
+            <Typography variant="body1" display="block">
+              Price:
+              {' '}
+              <b>
+                {' '}
+                $
+                {item.product.price}
+              </b>
+            </Typography>
+          </CardContent>
+          <QuantityButton
+            className={{ borderRadius: '2px' }}
+            quantity={item.quantity}
+            incrementProduct={() => incrementProduct(item._id, item.quantity)}
+            decrementProduct={() => decrementProduct(item._id, item.quantity)}
+          />
+          <Box className={classes.deleteIconContainer}>
+            <DeleteIcon
+              className={classes.deleteIcon}
+              onClick={() => deleteProduct(item._id)}
             />
-            <CardContent>
-              <Typography gutterBottom variant='body1' display={'block'}>
-                {item.product.title}
-              </Typography>
-              <Typography variant='body1' display={'block'}>
-                Price: <b> ${item.product.price}</b>
-              </Typography>
-            </CardContent>
-            <QuantityButton
-              className={{ borderRadius: '2px' }}
-              quantity={item.quantity}
-              incrementProduct={() => incrementProduct(item._id, item.quantity)}
-              decrementProduct={() => decrementProduct(item._id, item.quantity)}
-            />
-            <Box className={classes.deleteIconContainer}>
-              <DeleteIcon className={classes.deleteIcon} />
-            </Box>
-          </Card>
-        );
-      })}
+          </Box>
+        </Card>
+      ))}
     </List>
   );
 };

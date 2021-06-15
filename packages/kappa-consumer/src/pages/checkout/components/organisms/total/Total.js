@@ -10,7 +10,7 @@ import Typography from '@kappa/components/src/atoms/typography';
 
 import useStyles from './total.styles';
 
-const Total = () => {
+const Total = ({ orderCalculation }) => {
   const classes = useStyles();
   return (
     <Grid
@@ -33,15 +33,15 @@ const Total = () => {
               Subtotal :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              $130
+              ${orderCalculation.subTotal}
             </Typography>
           </div>
           <div className={`${classes.flex} ${classes.py_16}`}>
             <Typography color='textPrimary' variant='body2'>
-              shipping :
+              Discount :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              Calculate next step
+              {orderCalculation.discount}
             </Typography>
           </div>
         </Grid>
@@ -52,7 +52,7 @@ const Total = () => {
               Total :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              USD $155
+              {orderCalculation.subTotal - orderCalculation.discount}
             </Typography>
           </div>
         </Grid>
