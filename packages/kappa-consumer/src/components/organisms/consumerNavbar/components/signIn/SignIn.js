@@ -26,6 +26,7 @@ export default function SignIn(props, history) {
     email: '',
     password: '',
     keepMeLoggedIn: false,
+    role: 'user',
   });
 
   const classes = useStyles();

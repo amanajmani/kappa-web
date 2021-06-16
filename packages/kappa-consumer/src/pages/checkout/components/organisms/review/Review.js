@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 
 /* COMPONENTS */
 import Grid from '@kappa/components/src/atoms/grid';
+import Loader from '@kappa/components/src/atoms/loader';
+
 // atoms
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -13,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import List from '@kappa/components/src/atoms/list';
 import Box from '@kappa/components/src/atoms/box';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SadIcon from '../../../../../assets/images/sad';
 
 import Typography from '@kappa/components/src/atoms/typography';
 
@@ -23,80 +28,86 @@ import QuantityButton from '../../../../../components/molecules/quantityButton';
 
 import useStyles from './review.styles';
 
-const Review = ({ setOrderCalculation }) => {
-  const URL = 'http://localhost:5000';
+/* SERVICES */
+import ActionCreators from '../../../../../actions';
+
+import isEmpty from '../../../../../utils/isEmpty.utils';
+
+const Review = ({
+  getCart,
+  updateCart,
+  deleteProductFromCart,
+  cart,
+  fetching,
+  updatedCart,
+  setOrderCalculation,
+}) => {
+  console.log(cart, 'cart in review');
   const classes = useStyles();
 
   const [data, setData] = useState([]);
   const [countUpdate, setCountUpdate] = useState(false);
 
+  console.log(updatedCart, 'updatedCart');
+
+  useEffect(() => {
+    getCart('60b91c696807c4197c691214');
+  }, [updatedCart]);
+
+  useEffect(() => {
+    getCart('60b91c696807c4197c691214');
+  }, []);
+
   useEffect(() => {
     let subTotal = 0;
     let discount = 0;
-
-    axios
-      .get(`${URL}/api/v1/cart/60b91c696807c4197c691214`)
-      .then((res) => {
-        console.log(res, 'res in get single cart');
-        setData(res.data.data);
-
-        if (res.data.success) {
-          res.data.data.forEach((elem) => {
-            const subTotalTemp = elem.product.price * elem.quantity;
-            const discountTemp = subTotalTemp * (elem.product.discount / 100);
-
-            subTotal += subTotalTemp;
-            discount += discountTemp;
-          });
-
-          setOrderCalculation({ subTotal, discount });
-          setCountUpdate(false);
-        }
-      })
-      .catch((err) => console.log(err, 'err in cart v1'));
-  }, [countUpdate]);
+    if (!isEmpty(cart)) {
+      cart.forEach((elem) => {
+        const subTotalTemp = elem.product.price * elem.quantity;
+        const discountTemp = subTotalTemp * (elem.product.discount / 100);
+        subTotal += subTotalTemp;
+        discount += discountTemp;
+      });
+      setOrderCalculation({ subTotal, discount });
+      setCountUpdate(false);
+    }
+  }, [cart]);
 
   const incrementProduct = (id, count) => {
-    if (count < 10) {
-      axios
-        .put(`${URL}/api/v1/cart`, {
-          user: '60b91c696807c4197c691214',
-          itemId: id,
-          type: 'inc',
-        })
-        .then((response) => {
-          setCountUpdate(true);
-        });
-    }
+    updateCart({
+      user: '60b91c696807c4197c691214',
+      itemId: id,
+      type: 'inc',
+    });
   };
 
   const decrementProduct = (id, count) => {
-    if (count > 1) {
-      axios
-        .put(`${URL}/api/v1/cart`, {
-          user: '60b91c696807c4197c691214',
-          itemId: id,
-          type: 'dec',
-        })
-        .then((response) => {
-          setCountUpdate(true);
-        });
-    }
+    updateCart({
+      user: '60b91c696807c4197c691214',
+      itemId: id,
+      type: 'dec',
+    });
   };
 
   const deleteProduct = (id) => {
-    axios
-      .put(`${URL}/api/v1/cart/${id}`)
-      .then((response) => {
-        setCountUpdate(true);
-      })
-      .catch((err) => console.log(err));
+    deleteProductFromCart(id);
   };
 
   return (
     <List width='100%' className={classes.scrollable} subheader={<li />}>
-      {data &&
-        data.map((item) => (
+      {isEmpty(cart) ? (
+        fetching ? (
+          <Loader padding />
+        ) : (
+          <>
+            <Typography gutterBottom>
+              You haven&apos;t added anything yet
+            </Typography>
+            <SadIcon fontSize='large' />
+          </>
+        )
+      ) : (
+        cart.map((item) => (
           <Card key={item._id} className={classes.root}>
             <CardMedia
               className={classes.media}
@@ -123,9 +134,22 @@ const Review = ({ setOrderCalculation }) => {
               />
             </Box>
           </Card>
-        ))}
+        ))
+      )}
     </List>
   );
 };
 
-export default Review;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    cart: state.cart.cart,
+    fetching: state.cart.fetching,
+    updatedCart: state.cart.updatedCart,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Review);

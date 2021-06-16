@@ -32,3 +32,33 @@ export function addToCart(cartParams) {
     }, handleError);
   };
 }
+
+export function updateCart(cartParams) {
+  return (dispatch) => {
+    dispatch({
+      type: 'UPDATE_PRODUCT_IN_CART',
+    });
+
+    return cartServices.updateCart(cartParams).then((data) => {
+      dispatch({
+        type: 'UPDATED_PRODUCT_IN_CART',
+        payload: data,
+      });
+    }, handleError);
+  };
+}
+
+export function deleteProductFromCart(cartParams) {
+  return (dispatch) => {
+    dispatch({
+      type: 'DELETE_PRODUCT_FROM_CART',
+    });
+
+    return cartServices.deleteProductFromCart(cartParams).then((data) => {
+      dispatch({
+        type: 'DELETED_PRODUCT_FROM_CART',
+        payload: data,
+      });
+    }, handleError);
+  };
+}
