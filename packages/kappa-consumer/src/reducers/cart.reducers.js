@@ -1,7 +1,7 @@
 export default function cartReducer(
   state = {
     cart: [],
-    fetching: true,
+    fetching: false,
     updatedCart: [],
   },
   action
@@ -15,6 +15,7 @@ export default function cartReducer(
     case 'ADDED_PRODUCT_TO_CART':
       return {
         ...state,
+        cart: action.payload.data.items,
         fetching: false,
       };
     case 'FETCHING_CART':
@@ -38,7 +39,7 @@ export default function cartReducer(
       return {
         ...state,
         fetching: false,
-        updatedCart: action.payload,
+        cart: action.payload.data.items,
       };
 
     case 'DELETE_PRODUCT_FROM_CART':
@@ -50,7 +51,7 @@ export default function cartReducer(
       return {
         ...state,
         fetching: false,
-        updatedCart: action.payload,
+        cart: action.payload.data.items,
       };
     default:
       return state;

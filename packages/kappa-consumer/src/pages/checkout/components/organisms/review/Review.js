@@ -48,12 +48,6 @@ const Review = ({
   const [data, setData] = useState([]);
   const [countUpdate, setCountUpdate] = useState(false);
 
-  console.log(updatedCart, 'updatedCart');
-
-  useEffect(() => {
-    getCart('60b91c696807c4197c691214');
-  }, [updatedCart]);
-
   useEffect(() => {
     getCart('60b91c696807c4197c691214');
   }, []);

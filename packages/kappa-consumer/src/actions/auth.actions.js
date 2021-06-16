@@ -1,21 +1,30 @@
-/* CONSTANTS */
-import BASE_URL from '../constants/baseURL';
+// actions
+import * as authServices from '../services/auth.services';
 
-/* UTILS */
-import objToQueryString from '../utils/objToQueryStrings';
-
-/* HELPERS */
-import callApi from '../helpers/callApi';
+const handleError = (error) => console.log(error);
 
 // eslint-disable-next-line import/prefer-default-export
-export function login(details) {
-  console.log(details, 'details');
-  const url = `${BASE_URL}/api/v1/auth/authenticate`;
-  return callApi(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+export function loginUser(body) {
+  return (dispatch) => {
+    dispatch({
+      type: 'LOG_IN_START',
+    });
+
+    return authServices.loginUser(body).then((data) => {
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        dispatch({
+          type: 'LOG_IN_SUCCESS',
+          payload: data,
+        });
+      } else {
+        console.log(data, 'in else condition');
+        dispatch({
+          type: 'LOG_IN_FAILED',
+          payload: data,
+        });
+      }
+    }, handleError);
+  };
 }

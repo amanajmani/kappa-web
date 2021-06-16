@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { Route } from 'react-router-dom';
 
 /* COMPONENTS */
+import Loader from '@kappa/components/src/atoms/loader';
 // atoms
 import { Typography } from '@material-ui/core';
 import Button from '@kappa/components/src/atoms/button';
@@ -19,14 +22,22 @@ import Popup from '../popup';
 // Styles
 import useStyles from './signIn.styles';
 
-export default function SignIn(props, history) {
-  const URL = 'http://localhost:5000';
-  const { isOpen, setIsOpen, handleSignIn, handleForgetPass } = props;
+import ActionCreators from '../../../../../actions';
+
+const SignIn = ({
+  loginUser,
+  isOpen,
+  setIsOpen,
+  handleSignIn,
+  handleForgetPass,
+  user,
+  message,
+}) => {
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',
     keepMeLoggedIn: false,
-    role: 'user',
+    role: 'admin',
   });
 
   const classes = useStyles();
@@ -41,16 +52,7 @@ export default function SignIn(props, history) {
   };
 
   const submitLogin = () => {
-    console.log(loginDetails, 'loginDetails');
-
-    axios.post(`${URL}/api/v1/auth/authenticate`, loginDetails).then((res) => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      localStorage.setItem('token', res.data.token);
-
-      history;
-    });
+    loginUser(loginDetails);
   };
 
   return (
@@ -59,6 +61,10 @@ export default function SignIn(props, history) {
         Your Account for everything Kappa
       </DialogTitle>
       <DialogContent className={classes.content}>
+        <Typography variant='body2' color='error'>
+          {message}
+        </Typography>
+
         <TextField
           autoFocus
           margin='dense'
@@ -118,4 +124,18 @@ export default function SignIn(props, history) {
       </DialogActions>
     </Popup>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+    fetching: state.auth.fetching,
+    message: state.auth.message,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
