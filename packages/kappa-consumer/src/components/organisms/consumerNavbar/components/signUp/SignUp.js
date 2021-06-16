@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 
 /* COMPONENTS */
@@ -23,9 +25,18 @@ import Popup from '../popup';
 // Styles
 import useStyles from './signUp.styles';
 
-export default function SignUp(props) {
+import ActionCreators from '../../../../../actions';
+
+const SignUp = (props) => {
   const URL = 'http://localhost:5000';
-  const { isOpen, setIsOpen, handleSignUp, handleForgetPass } = props;
+  const {
+    isOpen,
+    setIsOpen,
+    handleSignUp,
+    handleForgetPass,
+    registerUser,
+    message,
+  } = props;
 
   const classes = useStyles();
 
@@ -78,23 +89,13 @@ export default function SignUp(props) {
     const { name, email, password, country } = values;
     if (Object.values(values.errorMessage).every((elem) => elem === '')) {
       console.log(values.errorMessage, 'error message nhi hai ');
-      axios
-        .post(`${URL}/api/v1/auth/register`, {
-          name,
-          email,
-          password,
-          country,
-        })
-        .then((res) => {
-          if (res.data.success) {
-            setResponseMessage(res.data.message);
-          } else {
-            setResponseMessage(res.data.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err, 'err');
-        });
+
+      registerUser({
+        name,
+        email,
+        password,
+        country,
+      });
     } else {
       console.log(values.errorMessage, 'error message  hai ');
     }
@@ -111,7 +112,7 @@ export default function SignUp(props) {
           </Typography>
 
           <Typography variant='body2' color='error'>
-            {responseMessage}
+            {message}
           </Typography>
 
           <TextField
@@ -203,4 +204,18 @@ export default function SignUp(props) {
       </form>
     </Popup>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+    fetching: state.auth.fetching,
+    message: state.auth.message,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

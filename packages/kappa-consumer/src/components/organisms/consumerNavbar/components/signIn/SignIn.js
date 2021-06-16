@@ -55,6 +55,12 @@ const SignIn = ({
     loginUser(loginDetails);
   };
 
+  useEffect(() => {
+    if (user.name) {
+      setIsOpen(false);
+    }
+  }, [user]);
+
   return (
     <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
       <DialogTitle className={classes.title}>

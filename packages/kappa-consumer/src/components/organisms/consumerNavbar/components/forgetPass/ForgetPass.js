@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import axios from 'axios';
 import { Route } from 'react-router-dom';
 
@@ -6,22 +9,29 @@ import { Route } from 'react-router-dom';
 // atoms
 import { Typography } from '@material-ui/core';
 import Popup from '../popup';
-import Button from '../../../../atoms/button';
-import TextField from '../../../../atoms/textField';
-import DialogActions from '../../../../atoms/dialogActions';
-import DialogContent from '../../../../atoms/dialogContent';
-import DialogTitle from '../../../../atoms/dialogTitle';
-import Checkbox from '../../../../atoms/checkbox';
-import FormControlLabel from '../../../../atoms/formControlLabel';
-import Link from '../../../../atoms/link';
+import Button from '@kappa/components/src/atoms/button';
+import TextField from '@kappa/components/src/atoms/textField';
+import DialogActions from '@kappa/components/src/atoms/dialogActions';
+import DialogContent from '@kappa/components/src/atoms/dialogContent';
+import DialogTitle from '@kappa/components/src/atoms/dialogTitle';
+import Checkbox from '@kappa/components/src/atoms/checkbox';
+import FormControlLabel from '@kappa/components/src/atoms/formControlLabel';
+import Link from '@kappa/components/src/atoms/link';
 
 // Styles
 import useStyles from './forgetPass.styles';
 
-export default function ForgetPass(props) {
-  const URL = 'http://localhost:5000';
-  const { isOpen, setIsOpen, handleSignIn, handleSignUp } = props;
-  const [responseMessage, setResponseMessage] = useState('');
+import ActionCreators from '../../../../../actions';
+
+const ForgetPass = (props) => {
+  const {
+    isOpen,
+    setIsOpen,
+    handleSignIn,
+    handleSignUp,
+    forgotPassword,
+    message,
+  } = props;
 
   const [loginDetails, setLoginDetails] = useState({
     email: '',
@@ -41,23 +51,8 @@ export default function ForgetPass(props) {
   };
 
   const submitForgotPass = () => {
-    console.log(loginDetails, 'loginDetails');
-
     const { email } = loginDetails;
-    axios
-      .put(`${URL}/api/v1/auth/reset-password`, { email })
-
-      .then((res) => {
-        console.log(res, 'res after forget');
-        if (res.data.success) {
-          setResponseMessage(res.data.message);
-        } else {
-          setResponseMessage(res.data.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err, 'err');
-      });
+    forgotPassword({ email });
   };
 
   return (
@@ -66,9 +61,9 @@ export default function ForgetPass(props) {
 
       <DialogContent className={classes.content}>
         <Typography variant='body2' color='error'>
-          {responseMessage}
+          {message}
         </Typography>
-        
+
         <TextField
           autoFocus
           margin='dense'
@@ -128,4 +123,18 @@ export default function ForgetPass(props) {
       </DialogActions>
     </Popup>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user,
+    fetching: state.auth.fetching,
+    message: state.auth.message,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgetPass);
