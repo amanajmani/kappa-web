@@ -5,23 +5,24 @@ import { Route } from 'react-router-dom';
 /* COMPONENTS */
 // atoms
 import { Typography } from '@material-ui/core';
-import Button from '@kappa/components/src/atoms/button';
-import TextField from '@kappa/components/src/atoms/textField';
-import DialogActions from '@kappa/components/src/atoms/dialogActions';
-import DialogContent from '@kappa/components/src/atoms/dialogContent';
-import DialogTitle from '@kappa/components/src/atoms/dialogTitle';
-import Checkbox from '@kappa/components/src/atoms/checkbox';
-import FormControlLabel from '@kappa/components/src/atoms/formControlLabel';
-import Link from '@kappa/components/src/atoms/link';
-
 import Popup from '../popup';
+import Button from '../../../../atoms/button';
+import TextField from '../../../../atoms/textField';
+import DialogActions from '../../../../atoms/dialogActions';
+import DialogContent from '../../../../atoms/dialogContent';
+import DialogTitle from '../../../../atoms/dialogTitle';
+import Checkbox from '../../../../atoms/checkbox';
+import FormControlLabel from '../../../../atoms/formControlLabel';
+import Link from '../../../../atoms/link';
 
 // Styles
-import useStyles from './signIn.styles';
+import useStyles from './forgetPass.styles';
 
-export default function SignIn(props, history) {
+export default function ForgetPass(props) {
   const URL = 'http://localhost:5000';
-  const { isOpen, setIsOpen, handleSignIn, handleForgetPass } = props;
+  const { isOpen, setIsOpen, handleSignIn, handleSignUp } = props;
+  const [responseMessage, setResponseMessage] = useState('');
+
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',
@@ -39,25 +40,35 @@ export default function SignIn(props, history) {
     }));
   };
 
-  const submitLogin = () => {
+  const submitForgotPass = () => {
     console.log(loginDetails, 'loginDetails');
 
-    axios.post(`${URL}/api/v1/auth/authenticate`, loginDetails).then((res) => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      localStorage.setItem('token', res.data.token);
+    const { email } = loginDetails;
+    axios
+      .put(`${URL}/api/v1/auth/reset-password`, { email })
 
-      history;
-    });
+      .then((res) => {
+        console.log(res, 'res after forget');
+        if (res.data.success) {
+          setResponseMessage(res.data.message);
+        } else {
+          setResponseMessage(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
   };
 
   return (
     <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle className={classes.title}>
-        Your Account for everything Kappa
-      </DialogTitle>
+      <DialogTitle className={classes.title}>Forget Password</DialogTitle>
+
       <DialogContent className={classes.content}>
+        <Typography variant='body2' color='error'>
+          {responseMessage}
+        </Typography>
+        
         <TextField
           autoFocus
           margin='dense'
@@ -71,7 +82,7 @@ export default function SignIn(props, history) {
           onChange={handleChange}
         />
 
-        <TextField
+        {/* <TextField
           margin='dense'
           id='password'
           label='Password'
@@ -81,8 +92,8 @@ export default function SignIn(props, history) {
           name='password'
           value={loginDetails.password}
           onChange={handleChange}
-        />
-        <FormControlLabel
+        /> */}
+        {/* <FormControlLabel
           className={classes.label}
           control={
             <Checkbox
@@ -93,7 +104,7 @@ export default function SignIn(props, history) {
             />
           }
           label='Keep me signed in'
-        />
+        /> */}
         <Typography variant='caption' gutterBottom>
           By logging in, you agree to Kappa&apos;s{' '}
           <Link href='/'>Privacy Policy</Link> and{' '}
@@ -102,17 +113,17 @@ export default function SignIn(props, history) {
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button
-          label='Sign In'
+          label='Reset Now'
           variant='contained'
           color='primary'
           className={classes.button}
-          onClick={submitLogin}
+          onClick={submitForgotPass}
         />
         <Typography variant='caption' gutterBottom>
           Not a member <Link onClick={handleSignIn}>Join Us</Link>
         </Typography>
         <Typography variant='caption' gutterBottom>
-          Reset Password <Link onClick={handleForgetPass}>Forgot Password</Link>
+          Already Register <Link onClick={handleSignUp}>Login In</Link>
         </Typography>
       </DialogActions>
     </Popup>

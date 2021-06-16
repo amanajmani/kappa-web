@@ -6,10 +6,7 @@ import clsx from 'clsx';
 // Styles
 import useStyles from './navbar.styles';
 
-const Navbar = ({
-  isAdmin,
-  children,
-}) => {
+const Navbar = ({ isAdmin, children }) => {
   const classes = useStyles();
 
   return (

@@ -34,21 +34,26 @@ const Review = ({ setOrderCalculation }) => {
     let subTotal = 0;
     let discount = 0;
 
-    axios.get(`${URL}/api/v1/cart/60b91c696807c4197c691214`).then((res) => {
-      setData(res.data.items);
+    axios
+      .get(`${URL}/api/v1/cart/60b91c696807c4197c691214`)
+      .then((res) => {
+        console.log(res, 'res in get single cart');
+        setData(res.data.data);
 
-      // calculate
-      res.data.items.forEach((elem) => {
-        const subTotalTemp = elem.product.price * elem.quantity;
-        const discountTemp = subTotalTemp * (elem.product.discount / 100);
+        if (res.data.success) {
+          res.data.data.forEach((elem) => {
+            const subTotalTemp = elem.product.price * elem.quantity;
+            const discountTemp = subTotalTemp * (elem.product.discount / 100);
 
-        subTotal += subTotalTemp;
-        discount += discountTemp;
-      });
+            subTotal += subTotalTemp;
+            discount += discountTemp;
+          });
 
-      setOrderCalculation({ subTotal, discount });
-      setCountUpdate(false);
-    });
+          setOrderCalculation({ subTotal, discount });
+          setCountUpdate(false);
+        }
+      })
+      .catch((err) => console.log(err, 'err in cart v1'));
   }, [countUpdate]);
 
   const incrementProduct = (id, count) => {
@@ -80,47 +85,45 @@ const Review = ({ setOrderCalculation }) => {
   };
 
   const deleteProduct = (id) => {
-    axios.put(`${URL}/api/v1/cart/${id}`).then((response) => {
-      setCountUpdate(true);
-    });
+    axios
+      .put(`${URL}/api/v1/cart/${id}`)
+      .then((response) => {
+        setCountUpdate(true);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
-    <List width="100%" className={classes.scrollable} subheader={<li />}>
-      {data.map((item) => (
-        <Card key={item._id} className={classes.root}>
-          <CardMedia
-            className={classes.media}
-            image={`${URL}/api/v1/files/${item.product.images[0]}`}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="body1" display="block">
-              {item.product.title}
-            </Typography>
-            <Typography variant="body1" display="block">
-              Price:
-              {' '}
-              <b>
-                {' '}
-                $
-                {item.product.price}
-              </b>
-            </Typography>
-          </CardContent>
-          <QuantityButton
-            className={{ borderRadius: '2px' }}
-            quantity={item.quantity}
-            incrementProduct={() => incrementProduct(item._id, item.quantity)}
-            decrementProduct={() => decrementProduct(item._id, item.quantity)}
-          />
-          <Box className={classes.deleteIconContainer}>
-            <DeleteIcon
-              className={classes.deleteIcon}
-              onClick={() => deleteProduct(item._id)}
+    <List width='100%' className={classes.scrollable} subheader={<li />}>
+      {data &&
+        data.map((item) => (
+          <Card key={item._id} className={classes.root}>
+            <CardMedia
+              className={classes.media}
+              image={`${URL}/api/v1/files/${item.product.images[0]}`}
             />
-          </Box>
-        </Card>
-      ))}
+            <CardContent>
+              <Typography gutterBottom variant='body1' display='block'>
+                {item.product.title}
+              </Typography>
+              <Typography variant='body1' display='block'>
+                Price: <b> ${item.product.price}</b>
+              </Typography>
+            </CardContent>
+            <QuantityButton
+              className={{ borderRadius: '2px' }}
+              quantity={item.quantity}
+              incrementProduct={() => incrementProduct(item._id, item.quantity)}
+              decrementProduct={() => decrementProduct(item._id, item.quantity)}
+            />
+            <Box className={classes.deleteIconContainer}>
+              <DeleteIcon
+                className={classes.deleteIcon}
+                onClick={() => deleteProduct(item._id)}
+              />
+            </Box>
+          </Card>
+        ))}
     </List>
   );
 };

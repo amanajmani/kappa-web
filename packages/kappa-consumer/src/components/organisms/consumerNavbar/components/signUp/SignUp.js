@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 /* COMPONENTS */
 // atoms
@@ -23,16 +24,17 @@ import Popup from '../popup';
 import useStyles from './signUp.styles';
 
 export default function SignUp(props) {
-  const { isOpen, setIsOpen, handleSignUp } = props;
+  const URL = 'http://localhost:5000';
+  const { isOpen, setIsOpen, handleSignUp, handleForgetPass } = props;
 
   const classes = useStyles();
 
-  const [checked, setChecked] = useState(true);
+  const [responseMessage, setResponseMessage] = useState('');
+
   const [values, setValues] = useState({
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    name: '',
     country: '',
     error: false,
     errorMessage: {},
@@ -43,16 +45,12 @@ export default function SignUp(props) {
     return regex.test(email);
   };
 
-  const handleChecked = (event) => {
-    setChecked(event.target.checked);
-  };
+  // const handleChecked = (event) => {
+  //   setChecked(event.target.checked);
+  // };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
     setValues((prev) => ({
       ...prev,
@@ -65,27 +63,41 @@ export default function SignUp(props) {
           values.password.length < 6
             ? 'Password should contain atleast 6 characters.'
             : '',
-        firstName:
-          values.firstName.length < 3
-            ? 'First name should contain atleast 3 characters.'
+        name:
+          values.name.length < 3
+            ? 'Full name should contain atleast 3 characters.'
             : '',
         country:
           values.country.length === 0 ? 'Please select your country' : '',
       },
     }));
+  };
 
-    if (values.errorMessage) {
-      console.log(values.errorMessage, 'error message hai ');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, password, country } = values;
+    if (Object.values(values.errorMessage).every((elem) => elem === '')) {
+      console.log(values.errorMessage, 'error message nhi hai ');
+      axios
+        .post(`${URL}/api/v1/auth/register`, {
+          name,
+          email,
+          password,
+          country,
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setResponseMessage(res.data.message);
+          } else {
+            setResponseMessage(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err, 'err');
+        });
     } else {
-      console.log(values.errorMessage, 'error message nahi haiii  hai ');
+      console.log(values.errorMessage, 'error message  hai ');
     }
-
-    // axios.post(`${URL}/api/v1/auth/authenticate`, loginDetails).then((res) => {
-    //   localStorage.removeItem('user');
-    //   localStorage.removeItem('token');
-    //   localStorage.setItem('user', JSON.stringify(res.data.user));
-    //   localStorage.setItem('token', res.data.token);
-    // });
   };
 
   return (
@@ -97,6 +109,24 @@ export default function SignUp(props) {
             Create you Kappa Member profile and get first access to the very
             best of Kappa products.
           </Typography>
+
+          <Typography variant='body2' color='error'>
+            {responseMessage}
+          </Typography>
+
+          <TextField
+            required
+            margin='dense'
+            id='name'
+            label='Name'
+            fullWidth
+            variant='outlined'
+            value={values.name}
+            onChange={handleChange('name')}
+            helperText={values.errorMessage.name}
+            error={!!values.errorMessage.name}
+          />
+
           <TextField
             required
             autoFocus
@@ -126,31 +156,6 @@ export default function SignUp(props) {
             error={!!values.errorMessage.password}
           />
 
-          <TextField
-            required
-            margin='dense'
-            id='firstName'
-            label='First Name'
-            type='firstName'
-            fullWidth
-            variant='outlined'
-            value={values.firstName}
-            onChange={handleChange('firstName')}
-            helperText={values.errorMessage.firstName}
-            error={!!values.errorMessage.firstName}
-          />
-
-          <TextField
-            margin='dense'
-            id='lastName'
-            label='Last Name'
-            type='lastName'
-            fullWidth
-            variant='outlined'
-            value={values.lastName}
-            onChange={handleChange('lastName')}
-          />
-
           <FormControl
             required
             className={classes.country}
@@ -172,17 +177,6 @@ export default function SignUp(props) {
             <FormHelperText>{values.errorMessage.country}</FormHelperText>
           </FormControl>
 
-          <FormControlLabel
-            className={classes.label}
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={handleChecked}
-                color='primary'
-              />
-            }
-            label='Keep me signed in'
-          />
           <Typography variant='caption' gutterBottom>
             By logging in, you agree to Kappa&apos;s{' '}
             <Link href='/'>Privacy Policy</Link> and{' '}
@@ -200,6 +194,10 @@ export default function SignUp(props) {
           />
           <Typography variant='caption' gutterBottom>
             Already a member? <Link onClick={handleSignUp}>Sign In</Link>
+          </Typography>
+          <Typography variant='caption' gutterBottom>
+            Reset Password{' '}
+            <Link onClick={handleForgetPass}>Forgot Password</Link>
           </Typography>
         </DialogActions>
       </form>
