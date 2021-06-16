@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 
 /* COMPONENTS */
+import Button from '@kappa/components/src/atoms/button';
+import Typography from '@kappa/components/src/atoms/typography';
 import AddressCard from '../../../../../components/organisms/addressCard';
 import EditAddressModal from '../../../../../components/organisms/editAddressModal';
 
 // atoms
 
-import Button from '@kappa/components/src/atoms/button';
-import Typography from '@kappa/components/src/atoms/typography';
-
 /* STYLES */
-
 import useStyles from './address.styles';
 
-const Address = () => {
+/* SERVICES */
+import ActionCreators from '../../../../../actions';
+
+const Address = ({ getAddresses, addAddress, address, message }) => {
   const classes = useStyles();
-  let URL = 'http://localhost:5000';
+  const URL = 'http://localhost:5000';
 
   const [open, setOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -30,20 +33,17 @@ const Address = () => {
     setOpen(false);
   };
 
-  const handleSubmitAddress = (address) => {
-    // console.log(address, 'address in address page baps a gyae hai ');
-    axios.post(`${URL}/api/v1/address`, address).then((res) => {
-      setAddresses(res.data.shippingAddress);
-    });
-    console.log('closing 1');
+  const handleSubmitAddress = (newAddress) => {
+    addAddress(newAddress);
     setOpen(false);
-    console.log('closing 2');
   };
 
   useEffect(() => {
-    axios.get(`${URL}/api/v1/address`).then((res) => {
-      setAddresses(res.data.shippingAddress);
-    });
+    getAddresses();
+
+    // axios.get(`${URL}/api/v1/address`).then((res) => {
+    //   setAddresses(res.data.shippingAddress);
+    // });
   }, [open]);
 
   const handleUpdateAddress = (address) => {
@@ -72,7 +72,7 @@ const Address = () => {
           Address Information
         </Typography>
         <Button
-          label={'Add Address'}
+          label='Add Address'
           variant='contained'
           color='dark'
           className={classes.addAddressBtn}
@@ -82,19 +82,33 @@ const Address = () => {
           handleClose={handleClose}
           handleSubmitAddress={(address) => handleSubmitAddress(address)}
           open={open}
-          dialogTitle={'Add New Address'}
-          cancelTitle={'Cancel'}
+          dialogTitle='Add New Address'
+          cancelTitle='Cancel'
         />
       </div>
 
       <AddressCard
         handleSubmitAddress={handleSubmitAddress}
-        handleUpdateAddress={(address) => handleUpdateAddress(address)}
-        data={addresses}
+        handleUpdateAddress={(updatedAddress) =>
+          handleUpdateAddress(updatedAddress)
+        }
+        data={address}
         deleteAddress={deleteAddress}
       />
     </>
   );
 };
 
-export default Address;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    address: state.address.address,
+    fetching: state.address.fetching,
+    message: state.address.message,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Address);

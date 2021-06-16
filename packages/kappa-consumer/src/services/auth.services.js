@@ -40,15 +40,3 @@ export function forgotPassword(body) {
   const config = getPutConfig(body);
   return callApi(url, config);
 }
-
-// export function updateCart(cartParams) {
-//   const url = `${BASE_URL}/api/v1/cart`;
-//   const config = getPutConfig(cartParams);
-//   return callApi(url, config);
-// }
-
-// export function deleteProductFromCart(id) {
-//   const url = `${BASE_URL}/api/v1/cart/${id}`;
-//   const config = getPutConfig();
-//   return callApi(url, config);
-// }
