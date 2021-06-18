@@ -48,7 +48,7 @@ const Checkout = ({ addOrder, cart, address }) => {
     subTotal: 0,
     discount: 0,
   });
-  const [currentOrder, setCurrentOrder] = useState({});
+  const [currentOrderPayment, setCurrentOrderPayment] = useState(0);
   const [paymentStatus, setPaymentStatus] = useState(false);
 
   const steps = getSteps();
@@ -99,13 +99,16 @@ const Checkout = ({ addOrder, cart, address }) => {
           (elem) => elem.default === true
         )[0];
 
+        let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
+        setCurrentOrderPayment(totalPrice + 100);
+
         addOrder({
           orderItems: cart,
           shippingAddress,
-          itemsPrice: 10,
-          taxPrice: 12,
-          shippingPrice: 45,
-          totalPrice: 789,
+          itemsPrice: orderCalculation.subTotal,
+          taxPrice: orderCalculation.discount,
+          shippingPrice: 50,
+          totalPrice,
           isPaid: true,
           paidAt: paymentResult.create_time,
         });
@@ -130,7 +133,7 @@ const Checkout = ({ addOrder, cart, address }) => {
 
                 <Paper className={classes.paymentPaper}>
                   <PayPalButton
-                    amount={1000}
+                    amount={currentOrderPayment}
                     onSuccess={successPaymentHandler}
                   />
                 </Paper>
