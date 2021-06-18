@@ -45,6 +45,44 @@ export default function authReducer(
         fetching: false,
       };
 
+    case 'UPDATE_ADDRESS_START':
+      return {
+        ...state,
+        fetching: true,
+      };
+    case 'UPDATE_ADDRESS_SUCCESS':
+      return {
+        ...state,
+        address: action.payload.shippingAddress,
+        fetching: false,
+        message: '',
+      };
+    case 'UPDATE_ADDRESS_FAILED':
+      return {
+        ...state,
+        message: action.payload.message,
+        fetching: false,
+      };
+
+    case 'DELETE_ADDRESS_START':
+      return {
+        ...state,
+        fetching: true,
+      };
+    case 'DELETE_ADDRESS_SUCCESS':
+      return {
+        ...state,
+        address: action.payload.shippingAddress,
+        fetching: false,
+        message: '',
+      };
+    case 'DELETE_ADDRESS_FAILED':
+      return {
+        ...state,
+        message: action.payload.message,
+        fetching: false,
+      };
+
     default:
       return state;
   }

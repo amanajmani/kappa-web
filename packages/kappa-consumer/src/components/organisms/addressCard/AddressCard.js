@@ -16,8 +16,8 @@ const AddressCard = ({
   data,
   handleUpdateAddress,
   handleSubmitAddress,
-
   deleteAddress,
+  isChecked,
 }) => {
   const [open, setOpen] = useState(false);
   const [updateAddress, setUpdateAddress] = useState({});
@@ -48,7 +48,9 @@ const AddressCard = ({
           <Paper className={classes.addressPaper}>
             <Radio
               checked={address.default === true}
-              onChange={() => handleUpdateAddress(address)}
+              onChange={() =>
+                handleUpdateAddress({ ...address, default: true })
+              }
               value={i}
               name='radio-button-demo'
             />

@@ -23,27 +23,14 @@ export function addAddress(body) {
   return callApi(url, config);
 }
 
-export function putAddress(id) {
+export function updateAddress(body, id) {
   const url = `${BASE_URL}/api/v1/address/${id}`;
-  const config = getPutConfig();
+  const config = getPutConfig(body);
   return callApi(url, config);
 }
 
-// export function fetchUser() {
-//   console.log('fetch user called');
-//   const url = `${BASE_URL}/api/v1/auth/authenticate`;
-//   const config = getConfig();
-//   return callApi(url, config);
-// }
-
-// export function registerUser(body) {
-//   const url = `${BASE_URL}/api/v1/auth/register`;
-//   const config = getPostConfig(body);
-//   return callApi(url, config);
-// }
-
-// export function forgotPassword(body) {
-//   const url = `${BASE_URL}/api/v1/auth/reset-password`;
-//   const config = getPutConfig(body);
-//   return callApi(url, config);
-// }
+export function deleteAddress(id) {
+  const url = `${BASE_URL}/api/v1/address/${id}`;
+  const config = getDeleteConfig();
+  return callApi(url, config);
+}

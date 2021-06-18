@@ -91,64 +91,76 @@ const Cart = ({
       )}
       <div className={classes.headerContainer}>
         <div className={classes.header}>
-          <Typography variant="h5" gutterBottom>CART</Typography>
-          <Typography variant="caption" gutterBottom>You are eligible for free shipping</Typography>
+          <Typography variant='h5' gutterBottom>
+            CART
+          </Typography>
+          <Typography variant='caption' gutterBottom>
+            You are eligible for free shipping
+          </Typography>
         </div>
-        <div className={clsx(
-          classes.productsList,
-          (isEmpty(cart)) && classes.emptyCart,
-        )}
+        <div
+          className={clsx(
+            classes.productsList,
+            isEmpty(cart) && classes.emptyCart
+          )}
         >
-          {isEmpty(cart)
-            ? (fetching ? <Loader padding />
-              : (
-                <>
-                  <Typography gutterBottom>You haven&apos;t added anything yet</Typography>
-                  <SadIcon fontSize="large" />
-                </>
-              )) : (cart.map((cartData) => (
-                <div
-                  key={cartData.product.id}
-                  className={classes.product}
-                >
-                  <img
-                    className={classes.image}
-                    src={`${BASE_URL}/api/v1/files/${cartData.product.images.length !== 0
-                    && cartData.product.images[0]}`}
-                    alt={cartData.product.title}
-                  />
-                  <div className={classes.productDescription}>
-                    <div>
-                      <Typography variant="h6">{cartData.product.title}</Typography>
-                      <Typography variant="body1">{cartData.product.price}</Typography>
-                    </div>
-                    <div className={classes.productActions}>
-                      <QuantityButton
-                        quantity={cartData.quantity}
-                        incrementProduct={() => incrementProduct(cartData._id)}
-                        decrementProduct={() => decrementProduct(cartData._id)}
-                      />
-                      <Button label="REMOVE" className={classes.removeButton} />
-                    </div>
+          {isEmpty(cart) ? (
+            fetching ? (
+              <Loader padding />
+            ) : (
+              <>
+                <Typography gutterBottom>
+                  You haven&apos;t added anything yet
+                </Typography>
+                <SadIcon fontSize='large' />
+              </>
+            )
+          ) : (
+            cart && cart.map((cartData) => (
+              <div key={cartData.product.id} className={classes.product}>
+                <img
+                  className={classes.image}
+                  src={`${BASE_URL}/api/v1/files/${
+                    cartData.product &&
+                    cartData.product.images.length &&
+                    cartData.product.images[0]
+                  }`}
+                  alt={cartData.product.title}
+                />
+                <div className={classes.productDescription}>
+                  <div>
+                    <Typography variant='h6'>
+                      {cartData.product.title}
+                    </Typography>
+                    <Typography variant='body1'>
+                      {cartData.product.price}
+                    </Typography>
+                  </div>
+                  <div className={classes.productActions}>
+                    <QuantityButton
+                      quantity={cartData.quantity}
+                      incrementProduct={() => incrementProduct(cartData._id)}
+                      decrementProduct={() => decrementProduct(cartData._id)}
+                    />
+                    <Button label='REMOVE' className={classes.removeButton} />
                   </div>
                 </div>
-            )))}
+              </div>
+            ))
+          )}
         </div>
-        <Paper
-          className={classes.footer}
-          elevation={10}
-        >
-          <Typography variant="caption" gutterBottom>
+        <Paper className={classes.footer} elevation={10}>
+          <Typography variant='caption' gutterBottom>
             Shipping & taxes calculated at checkout
           </Typography>
           <Button
-            variant="contained"
-            color="primary"
-            label="Checkout"
+            variant='contained'
+            color='primary'
+            label='Checkout'
             className={classes.checkoutButton}
             component={Link}
             onClick={() => setIsCartVisible(false)}
-            to="/checkout"
+            to='/checkout'
           />
         </Paper>
       </div>

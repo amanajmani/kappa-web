@@ -66,4 +66,7 @@ export default makeStyles((theme) => ({
   stepperControls: {
     margin: '16px 0px',
   },
+  instructions: {
+    justifyContent: 'center',
+  },
 }));

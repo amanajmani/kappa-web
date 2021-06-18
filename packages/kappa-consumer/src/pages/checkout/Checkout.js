@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { PayPalButton } from 'react-paypal-button-v2';
 import axios from 'axios';
 
@@ -27,6 +29,9 @@ import Review from './components/organisms/review';
 /* STYLES */
 import useStyles from './checkout.styles';
 
+/* SERVICES */
+import ActionCreators from '../../actions';
+
 /* ASSETS */
 // images
 import ShoppingCartIcon from '../../assets/images/shoppingCart';
@@ -35,7 +40,7 @@ function getSteps() {
   return ['Review Cart', 'Shipping', 'Payment'];
 }
 
-const Checkout = () => {
+const Checkout = ({ addOrder, cart, address }) => {
   let URL = 'http://localhost:5000';
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -44,45 +49,17 @@ const Checkout = () => {
     discount: 0,
   });
   const [currentOrder, setCurrentOrder] = useState({});
+  const [paymentStatus, setPaymentStatus] = useState(false);
 
   const steps = getSteps();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-    if (activeStep === 1) {
-      axios
-        .post(`${URL}/api/v1/order`, {
-          user: '60b91c696807c4197c691214',
-          orderItems: [
-            { product: '60c5ea0fe9bfde323ffda227', quantity: 1 },
-            { product: '60c5e5e55ba70c30d65dad0b', quantity: 1 },
-            { product: '60c5e5ea5ba70c30d65dad0c', quantity: 1 },
-          ],
-          shippingAddress: {
-            address: 'EWS 616/1550',
-            city: 'Kanpur',
-            postalCode: '208020',
-            country: 'India',
-          },
-          paymentMethod: 'Paypal',
-          taxPrice: 100,
-          shippingPrice: 200,
-          totalPrice: 400,
-        })
-        .then((res) => {
-          setCurrentOrder(res.data);
-        });
-    }
   };
 
   const [sdkReady, setSdkReady] = useState(false);
 
   useEffect(() => {
-    //  if (!userInfo) {
-    //    history.push('/login');
-    //  }
-
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get(`${URL}/api/v1/config/paypal`);
       const script = document.createElement('script');
@@ -94,18 +71,6 @@ const Checkout = () => {
       };
       document.body.appendChild(script);
     };
-
-    // if (!order || successPay || successDeliver || order._id !== orderId) {
-    //   dispatch({ type: ORDER_PAY_RESET });
-    //   dispatch({ type: ORDER_DELIVER_RESET });
-    //   dispatch(getOrderDetails(orderId));
-    // } else if (!order.isPaid) {
-    //   if (!window.paypal) {
-    //     addPayPalScript();
-    //   } else {
-    //     setSdkReady(true);
-    //   }
-    // }
 
     if (true) {
       if (!window.paypal) {
@@ -126,24 +91,57 @@ const Checkout = () => {
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult, 'paymentResult');
+
+    if (paymentResult) {
+      setPaymentStatus(true);
+      if (address && address.length) {
+        let shippingAddress = address.filter(
+          (elem) => elem.default === true
+        )[0];
+
+        addOrder({
+          orderItems: cart,
+          shippingAddress,
+          itemsPrice: 10,
+          taxPrice: 12,
+          shippingPrice: 45,
+          totalPrice: 789,
+          isPaid: true,
+          paidAt: paymentResult.create_time,
+        });
+      }
+    }
   };
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
-        return <Review setOrderCalculation={setOrderCalculation} />;
       case 1:
+        return <Review setOrderCalculation={setOrderCalculation} />;
+      case 0:
         return <Address />;
       case 2:
         return (
           <>
-            <Typography color='textPrimary' variant='h6'>
-              Select a payment method
-            </Typography>
+            {!paymentStatus ? (
+              <>
+                <Typography color='textPrimary' variant='h6'>
+                  Select a payment method
+                </Typography>
 
-            <Paper className={classes.paymentPaper}>
-              <PayPalButton amount={1000} onSuccess={successPaymentHandler} />
-            </Paper>
+                <Paper className={classes.paymentPaper}>
+                  <PayPalButton
+                    amount={1000}
+                    onSuccess={successPaymentHandler}
+                  />
+                </Paper>
+              </>
+            ) : (
+              <>
+                <Typography className={classes.instructions}>
+                  Order Received , Payment Successful.
+                </Typography>
+              </>
+            )}
           </>
         );
       default:
@@ -159,7 +157,7 @@ const Checkout = () => {
         </Typography>
 
         <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
+          {steps.map((label, i) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
@@ -180,26 +178,38 @@ const Checkout = () => {
                 <div className={`${classes.stepperContent}`}>
                   {getStepContent(activeStep)}
                   <div className={classes.stepperControls}>
-                    <Button
-                      label={activeStep === steps.length - 1 ? 'Prev' : 'Prev'}
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.backButton}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      startIcon={<ShoppingCartIcon />}
-                      label={
-                        activeStep === steps.length - 1
-                          ? 'Pay Now'
-                          : 'Continue Shipping'
-                      }
-                      variant='contained'
-                      color='dark'
-                      className={classes.cartButton}
-                      onClick={handleNext}
-                    />
+                    {activeStep !== steps.length - 1 ? (
+                      <Button
+                        label='Prev'
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        className={classes.backButton}
+                      >
+                        Back
+                      </Button>
+                    ) : (
+                      ''
+                    )}
+
+                    {activeStep !== steps.length - 1 ? (
+                      <Button
+                        startIcon={<ShoppingCartIcon />}
+                        label='Continue Shipping'
+                        variant='contained'
+                        disabled={
+                          activeStep === steps.length - 2
+                            ? cart && cart.length
+                              ? false
+                              : true
+                            : ''
+                        }
+                        color='dark'
+                        className={classes.cartButton}
+                        onClick={handleNext}
+                      />
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
               </>
@@ -212,4 +222,17 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    address: state.address.address,
+    cart: state.cart.cart,
+    fetching: state.cart.fetching,
+    updatedCart: state.cart.updatedCart,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

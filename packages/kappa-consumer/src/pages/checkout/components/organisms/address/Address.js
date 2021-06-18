@@ -17,12 +17,22 @@ import useStyles from './address.styles';
 /* SERVICES */
 import ActionCreators from '../../../../../actions';
 
-const Address = ({ getAddresses, addAddress, address, message }) => {
+const Address = ({
+  getAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress,
+  address,
+  message,
+}) => {
   const classes = useStyles();
   const URL = 'http://localhost:5000';
 
   const [open, setOpen] = useState(false);
-  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    getAddresses();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,48 +45,45 @@ const Address = ({ getAddresses, addAddress, address, message }) => {
   const handleSubmitAddress = (newAddress) => {
     addAddress(newAddress);
     setOpen(false);
+    console.log(message, 'message');
   };
-
-  useEffect(() => {
-    getAddresses();
-
-    // axios.get(`${URL}/api/v1/address`).then((res) => {
-    //   setAddresses(res.data.shippingAddress);
-    // });
-  }, [open]);
 
   const handleUpdateAddress = (address) => {
-    address = { ...address, default: true };
-    axios.put(`${URL}/api/v1/address/${address._id}`, address).then((res) => {
-      setAddresses(res.data.shippingAddress);
-    });
-    console.log('closing 1');
+    updateAddress(address, address._id);
     setOpen(false);
-    console.log('closing 2');
   };
 
-  const deleteAddress = (addressId) => {
-    axios.delete(`${URL}/api/v1/address/${addressId}`).then((res) => {
-      setAddresses(res.data.shippingAddress);
-    });
-    console.log('closing 1');
+  const handleDeleteAddress = (id) => {
+    deleteAddress(id);
+
+    console.log('closing 1 delete');
     setOpen(false);
-    console.log('closing 2');
+    console.log('closing 2 delete');
   };
 
   return (
     <>
       <div className={classes.root}>
-        <Typography className={classes.title} color='textPrimary' variant='h6'>
-          Address Information
+        <Typography variant='body2' color='error'>
+          {message}
         </Typography>
-        <Button
-          label='Add Address'
-          variant='contained'
-          color='dark'
-          className={classes.addAddressBtn}
-          onClick={handleClickOpen}
-        />
+        <div className={classes.root}>
+          <Typography
+            className={classes.title}
+            color='textPrimary'
+            variant='h6'
+          >
+            Address Information
+          </Typography>
+          <Button
+            label='Add Address'
+            variant='contained'
+            color='dark'
+            className={classes.addAddressBtn}
+            onClick={handleClickOpen}
+          />
+        </div>
+
         <EditAddressModal
           handleClose={handleClose}
           handleSubmitAddress={(address) => handleSubmitAddress(address)}
@@ -92,7 +99,7 @@ const Address = ({ getAddresses, addAddress, address, message }) => {
           handleUpdateAddress(updatedAddress)
         }
         data={address}
-        deleteAddress={deleteAddress}
+        deleteAddress={handleDeleteAddress}
       />
     </>
   );

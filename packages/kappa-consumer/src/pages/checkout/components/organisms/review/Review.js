@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
+import BASE_URL from '../../../../../constants/baseURL';
 
 /* COMPONENTS */
 import Grid from '@kappa/components/src/atoms/grid';
@@ -105,7 +105,7 @@ const Review = ({
           <Card key={item._id} className={classes.root}>
             <CardMedia
               className={classes.media}
-              image={`${URL}/api/v1/files/${item.product.images[0]}`}
+              image={`${BASE_URL}/api/v1/files/${item.product.images[0]}`}
             />
             <CardContent>
               <Typography gutterBottom variant='body1' display='block'>

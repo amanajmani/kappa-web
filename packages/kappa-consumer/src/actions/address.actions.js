@@ -47,3 +47,47 @@ export function addAddress(body) {
     }, handleError);
   };
 }
+
+export function updateAddress(body, id) {
+  return (dispatch) => {
+    dispatch({
+      type: 'UPDATE_ADDRESS_START',
+    });
+
+    return addressServices.updateAddress(body, id).then((data) => {
+      if (data.success) {
+        dispatch({
+          type: 'UPDATE_ADDRESS_SUCCESS',
+          payload: data,
+        });
+      } else {
+        dispatch({
+          type: 'UPDATE_ADDRESS_FAILED',
+          payload: data,
+        });
+      }
+    }, handleError);
+  };
+}
+
+export function deleteAddress(id) {
+  return (dispatch) => {
+    dispatch({
+      type: 'DELETE_ADDRESS_START',
+    });
+
+    return addressServices.deleteAddress(id).then((data) => {
+      if (data.success) {
+        dispatch({
+          type: 'DELETE_ADDRESS_SUCCESS',
+          payload: data,
+        });
+      } else {
+        dispatch({
+          type: 'DELETE_ADDRESS_FAILED',
+          payload: data,
+        });
+      }
+    }, handleError);
+  };
+}

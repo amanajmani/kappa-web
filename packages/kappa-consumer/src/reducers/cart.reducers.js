@@ -3,7 +3,7 @@ export default function cartReducer(
     cart: [],
     fetching: false,
   },
-  action,
+  action
 ) {
   switch (action.type) {
     case 'ADD_PRODUCT_TO_CART':

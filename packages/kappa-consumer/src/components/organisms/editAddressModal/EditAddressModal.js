@@ -35,8 +35,6 @@ const EditAddressModal = ({
     default: false,
   });
 
-  if (type) console.log(type, 'type in under');
-
   useEffect(() => {
     console.log(data, 'data in edit mode');
     if (data) {
@@ -58,8 +56,24 @@ const EditAddressModal = ({
   const submitAddress = (address) => {
     if (cancelTitle === 'Cancel') {
       handleSubmitAddress(address);
+      setAddress({
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        postalCode: '',
+        default: false,
+      });
     } else {
       handleUpdateAddress(address);
+      setAddress({
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        postalCode: '',
+        default: false,
+      });
     }
   };
 
@@ -68,6 +82,14 @@ const EditAddressModal = ({
       deleteAddress(addressId);
     } else {
       handleClose();
+      setAddress({
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        postalCode: '',
+        default: false,
+      });
     }
   };
 
