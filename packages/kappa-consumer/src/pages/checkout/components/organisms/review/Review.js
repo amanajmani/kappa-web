@@ -42,7 +42,7 @@ const Review = ({
   updatedCart,
   setOrderCalculation,
 }) => {
-  console.log(cart, 'cart in review');
+  
   const classes = useStyles();
 
   const [data, setData] = useState([]);

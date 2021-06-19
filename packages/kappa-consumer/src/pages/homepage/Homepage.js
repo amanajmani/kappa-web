@@ -36,15 +36,11 @@ const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
       verifyUser(verificationCode);
     }
 
-    console.log(searchParams, 'searchParams--------------');
-    console.log(search, 'search--------------search');
-
     if (user && user.toLowerCase() === 'unauthorized') {
       setIsSignInOpen(true);
     }
 
     if (resetToken) {
-      console.log('set Reset Ture ......... ....................');
       setIsOpen(true);
       setResetPasswordState(true);
       setResetTokenValue(resetToken);

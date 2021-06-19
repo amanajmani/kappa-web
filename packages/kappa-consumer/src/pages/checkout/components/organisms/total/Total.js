@@ -41,7 +41,7 @@ const Total = ({ orderCalculation }) => {
               Discount :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              {orderCalculation.discount}
+              ${orderCalculation.discount}
             </Typography>
           </div>
         </Grid>
@@ -49,10 +49,18 @@ const Total = ({ orderCalculation }) => {
         <Grid item xs={12}>
           <div className={`${classes.flex} ${classes.py_16}`}>
             <Typography color='textPrimary' variant='body2'>
+              Shipping :
+            </Typography>
+            <Typography color='textPrimary' variant='body2'>
+              $5
+            </Typography>
+          </div>
+          <div className={`${classes.flex} ${classes.py_16}`}>
+            <Typography color='textPrimary' variant='body2'>
               Total :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              {orderCalculation.subTotal - orderCalculation.discount}
+              ${orderCalculation.subTotal - orderCalculation.discount + 5}
             </Typography>
           </div>
         </Grid>

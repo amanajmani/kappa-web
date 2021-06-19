@@ -116,6 +116,7 @@ const EditAddressModal = ({
                 value={address.address}
                 onChange={handleChange}
                 name='address'
+                label='Address Line'
               />
               <Box
                 width='100%'
@@ -126,12 +127,14 @@ const EditAddressModal = ({
                   value={address.city}
                   onChange={handleChange}
                   name='city'
+                  label='City'
                 />
                 <TextField
                   id='standard-basic'
                   value={address.state}
                   onChange={handleChange}
                   name='state'
+                  label='State'
                 />
               </Box>
               <Box
@@ -143,12 +146,14 @@ const EditAddressModal = ({
                   value={address.country}
                   onChange={handleChange}
                   name='country'
+                  label='Country'
                 />
                 <TextField
                   id='standard-basic'
                   value={address.postalCode}
                   onChange={handleChange}
                   name='postalCode'
+                  label='Postal Code'
                 />
               </Box>
               <Box className={classes.verticalSpacing}>

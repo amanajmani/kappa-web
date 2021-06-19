@@ -21,6 +21,7 @@ import List from '@material-ui/core/List';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import Loader from '@kappa/components/src/atoms/loader';
 
 import Address from './components/organisms/address';
 import Total from './components/organisms/total';
@@ -72,12 +73,12 @@ const Checkout = ({ addOrder, cart, address }) => {
       document.body.appendChild(script);
     };
 
-    if (true) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
-      }
+    if (!window.paypal) {
+      addPayPalScript();
+    } else {
+      setSdkReady(true);
+      let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
+      setCurrentOrderPayment(totalPrice + 100 + 5);
     }
   }, []);
 
@@ -91,20 +92,15 @@ const Checkout = ({ addOrder, cart, address }) => {
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult, 'paymentResult');
-    console.log('level -------1');
 
     if (paymentResult) {
-      console.log('level -------2');
       setPaymentStatus(true);
       if (address && address.length) {
-        console.log('level -------3');
         let shippingAddress = address.filter(
           (elem) => elem.default === true
         )[0];
 
         let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
-        setCurrentOrderPayment(totalPrice + 100);
-        console.log('level -------4');
 
         addOrder({
           orderItems: cart,
@@ -116,7 +112,6 @@ const Checkout = ({ addOrder, cart, address }) => {
           isPaid: true,
           paidAt: paymentResult.create_time,
         });
-        console.log('level -------5');
       }
     }
   };
@@ -137,10 +132,27 @@ const Checkout = ({ addOrder, cart, address }) => {
                 </Typography>
 
                 <Paper className={classes.paymentPaper}>
-                  <PayPalButton
-                    amount={currentOrderPayment}
-                    onSuccess={successPaymentHandler}
-                  />
+                  {!sdkReady ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      createOrder={(data, actions) => {
+                        return actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                currency_code: 'USD',
+                                value: currentOrderPayment
+                                  ? currentOrderPayment
+                                  : 100,
+                              },
+                            },
+                          ],
+                        });
+                      }}
+                      onSuccess={successPaymentHandler}
+                    />
+                  )}
                 </Paper>
               </>
             ) : (
@@ -174,39 +186,32 @@ const Checkout = ({ addOrder, cart, address }) => {
 
         <Grid container className={classes.container} spacing={2}>
           <Grid className={`${classes.stepperDiv}`} item lg={8} xs={12}>
-            {activeStep === steps.length ? (
-              <div>
-                <Typography className={classes.instructions}>
-                  Order Received , Payment Successful.
-                </Typography>
-                <Button onClick={handleReset}>Reset</Button>
-              </div>
-            ) : (
+            {activeStep === steps.length ? null : (
               <>
                 <div className={`${classes.stepperContent}`}>
                   {getStepContent(activeStep)}
                   <div className={classes.stepperControls}>
-                    {activeStep !== steps.length - 1 ? (
-                      <Button
-                        label='Prev'
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.backButton}
-                      >
-                        Back
-                      </Button>
-                    ) : (
-                      ''
-                    )}
+                    <Button
+                      label='Back'
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
 
                     {activeStep !== steps.length - 1 ? (
                       <Button
                         startIcon={<ShoppingCartIcon />}
-                        label='Continue Shipping'
+                        label='Continue'
                         variant='contained'
                         disabled={
-                          activeStep === steps.length - 2
+                          activeStep === steps.length - 3
                             ? cart && cart.length
+                              ? false
+                              : true
+                            : activeStep === steps.length - 2
+                            ? address && address.length
                               ? false
                               : true
                             : ''

@@ -55,10 +55,7 @@ const Address = ({
 
   const handleDeleteAddress = (id) => {
     deleteAddress(id);
-
-    console.log('closing 1 delete');
     setOpen(false);
-    console.log('closing 2 delete');
   };
 
   return (
@@ -92,6 +89,11 @@ const Address = ({
           cancelTitle='Cancel'
         />
       </div>
+      {address && address.length ? null : (
+        <Typography variant='h6' color='error'>
+          No Address found
+        </Typography>
+      )}
 
       <AddressCard
         handleSubmitAddress={handleSubmitAddress}
