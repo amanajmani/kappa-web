@@ -46,6 +46,8 @@ const Product = ({
   product,
   fetching,
   getCart,
+  setIsSignInOpen,
+  user,
 }) => {
   const classes = useStyles();
 
@@ -65,7 +67,6 @@ const Product = ({
       getAProduct(productParams);
     }
   }, [productParams]);
-
 
   const handleChangeIndex = (i) => {
     setIndex(i);
@@ -106,110 +107,122 @@ const Product = ({
 
   return (
     <>
-      {isEmpty(product)
-        ? (fetching ? <Loader padding /> : <Typography> No Product Found </Typography>)
-        : (
-          <>
-            <ContentContainer className={classes.container}>
-              <Grid container spacing={2}>
-                <Grid item sm={6} xs={12} className={classes.leftSection}>
-                  <div className={classes.slideImageContainer}>
-                    <SwipeableViews
-                      index={activeStep}
-                      onChangeIndex={handleChangeIndex}
-                      enableMouseEvents
-                    >
-                      {product.images.length !== 0
-              && product.images.map((image) => (
-                <div
-                  key={image}
-                >
-                  <img
-                    className={classes.image}
-                    src={`${BASE_URL}/api/v1/files/${product.images.length !== 0 && product.images[0]}`}
-                    alt={image}
+      {isEmpty(product) ? (
+        fetching ? (
+          <Loader padding />
+        ) : (
+          <Typography> No Product Found </Typography>
+        )
+      ) : (
+        <>
+          <ContentContainer className={classes.container}>
+            <Grid container spacing={2}>
+              <Grid item sm={6} xs={12} className={classes.leftSection}>
+                <div className={classes.slideImageContainer}>
+                  <SwipeableViews
+                    index={activeStep}
+                    onChangeIndex={handleChangeIndex}
+                    enableMouseEvents
+                  >
+                    {product.images.length !== 0 &&
+                      product.images.map((image) => (
+                        <div key={image}>
+                          <img
+                            className={classes.image}
+                            src={`${BASE_URL}/api/v1/files/${
+                              product.images.length !== 0 && product.images[0]
+                            }`}
+                            alt={image}
+                          />
+                        </div>
+                      ))}
+                  </SwipeableViews>
+                  <MobileStepper
+                    variant='dots'
+                    steps={product.images.length !== 0 && product.images.length}
+                    position='static'
+                    activeStep={activeStep}
+                    className={classes.slideImageContainer}
+                    nextButton={
+                      <IconButton
+                        onClick={handleNext}
+                        disabled={
+                          activeStep ===
+                          (product.images.length !== 0 &&
+                            product.images.length) -
+                            1
+                        }
+                      >
+                        <ArrowRightIcon fontSize='large' />
+                      </IconButton>
+                    }
+                    backButton={
+                      <IconButton
+                        onClick={handleBack}
+                        disabled={activeStep === 0}
+                      >
+                        <ArrowLeftIcon fontSize='large' />
+                      </IconButton>
+                    }
                   />
                 </div>
-              ))}
-                    </SwipeableViews>
-                    <MobileStepper
-                      variant="dots"
-                      steps={product.images.length !== 0
-              && product.images.length}
-                      position="static"
-                      activeStep={activeStep}
-                      className={classes.slideImageContainer}
-                      nextButton={(
-                        <IconButton
-                          onClick={handleNext}
-                          disabled={activeStep === (product.images.length !== 0
-                  && product.images.length) - 1}
-                        >
-                          <ArrowRightIcon fontSize="large" />
-                        </IconButton>
-            )}
-                      backButton={(
-                        <IconButton onClick={handleBack} disabled={activeStep === 0}>
-                          <ArrowLeftIcon fontSize="large" />
-                        </IconButton>
-            )}
+              </Grid>
+              <Grid item sm={6} xs={12} className={classes.rightSection}>
+                <Grid
+                  container
+                  direction='column'
+                  justify='space-between'
+                  alignItems='flex-start'
+                  className={classes.productDetailsContainer}
+                >
+                  <Grid item>
+                    <Typography variant='h4' gutterBottom>
+                      {product.title}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant='h6' color='textSecondary' gutterBottom>
+                      {product.price}
+                    </Typography>
+                  </Grid>
+                  <Grid item className={classes.productDescriptionContainer}>
+                    <Typography variant='caption'>
+                      {product.description}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item className={classes.quantityGridContainer}>
+                    <QuantityButton
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                      localIncrementProduct={localIncrementProduct}
+                      localDecrementProduct={localDecrementProduct}
                     />
-                  </div>
-                </Grid>
-                <Grid item sm={6} xs={12} className={classes.rightSection}>
-                  <Grid
-                    container
-                    direction="column"
-                    justify="space-between"
-                    alignItems="flex-start"
-                    className={classes.productDetailsContainer}
-                  >
-                    <Grid item>
-                      <Typography variant="h4" gutterBottom>
-                        {product.title}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h6" color="textSecondary" gutterBottom>
-                        {product.price}
-                      </Typography>
-                    </Grid>
-                    <Grid item className={classes.productDescriptionContainer}>
-                      <Typography variant="caption">
-                        {product.description}
-                      </Typography>
-                    </Grid>
+                  </Grid>
 
-                    <Grid item className={classes.quantityGridContainer}>
-                      <QuantityButton
-                        quantity={quantity}
-                        setQuantity={setQuantity}
-                        localIncrementProduct={localIncrementProduct}
-                        localDecrementProduct={localDecrementProduct}
-                      />
-                    </Grid>
-
-                    <Grid item className={classes.cartButtonContainer}>
-                      <Button
-                        startIcon={<ShoppingCartIcon />}
-                        label="Add To Cart"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleCart()}
-                        className={classes.cartButton}
-                      />
-                    </Grid>
+                  <Grid item className={classes.cartButtonContainer}>
+                    <Button
+                      startIcon={<ShoppingCartIcon />}
+                      label='Add To Cart'
+                      variant='contained'
+                      color='primary'
+                      onClick={() =>
+                        user.name ? handleCart() : setIsSignInOpen(true)
+                      }
+                      className={classes.cartButton}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
-            </ContentContainer>
+            </Grid>
+          </ContentContainer>
 
-            <Cart
-              isCartVisible={isCartVisible}
-              setIsCartVisible={setIsCartVisible}
-            />
-          </>
-        )}
+          <Cart
+            isCartVisible={isCartVisible}
+            setIsCartVisible={setIsCartVisible}
+          />
+        </>
+      )}
     </>
   );
 };
@@ -220,6 +233,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    user: state.auth.user,
     product: state.product.product,
     cart: state.cart.cart,
     fetching: state.product.fetching,

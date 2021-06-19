@@ -10,8 +10,8 @@ const Navbar = ({ isAdmin, children, isHidden }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
-          {children}
+      <AppBar position='static' className={classes.appBar}>
+        {children}
       </AppBar>
     </div>
   );

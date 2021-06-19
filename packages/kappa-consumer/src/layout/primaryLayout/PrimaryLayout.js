@@ -33,19 +33,19 @@ const PrimaryLayout = ({
 
   return (
     <div className={classes.root}>
-        {!fetching && categories 
-          ? (<>
-              <Navbar>
-                <ConsumerNavbar categories={categories} />
-              </Navbar>
-              <div className={classes.content}>
-                <main>{children}</main>
-              </div>
-              <Footer />
-              </>
-          ) : (
-          <Loader />
-        )}
+      {!fetching && categories ? (
+        <>
+          <Navbar>
+            <ConsumerNavbar categories={categories} />
+          </Navbar>
+          <div className={classes.content}>
+            <main>{children}</main>
+          </div>
+          <Footer />
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

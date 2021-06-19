@@ -58,11 +58,13 @@ export function registerUser(body) {
 
     return authServices.registerUser(body).then((data) => {
       if (data.success) {
+        data = { ...data, userRegistered: true };
         dispatch({
           type: 'REGISTER_USER_SUCCESS',
           payload: data,
         });
       } else {
+        data = { ...data, userRegistered: false };
         dispatch({
           type: 'REGISTER_USER_FAILED',
           payload: data,
@@ -82,7 +84,7 @@ export function verifyUser(body) {
       if (data.success) {
         dispatch({
           type: 'VERIFY_USER_SUCCESS',
-          payload: data,
+          payload: { ...data, verified: true },
         });
       } else {
         dispatch({
@@ -113,5 +115,58 @@ export function forgotPassword(body) {
         });
       }
     }, handleError);
+  };
+}
+
+export function resetPassword(body) {
+  return (dispatch) => {
+    dispatch({
+      type: 'RESET_PASSWORD_START',
+    });
+
+    return authServices.resetPassword(body).then((data) => {
+      console.log(
+        data,
+        'data-----  resetPassword resetPassword resetPassword '
+      );
+      if (data.success) {
+        
+        dispatch({
+          type: 'RESET_PASSWORD_SUCCESS',
+          payload: { ...data, verified : true},
+        });
+      } else {
+        dispatch({
+          type: 'RESET_PASSWORD_FAILED',
+          payload: { ...data, verified: false },
+        });
+      }
+    }, handleError);
+  };
+}
+
+export function setIsSignInOpen(body) {
+  console.log(body, 'setIsSignInOpen');
+  return (dispatch) => {
+    dispatch({
+      type: 'OPEN_LOGIN_MODAL',
+      payload: body,
+    });
+  };
+}
+
+export function clearAuthMessage() {
+  return (dispatch) => {
+    dispatch({
+      type: 'CLEAR_AUTH_MESSAGE',
+    });
+  };
+}
+
+export function setUserRegFalse() {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_USER_REGISTER_FALSE',
+    });
   };
 }

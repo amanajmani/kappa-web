@@ -91,16 +91,20 @@ const Checkout = ({ addOrder, cart, address }) => {
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult, 'paymentResult');
+    console.log('level -------1');
 
     if (paymentResult) {
+      console.log('level -------2');
       setPaymentStatus(true);
       if (address && address.length) {
+        console.log('level -------3');
         let shippingAddress = address.filter(
           (elem) => elem.default === true
         )[0];
 
         let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
         setCurrentOrderPayment(totalPrice + 100);
+        console.log('level -------4');
 
         addOrder({
           orderItems: cart,
@@ -112,15 +116,16 @@ const Checkout = ({ addOrder, cart, address }) => {
           isPaid: true,
           paidAt: paymentResult.create_time,
         });
+        console.log('level -------5');
       }
     }
   };
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 1:
-        return <Review setOrderCalculation={setOrderCalculation} />;
       case 0:
+        return <Review setOrderCalculation={setOrderCalculation} />;
+      case 1:
         return <Address />;
       case 2:
         return (

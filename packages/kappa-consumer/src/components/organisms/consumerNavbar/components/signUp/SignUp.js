@@ -21,6 +21,7 @@ import FormHelperText from '@kappa/components/src/atoms/formHelperText';
 import Link from '@kappa/components/src/atoms/link';
 import COUNTRIES from '@kappa/components/src/constants/countries';
 import Popup from '../popup';
+import Loader from '@kappa/components/src/atoms/loader';
 
 // Styles
 import useStyles from './signUp.styles';
@@ -36,11 +37,14 @@ const SignUp = (props) => {
     handleForgetPass,
     registerUser,
     message,
+    fetching,
+    userRegistered,
+    setUserRegFalse,
   } = props;
 
   const classes = useStyles();
 
-  const [responseMessage, setResponseMessage] = useState('');
+  const [isValid, setIsValid] = useState(false);
 
   const [values, setValues] = useState({
     email: '',
@@ -62,6 +66,24 @@ const SignUp = (props) => {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  useEffect(() => {
+    if (
+      Object.values(values.errorMessage).every((elem) => elem === '') &&
+      !(values.country.length === 0) &&
+      !(values.name.length < 3) &&
+      !(values.password.length < 6) &&
+      validateEmail(values.email)
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [values]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     setValues((prev) => ({
       ...prev,
@@ -82,12 +104,9 @@ const SignUp = (props) => {
           values.country.length === 0 ? 'Please select your country' : '',
       },
     }));
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
     const { name, email, password, country } = values;
-    if (Object.values(values.errorMessage).every((elem) => elem === '')) {
+    if (isValid) {
       console.log(values.errorMessage, 'error message nhi hai ');
 
       registerUser({
@@ -101,98 +120,137 @@ const SignUp = (props) => {
     }
   };
 
+  useEffect(() => {
+    setValues({
+      email: '',
+      password: '',
+      name: '',
+      country: '',
+      error: false,
+      errorMessage: {},
+    });
+    setUserRegFalse();
+  }, [isOpen]);
+
   return (
-    <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle className={classes.title}>Become a Kappa Member</DialogTitle>
+    <Popup isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)}>
+      <DialogTitle className={classes.title}>
+        {userRegistered
+          ? 'Thanks for becoming a Mr Nomad Member.'
+          : 'Become a Mr Nomad Member.'}
+      </DialogTitle>
       <form noValidate autoComplete='off'>
         <DialogContent className={classes.content}>
-          <Typography variant='caption' color='textSecondary' gutterBottom>
-            Create you Kappa Member profile and get first access to the very
-            best of Kappa products.
-          </Typography>
+          {userRegistered ? (
+            <></>
+          ) : (
+            <Typography variant='caption' color='textSecondary' gutterBottom>
+              Create you Kappa Member profile and get first access to the very
+              best of Kappa products.
+            </Typography>
+          )}
 
-          <Typography variant='body2' color='error'>
+          <Typography variant={userRegistered ? 'h6' : 'body2'} color='error'>
             {message}
           </Typography>
+          {userRegistered ? (
+            <></>
+          ) : (
+            <>
+              {fetching ? (
+                <Loader padding />
+              ) : (
+                <>
+                  <TextField
+                    required
+                    margin='dense'
+                    id='name'
+                    label='Name'
+                    fullWidth
+                    variant='outlined'
+                    value={values.name}
+                    onChange={handleChange('name')}
+                    helperText={values.errorMessage.name}
+                    error={!!values.errorMessage.name}
+                  />
 
-          <TextField
-            required
-            margin='dense'
-            id='name'
-            label='Name'
-            fullWidth
-            variant='outlined'
-            value={values.name}
-            onChange={handleChange('name')}
-            helperText={values.errorMessage.name}
-            error={!!values.errorMessage.name}
-          />
+                  <TextField
+                    required
+                    autoFocus
+                    margin='dense'
+                    id='email'
+                    label='Email Address'
+                    type='email'
+                    fullWidth
+                    variant='outlined'
+                    value={values.email}
+                    onChange={handleChange('email')}
+                    helperText={values.errorMessage.email}
+                    error={!!values.errorMessage.email}
+                  />
 
-          <TextField
-            required
-            autoFocus
-            margin='dense'
-            id='email'
-            label='Email Address'
-            type='email'
-            fullWidth
-            variant='outlined'
-            value={values.email}
-            onChange={handleChange('email')}
-            helperText={values.errorMessage.email}
-            error={!!values.errorMessage.email}
-          />
+                  <TextField
+                    required
+                    margin='dense'
+                    id='password'
+                    label='Password'
+                    type='password'
+                    fullWidth
+                    variant='outlined'
+                    value={values.password}
+                    onChange={handleChange('password')}
+                    helperText={values.errorMessage.password}
+                    error={!!values.errorMessage.password}
+                  />
 
-          <TextField
-            required
-            margin='dense'
-            id='password'
-            label='Password'
-            type='password'
-            fullWidth
-            variant='outlined'
-            value={values.password}
-            onChange={handleChange('password')}
-            helperText={values.errorMessage.password}
-            error={!!values.errorMessage.password}
-          />
+                  <FormControl
+                    required
+                    className={classes.country}
+                    variant='outlined'
+                    margin='dense'
+                    error={!!values.errorMessage.country}
+                    helperText={values.errorMessage.country}
+                  >
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      label='Country'
+                      value={values.country}
+                      onChange={handleChange('country')}
+                    >
+                      {COUNTRIES.map((country) => (
+                        <MenuItem value={country.label}>
+                          {country.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      {values.errorMessage.country}
+                    </FormHelperText>
+                  </FormControl>
+                </>
+              )}
 
-          <FormControl
-            required
-            className={classes.country}
-            variant='outlined'
-            margin='dense'
-            error={!!values.errorMessage.country}
-            helperText={values.errorMessage.country}
-          >
-            <InputLabel>Country</InputLabel>
-            <Select
-              label='Country'
-              value={values.country}
-              onChange={handleChange('country')}
-            >
-              {COUNTRIES.map((country) => (
-                <MenuItem value={country.label}>{country.label}</MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{values.errorMessage.country}</FormHelperText>
-          </FormControl>
-
-          <Typography variant='caption' gutterBottom>
-            By logging in, you agree to Kappa&apos;s{' '}
-            <Link href='/'>Privacy Policy</Link> and{' '}
-            <Link href='/'>Terms of Use</Link>{' '}
-          </Typography>
+              <Typography variant='caption' gutterBottom>
+                By logging in, you agree to Kappa&apos;s{' '}
+                <Link href='/'>Privacy Policy</Link> and{' '}
+                <Link href='/'>Terms of Use</Link>{' '}
+              </Typography>
+            </>
+          )}
         </DialogContent>
         <DialogActions className={classes.actions}>
-          <Button
-            type='submit'
-            label='Sign Up'
-            variant='contained'
-            color='primary'
-            className={classes.button}
-            onClick={(e) => handleSubmit(e)}
-          />
+          {userRegistered ? (
+            <></>
+          ) : (
+            <Button
+              type='submit'
+              label='Sign Up'
+              variant='contained'
+              color='primary'
+              className={classes.button}
+              onClick={(e) => handleSubmit(e)}
+            />
+          )}
           <Typography variant='caption' gutterBottom>
             Already a member? <Link onClick={handleSignUp}>Sign In</Link>
           </Typography>
@@ -212,6 +270,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    userRegistered: state.auth.userRegistered,
     user: state.auth.user,
     fetching: state.auth.fetching,
     message: state.auth.message,

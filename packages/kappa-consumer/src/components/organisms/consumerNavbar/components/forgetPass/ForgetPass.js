@@ -56,7 +56,7 @@ const ForgetPass = (props) => {
   };
 
   return (
-    <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Popup isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)}>
       <DialogTitle className={classes.title}>Forget Password</DialogTitle>
 
       <DialogContent className={classes.content}>

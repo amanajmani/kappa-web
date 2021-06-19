@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
+import { Link, withRouter, useHistory } from 'react-router-dom';
 
 import { IconButton, Tabs, Tab } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
@@ -31,12 +30,18 @@ import PersonIcon from '../../../assets/images/person';
 
 import ActionCreators from '../../../actions';
 
-const ConsumerNavbar = ({ 
-  categories, fetchingAuth, user, fetchUser,
+const ConsumerNavbar = ({
+  categories,
+  
+  user,
+  fetchUser,
+  isSignInOpen,
+  setIsSignInOpen,
+  clearAuthMessage,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(2);
-  const [isSignInOpen, setIsSignInOpen] = React.useState(false);
+  // const [isSignInOpen, setIsSignInOpen] = React.useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = React.useState(false);
   const [isCartVisible, setIsCartVisible] = React.useState(false);
   const [isForgetPassOpen, setIsForgetPassOpen] = React.useState(false);
@@ -56,22 +61,26 @@ const ConsumerNavbar = ({
     setIsSignUpOpen(true);
     setIsSignInOpen(false);
     setIsForgetPassOpen(false);
+    clearAuthMessage();
   };
 
   const handleSignUp = () => {
     setIsSignInOpen(true);
     setIsSignUpOpen(false);
     setIsForgetPassOpen(false);
+    clearAuthMessage();
   };
 
   const handleForgetPass = () => {
     setIsSignUpOpen(false);
     setIsSignInOpen(false);
     setIsForgetPassOpen(true);
+    clearAuthMessage();
   };
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
+    clearAuthMessage();
   };
 
   useEffect(() => {
@@ -100,14 +109,10 @@ const ConsumerNavbar = ({
     <>
       <div className={classes.sectionDesktop}>
         <div className={classes.sectionLeftDesktop}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            className={classes.tabs}
-          >
+          <Tabs value={value} onChange={handleChange} className={classes.tabs}>
             <Tab
               label='SHOP'
-              className={classes.tab}  
+              className={classes.tab}
               ref={anchorRef}
               onClick={handleToggle}
             />
@@ -127,26 +132,38 @@ const ConsumerNavbar = ({
         </Link>
         <div className={classes.sectionRightDesktop}>
           {user.name ? (
-            <Button
-              className={classes.button}
-              label={user.name}
-            />
+            <Button className={classes.button} label={user.name} />
           ) : (
-              <IconButton className={classes.button} onClick={() => setIsSignInOpen(true)}>
-                <PersonIcon />
-              </IconButton>
-            )}
+            <IconButton
+              className={classes.button}
+              onClick={() => setIsSignInOpen(true)}
+            >
+              <PersonIcon />
+            </IconButton>
+          )}
 
-          <IconButton className={classes.button} onClick={() => setIsCartVisible(true)}>
-            <ShoppingCartIcon />
-          </IconButton>
+          {user.name ? (
+            <IconButton
+              className={classes.button}
+              onClick={() => setIsCartVisible(true)}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              className={classes.button}
+              onClick={() => setIsSignInOpen(true)}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+          )}
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder='Search…'
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -179,19 +196,28 @@ const ConsumerNavbar = ({
       <Cart isCartVisible={isCartVisible} setIsCartVisible={setIsCartVisible} />
       <SignIn
         isOpen={isSignInOpen}
-        setIsOpen={setIsSignInOpen}
+        setIsOpen={() => {
+          setIsSignInOpen();
+          clearAuthMessage();
+        }}
         handleSignIn={handleSignIn}
         handleForgetPass={handleForgetPass}
       />
       <SignUp
         isOpen={isSignUpOpen}
-        setIsOpen={setIsSignUpOpen}
+        setIsOpen={(bool) => {
+          setIsSignUpOpen(bool);
+          clearAuthMessage();
+        }}
         handleSignUp={handleSignUp}
         handleForgetPass={handleForgetPass}
       />
       <ForgetPass
         isOpen={isForgetPassOpen}
-        setIsOpen={setIsForgetPassOpen}
+        setIsOpen={(bool) => {
+          setIsForgetPassOpen(bool);
+          clearAuthMessage();
+        }}
         handleForgetPass={handleForgetPass}
         handleSignIn={handleSignIn}
         handleSignUp={handleSignUp}
@@ -206,10 +232,12 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    isSignInOpen: state.auth.isSignInOpen,
     user: state.auth.user,
-    fetchingAuth: state.auth.fetching,
     message: state.auth.message,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConsumerNavbar);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ConsumerNavbar)
+);

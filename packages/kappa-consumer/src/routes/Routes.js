@@ -12,21 +12,22 @@ import Homepage from '../pages/homepage';
 import ProductsList from '../pages/productsList';
 import Product from '../pages/product';
 import Checkout from '../pages/checkout';
+import PrivateRoute from '../components/organisms/privateRoutes';
 
 function Routes() {
   return (
     <Router>
       <Provider store={store}>
         <MyThemeProvider>
-            <PrimaryLayout>
+          <PrimaryLayout>
             <Switch>
-                <Route path='/' exact component={Homepage} />
-                <Route path='/checkout' component={Checkout} />
-                <Route path='/product/:id/' component={Product} />
-                <Route path='/verify/:verificationCode' component={Homepage} />
-                <Route path='/:id' component={ProductsList} />
-              </Switch>
-            </PrimaryLayout>
+              <Route path='/' exact component={Homepage} />
+              <PrivateRoute path='/checkout' component={Checkout} />
+              <Route path='/product/:id/' component={Product} />
+              <Route path='/verify/:verificationCode' component={Homepage} />
+              <Route path='/:id' component={ProductsList} />
+            </Switch>
+          </PrimaryLayout>
         </MyThemeProvider>
       </Provider>
     </Router>

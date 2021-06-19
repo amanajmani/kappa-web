@@ -11,11 +11,7 @@ const Loader = (props) => {
   const classes = useStyles();
 
   return (
-    <div
-      {...props}
-      className={classes.root}
-      style={{ padding: padding && 50 }}
-    >
+    <div {...props} className={classes.root} style={{ padding: padding && 50 }}>
       <CircularProgress />
     </div>
   );

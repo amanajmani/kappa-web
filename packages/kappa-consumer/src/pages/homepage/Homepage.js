@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -9,26 +9,59 @@ import carouselData from './constants/carouselData.constants';
 
 // components
 import Carousel from './components/organisms/carousel';
+import Modal from '../../components/organisms/modal';
 
 import ActionCreators from '../../actions';
 
-const App = ({ match, verifyUser, message }) => {
+const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [verification, setVerification] = useState(false);
+  const [resetPasswordState, setResetPasswordState] = useState(false);
+  const [resetTokenValue, setResetTokenValue] = useState('');
 
   useEffect(() => {
+    console.log('enter in hompage dfghjk456789456789');
+    const { search } = location;
+    const searchParams = new URLSearchParams(search);
+    const user = searchParams.get('user');
+    const resetToken = searchParams.get('resetToken');
+
     const {
       params: { verificationCode },
     } = match;
 
     if (verificationCode) {
+      setIsOpen(true);
+      setVerification(true);
       verifyUser(verificationCode);
+    }
+
+    console.log(searchParams, 'searchParams--------------');
+    console.log(search, 'search--------------search');
+
+    if (user && user.toLowerCase() === 'unauthorized') {
+      setIsSignInOpen(true);
+    }
+
+    if (resetToken) {
+      console.log('set Reset Ture ......... ....................');
+      setIsOpen(true);
+      setResetPasswordState(true);
+      setResetTokenValue(resetToken);
     }
   }, []);
 
   return (
     <div>
-      <Typography variant='body2' color='error'>
-        {message}
-      </Typography>
+      <Modal
+        setIsOpen={setIsOpen}
+        isOpen={isOpen}
+        verification={verification}
+        resetPasswordState={resetPasswordState}
+        resetTokenValue={resetTokenValue}
+        setResetPasswordState={setResetPasswordState}
+      />
+      <Typography variant='body2' color='error'></Typography>
       <Carousel data={carouselData} />
     </div>
   );

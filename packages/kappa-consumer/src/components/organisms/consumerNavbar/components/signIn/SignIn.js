@@ -53,6 +53,12 @@ const SignIn = ({
 
   const submitLogin = () => {
     loginUser(loginDetails);
+    setLoginDetails({
+      email: '',
+      password: '',
+      keepMeLoggedIn: false,
+      role: 'admin',
+    });
   };
 
   useEffect(() => {
@@ -60,6 +66,15 @@ const SignIn = ({
       setIsOpen(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    setLoginDetails({
+      email: '',
+      password: '',
+      keepMeLoggedIn: false,
+      role: 'admin',
+    });
+  }, [isOpen]);
 
   return (
     <Popup isOpen={isOpen} setIsOpen={setIsOpen}>

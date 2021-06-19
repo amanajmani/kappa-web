@@ -15,10 +15,7 @@ import useStyles from './categoriesList.styles';
 
 const CategoriesListMenu = (props) => {
   const classes = useStyles();
-  const {
-    setOpen, open, anchorRef, categories,
-    fetching,
-  } = props;
+  const { setOpen, open, anchorRef, categories, fetching } = props;
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -46,14 +43,23 @@ const CategoriesListMenu = (props) => {
   }, [open]);
 
   return (
-    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal style={{ zIndex: 10, width: '99.5%'}}>
+    <Popper
+      open={open}
+      anchorEl={anchorRef.current}
+      role={undefined}
+      transition
+      disablePortal
+      style={{ zIndex: 10, width: '99.5%' }}
+    >
       {({ TransitionProps, placement }) => (
-        <Grow
-          {...TransitionProps}
-        >
+        <Grow {...TransitionProps}>
           <Paper>
             <ClickAwayListener onClickAway={handleClose}>
-              <MenuList autoFocusItem={false} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+              <MenuList
+                autoFocusItem={false}
+                id='menu-list-grow'
+                onKeyDown={handleListKeyDown}
+              >
                 {categories.data.map((category) => (
                   <MenuItem
                     component={Link}

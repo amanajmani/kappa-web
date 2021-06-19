@@ -3,6 +3,9 @@ export default function authReducer(
     user: {},
     fetching: false,
     message: '',
+    isSignInOpen: false,
+    userRegistered: false,
+    verified: false,
   },
   action
 ) {
@@ -36,12 +39,14 @@ export default function authReducer(
         ...state,
         fetching: false,
         message: action.payload.message,
+        userRegistered: action.payload.userRegistered,
       };
     case 'REGISTER_USER_FAILED':
       return {
         ...state,
         message: action.payload.message,
         fetching: false,
+        userRegistered: action.payload.userRegistered,
       };
 
     case 'VERIFY_USER_START':
@@ -54,6 +59,7 @@ export default function authReducer(
         ...state,
         fetching: false,
         message: action.payload.message,
+        verified: action.payload.verified,
       };
     case 'VERIFY_USER_FAILED':
       return {
@@ -78,6 +84,44 @@ export default function authReducer(
         ...state,
         message: action.payload.message,
         fetching: false,
+      };
+
+    case 'OPEN_LOGIN_MODAL':
+      return {
+        ...state,
+        isSignInOpen: action.payload,
+      };
+
+    case 'CLEAR_AUTH_MESSAGE':
+      return {
+        ...state,
+        message: '',
+      };
+
+    case 'SET_USER_REGISTER_FALSE':
+      return {
+        ...state,
+        userRegistered: false,
+      };
+
+    case 'RESET_PASSWORD_START':
+      return {
+        ...state,
+        fetching: true,
+      };
+    case 'RESET_PASSWORD_SUCCESS':
+      return {
+        ...state,
+        fetching: false,
+        message: action.payload.message,
+        verified: action.payload.verified,
+      };
+    case 'RESET_PASSWORD_FAILED':
+      return {
+        ...state,
+        message: action.payload.message,
+        fetching: false,
+        verified: action.payload.verified,
       };
 
     default:

@@ -116,7 +116,8 @@ const Cart = ({
               </>
             )
           ) : (
-            cart && cart.map((cartData) => (
+            cart &&
+            cart.map((cartData) => (
               <div key={cartData.product.id} className={classes.product}>
                 <img
                   className={classes.image}

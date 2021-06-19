@@ -28,6 +28,12 @@ export function registerUser(body) {
   return callApi(url, config);
 }
 
+export function resetPassword(body) {
+  const url = `${BASE_URL}/api/v1/auth/resetPasswordNow`;
+  const config = getPostConfig(body);
+  return callApi(url, config);
+}
+
 export function verifyUser(verificationCode) {
   const url = `${BASE_URL}/api/v1/auth/verify-now/${verificationCode}`;
   const config = getConfig();
