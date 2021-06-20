@@ -62,11 +62,27 @@ export default makeStyles((theme) => ({
   },
   paymentPaper: {
     margin: '16px 0px',
+    padding: theme.spacing(6),
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(3),
+    },
   },
   stepperControls: {
     margin: '16px 0px',
   },
   instructions: {
     justifyContent: 'center',
+  },
+
+  cashOnDelivery: {
+    width: '100%',
+    marginTop: '12px',
+    backgroundColor: '#fff',
+    border: '1px solid gray',
+    color: '#3c52b2',
+    '&:hover': {
+      background: 'black',
+      color: 'white',
+    },
   },
 }));

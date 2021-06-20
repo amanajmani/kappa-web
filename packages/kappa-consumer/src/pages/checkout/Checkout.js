@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PayPalButton } from 'react-paypal-button-v2';
-import axios from 'axios';
+import { Link as RouterLink } from 'react-router-dom';
 import BASE_URL from '../../constants/baseURL';
 
 /* COMPONENTS */
@@ -23,6 +23,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Loader from '@kappa/components/src/atoms/loader';
+import Link from '@material-ui/core/Link';
 
 import Address from './components/organisms/address';
 import Total from './components/organisms/total';
@@ -42,7 +43,7 @@ function getSteps() {
   return ['Review Cart', 'Shipping', 'Payment'];
 }
 
-const Checkout = ({ addOrder, cart, address }) => {
+const Checkout = ({ addOrder, cart, address, user }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [orderCalculation, setOrderCalculation] = useState({
@@ -61,39 +62,15 @@ const Checkout = ({ addOrder, cart, address }) => {
   const [sdkReady, setSdkReady] = useState(false);
 
   useEffect(() => {
-    // const addPayPalScript = async () => {
-    //   // const { data: clientId } = await axios.get(
-    //   //   `${BASE_URL}/api/v1/config/paypal`
-    //   // );
-    //   const script = document.createElement('script');
-    //   script.type = 'text/javascript';
-    //   script.src = `https://www.paypal.com/sdk/js?client-id=ARl9JFy8Cc-bc49YMZyEFizHNGaDqtQejkCvs1knPHirzwcrvBZMDnLJ5SdQFIi5rs8QXZaXQvYQPdq`;
-    //   script.async = true;
-    //   script.onload = () => {
-    //     setSdkReady(true);
-    //     console.log('append---------1');
-    //   };
-    //   document.body.appendChild(script);
-    // };
-
-    // if (!window.paypal) {
-    //   console.log('append---------add');
-    //   addPayPalScript();
-    // } else {
+    let total = parseFloat(
+      orderCalculation.subTotal - orderCalculation.discount + 5
+    ).toFixed(2);
+    setCurrentOrderPayment(total);
     setSdkReady(true);
-    let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
-    let tempTotal = totalPrice + 100 + 5;
-    tempTotal = parseFloat(tempTotal).toFixed(2);
-    setCurrentOrderPayment(tempTotal);
-    // }
-  }, []);
+  }, [orderCalculation.discount, orderCalculation.subTotal]);
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const successPaymentHandler = (paymentResult) => {
@@ -106,22 +83,46 @@ const Checkout = ({ addOrder, cart, address }) => {
           (elem) => elem.default === true
         )[0];
 
-        let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
-        let tempTotal = totalPrice + 100 + 5;
-        tempTotal = parseFloat(tempTotal).toFixed(2);
-        setCurrentOrderPayment(tempTotal);
-
         addOrder({
           orderItems: cart,
           shippingAddress,
           itemsPrice: orderCalculation.subTotal,
           taxPrice: orderCalculation.discount,
-          shippingPrice: 50,
-          totalPrice: tempTotal,
+          shippingPrice: 5,
+          totalPrice: currentOrderPayment,
           isPaid: true,
           paidAt: paymentResult.create_time,
+          paymentMethod: 'paypal',
+          paymentResult: {
+            status: 'success',
+            update_time: paymentResult.create_time,
+            email_address: user.email,
+          },
         });
       }
+    }
+  };
+
+  const cashOnDeliveryHandle = () => {
+    setPaymentStatus(true);
+    if (address && address.length) {
+      let shippingAddress = address.filter((elem) => elem.default === true)[0];
+
+      addOrder({
+        orderItems: cart,
+        shippingAddress,
+        itemsPrice: orderCalculation.subTotal,
+        taxPrice: orderCalculation.discount,
+        shippingPrice: 50,
+        totalPrice: currentOrderPayment,
+        isPaid: false,
+        paymentMethod: 'cash',
+        paymentResult: {
+          status: 'pending',
+          update_time: { type: String },
+          email_address: user.email,
+        },
+      });
     }
   };
 
@@ -144,33 +145,35 @@ const Checkout = ({ addOrder, cart, address }) => {
                   {!sdkReady ? (
                     <Loader />
                   ) : (
-                    <PayPalButton
-                      createOrder={(data, actions) => {
-                        return actions.order.create({
-                          purchase_units: [
-                            {
-                              amount: {
-                                currency_code: 'USD',
-                                value: 100,
-                              },
-                              /* shipping: {
-                                address: {
-                                  address_line_1:
-                                    'EWS. 507 Wing A Raheja Residency',
-                                  address_line_2: 'Film City Road',
-                                  admin_area_1: 'Maharashtra',
-                                  admin_area_2: 'Mumbai',
-                                  country_code: 'IN',
-                                  postal_code: '400097',
+                    <>
+                      <PayPalButton
+                        onClick={() =>
+                          console.log(
+                            currentOrderPayment,
+                            'currentOrderPayment inside button'
+                          )
+                        }
+                        createOrder={(data, actions) => {
+                          console.log(data, 'data n data n data n paypal');
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  currency_code: 'USD',
+                                  value: currentOrderPayment,
                                 },
-                                name: { full_name: 'Ravi Kumar' },
-                              }, */
-                            },
-                          ],
-                        });
-                      }}
-                      onSuccess={successPaymentHandler}
-                    />
+                              },
+                            ],
+                          });
+                        }}
+                        onSuccess={successPaymentHandler}
+                      />
+                      <Button
+                        label='Cash On Delivery'
+                        onClick={cashOnDeliveryHandle}
+                        className={classes.cashOnDelivery}
+                      ></Button>
+                    </>
                   )}
                 </Paper>
               </>
@@ -210,14 +213,16 @@ const Checkout = ({ addOrder, cart, address }) => {
                 <div className={`${classes.stepperContent}`}>
                   {getStepContent(activeStep)}
                   <div className={classes.stepperControls}>
-                    <Button
-                      label='Back'
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.backButton}
-                    >
-                      Back
-                    </Button>
+                    {activeStep !== steps.length - 1 ? (
+                      <Button
+                        label='Back'
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        className={classes.backButton}
+                      >
+                        Back
+                      </Button>
+                    ) : null}
 
                     {activeStep !== steps.length - 1 ? (
                       <Button
@@ -242,6 +247,16 @@ const Checkout = ({ addOrder, cart, address }) => {
                     ) : (
                       ''
                     )}
+                    {activeStep === steps.length - 1 ? (
+                      <Link underline='none' component={RouterLink} to={`/`}>
+                        <Button
+                          variant='contained'
+                          color='primary'
+                          label='Home'
+                          className={classes.checkoutButton}
+                        />
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </>
@@ -261,6 +276,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     address: state.address.address,
+    user: state.auth.user,
     cart: state.cart.cart,
     fetching: state.cart.fetching,
     updatedCart: state.cart.updatedCart,
