@@ -10,7 +10,12 @@ import ProductView from './components/productView';
 import useStyles from './products.styles';
 
 /* UTILS */
-import { getAllProducts, addProduct, updateProduct, deleteProduct } from '../../network/api';
+import {
+  getAllProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+} from '../../network/api';
 import { productsTableHeader } from '../../utils/constants';
 
 /* ICONS */
@@ -23,7 +28,7 @@ const initialProductFields = {
   description: '',
   price: null,
   title: '',
-  user: '60b91c696807c4197c691214',
+  user: '60cf3a3ccc00f23267623951',
 };
 
 export default function Products() {
@@ -42,7 +47,10 @@ export default function Products() {
 
   const handleProductFields = (name) => (event) => {
     if (name === 'countInStock' || name === 'price') {
-      setProductFields({ ...productFields, [name]: parseInt(event.target.value, 10) });
+      setProductFields({
+        ...productFields,
+        [name]: parseInt(event.target.value, 10),
+      });
     } else {
       setProductFields({ ...productFields, [name]: event.target.value });
     }
@@ -51,11 +59,10 @@ export default function Products() {
   useEffect(() => {
     setFetching(true);
     setProducts(null);
-    getAllProducts(productParams)
-      .then((res) => {
-        setProducts(res);
-        setFetching(false);
-      });
+    getAllProducts(productParams).then((res) => {
+      setProducts(res);
+      setFetching(false);
+    });
   }, [productParams]);
 
   const openProductView = () => {
@@ -70,14 +77,13 @@ export default function Products() {
   };
 
   const fetchAllProducts = () => {
-    return getAllProducts(productParams)
-      .then((res) => {
-        setProducts(res);
-        setProductFields(initialProductFields);
-        setImageFiles(null);
-        setFetching(false);
+    return getAllProducts(productParams).then((res) => {
+      setProducts(res);
+      setProductFields(initialProductFields);
+      setImageFiles(null);
+      setFetching(false);
     });
-  }
+  };
 
   const handleSubmit = () => {
     setIsEditMode(false);
@@ -85,24 +91,21 @@ export default function Products() {
     setFetching(true);
     if (productFields.hasOwnProperty('images')) {
       delete productFields.images;
-      updateProduct(productFields, imageFiles)
-        .then(() => {
-          fetchAllProducts();
-        });
+      updateProduct(productFields, imageFiles).then(() => {
+        fetchAllProducts();
+      });
     } else {
-      addProduct(productFields, imageFiles)
-      .then(() => {
+      addProduct(productFields, imageFiles).then(() => {
         fetchAllProducts();
       });
     }
   };
 
   const handleDelete = (productId) => {
-    deleteProduct(productId)
-        .then(() => {
-          fetchAllProducts();
-      });
-    }
+    deleteProduct(productId).then(() => {
+      fetchAllProducts();
+    });
+  };
 
   return (
     <div className={classes.root}>
@@ -118,7 +121,7 @@ export default function Products() {
         handleDelete={handleDelete}
       />
       <Fab
-        color="primary"
+        color='primary'
         className={classes.icon}
         onClick={handleAddNewProduct}
       >
