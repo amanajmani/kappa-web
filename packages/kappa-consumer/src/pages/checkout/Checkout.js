@@ -78,7 +78,9 @@ const Checkout = ({ addOrder, cart, address }) => {
     } else {
       setSdkReady(true);
       let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
-      setCurrentOrderPayment(totalPrice + 100 + 5);
+      let tempTotal = totalPrice + 100 + 5;
+      tempTotal = parseFloat(tempTotal).toFixed(2);
+      setCurrentOrderPayment(tempTotal);
     }
   }, []);
 
@@ -101,6 +103,9 @@ const Checkout = ({ addOrder, cart, address }) => {
         )[0];
 
         let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
+        let tempTotal = totalPrice + 100 + 5;
+        tempTotal = parseFloat(tempTotal).toFixed(2);
+        setCurrentOrderPayment(tempTotal);
 
         addOrder({
           orderItems: cart,
@@ -108,7 +113,7 @@ const Checkout = ({ addOrder, cart, address }) => {
           itemsPrice: orderCalculation.subTotal,
           taxPrice: orderCalculation.discount,
           shippingPrice: 50,
-          totalPrice,
+          totalPrice: tempTotal,
           isPaid: true,
           paidAt: paymentResult.create_time,
         });
@@ -142,10 +147,20 @@ const Checkout = ({ addOrder, cart, address }) => {
                             {
                               amount: {
                                 currency_code: 'USD',
-                                value: currentOrderPayment
-                                  ? currentOrderPayment
-                                  : 100,
+                                value: 100,
                               },
+                              /* shipping: {
+                                address: {
+                                  address_line_1:
+                                    'EWS. 507 Wing A Raheja Residency',
+                                  address_line_2: 'Film City Road',
+                                  admin_area_1: 'Maharashtra',
+                                  admin_area_2: 'Mumbai',
+                                  country_code: 'IN',
+                                  postal_code: '400097',
+                                },
+                                name: { full_name: 'Ravi Kumar' },
+                              }, */
                             },
                           ],
                         });

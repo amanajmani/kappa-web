@@ -33,7 +33,7 @@ const Total = ({ orderCalculation }) => {
               Subtotal :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              ${orderCalculation.subTotal}
+              ${parseFloat(orderCalculation.subTotal).toFixed(2)}
             </Typography>
           </div>
           <div className={`${classes.flex} ${classes.py_16}`}>
@@ -41,7 +41,7 @@ const Total = ({ orderCalculation }) => {
               Discount :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              ${orderCalculation.discount}
+              ${parseFloat(orderCalculation.discount).toFixed(2)}
             </Typography>
           </div>
         </Grid>
@@ -60,7 +60,10 @@ const Total = ({ orderCalculation }) => {
               Total :
             </Typography>
             <Typography color='textPrimary' variant='body2'>
-              ${orderCalculation.subTotal - orderCalculation.discount + 5}
+              $
+              {parseFloat(
+                orderCalculation.subTotal - orderCalculation.discount + 5
+              ).toFixed(2)}
             </Typography>
           </div>
         </Grid>
