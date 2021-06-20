@@ -18,6 +18,7 @@ const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
   const [verification, setVerification] = useState(false);
   const [resetPasswordState, setResetPasswordState] = useState(false);
   const [resetTokenValue, setResetTokenValue] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
 
   useEffect(() => {
     console.log('enter in hompage dfghjk456789456789');
@@ -33,7 +34,7 @@ const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
     if (verificationCode) {
       setIsOpen(true);
       setVerification(true);
-      verifyUser(verificationCode);
+      setVerificationCode(verificationCode);
     }
 
     if (user && user.toLowerCase() === 'unauthorized') {
@@ -56,6 +57,7 @@ const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
         resetPasswordState={resetPasswordState}
         resetTokenValue={resetTokenValue}
         setResetPasswordState={setResetPasswordState}
+        verificationCode={verificationCode}
       />
       <Typography variant='body2' color='error'></Typography>
       <Carousel data={carouselData} />

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PayPalButton } from 'react-paypal-button-v2';
 import axios from 'axios';
+import BASE_URL from '../../constants/baseURL';
 
 /* COMPONENTS */
 // atoms
@@ -42,7 +43,6 @@ function getSteps() {
 }
 
 const Checkout = ({ addOrder, cart, address }) => {
-  let URL = 'http://localhost:5000';
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [orderCalculation, setOrderCalculation] = useState({
@@ -62,7 +62,9 @@ const Checkout = ({ addOrder, cart, address }) => {
 
   useEffect(() => {
     const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get(`${URL}/api/v1/config/paypal`);
+      const { data: clientId } = await axios.get(
+        `${BASE_URL}/api/v1/config/paypal`
+      );
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;

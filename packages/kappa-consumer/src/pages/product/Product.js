@@ -85,7 +85,6 @@ const Product = ({
   const handleCart = () => {
     setIsCartVisible(true);
     addToCart({
-      user: '60b91c696807c4197c691214',
       item: {
         product: product._id,
         quantity,

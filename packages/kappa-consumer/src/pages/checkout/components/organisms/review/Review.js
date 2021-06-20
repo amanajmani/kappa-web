@@ -42,14 +42,13 @@ const Review = ({
   updatedCart,
   setOrderCalculation,
 }) => {
-  
   const classes = useStyles();
 
   const [data, setData] = useState([]);
   const [countUpdate, setCountUpdate] = useState(false);
 
   useEffect(() => {
-    getCart('60b91c696807c4197c691214');
+    getCart();
   }, []);
 
   useEffect(() => {
@@ -67,20 +66,22 @@ const Review = ({
     }
   }, [cart]);
 
-  const incrementProduct = (id, count) => {
-    updateCart({
-      user: '60b91c696807c4197c691214',
-      itemId: id,
-      type: 'inc',
-    });
+  const incrementProduct = (id, quantity) => {
+    if (quantity < 10) {
+      updateCart({
+        itemId: id,
+        type: 'inc',
+      });
+    }
   };
 
-  const decrementProduct = (id, count) => {
-    updateCart({
-      user: '60b91c696807c4197c691214',
-      itemId: id,
-      type: 'dec',
-    });
+  const decrementProduct = (id, quantity) => {
+    if (quantity > 1) {
+      updateCart({
+        itemId: id,
+        type: 'dec',
+      });
+    }
   };
 
   const deleteProduct = (id) => {
@@ -118,6 +119,7 @@ const Review = ({
             <QuantityButton
               className={{ borderRadius: '2px' }}
               quantity={item.quantity}
+              fetching={fetching}
               incrementProduct={() => incrementProduct(item._id, item.quantity)}
               decrementProduct={() => decrementProduct(item._id, item.quantity)}
             />

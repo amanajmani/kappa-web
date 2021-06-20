@@ -37,7 +37,7 @@ const SignIn = ({
     email: '',
     password: '',
     keepMeLoggedIn: false,
-    role: 'admin',
+    role: 'user',
   });
 
   const classes = useStyles();
@@ -57,7 +57,7 @@ const SignIn = ({
       email: '',
       password: '',
       keepMeLoggedIn: false,
-      role: 'admin',
+      role: 'user',
     });
   };
 
@@ -72,7 +72,7 @@ const SignIn = ({
       email: '',
       password: '',
       keepMeLoggedIn: false,
-      role: 'admin',
+      role: 'user',
     });
   }, [isOpen]);
 

@@ -5,13 +5,15 @@ import BASE_URL from '../constants/baseURL';
 import getPostConfig from '../helpers/getPostConfig';
 import getPutConfig from '../helpers/getPutConfig';
 import getDeleteConfig from '../helpers/getDeleteConfig';
+import getConfig from '../helpers/getConfig';
 
 /* HELPERS */
 import callApi from '../helpers/callApi';
 
-export function getCart(userId) {
-  const url = `${BASE_URL}/api/v1/cart/${userId}`;
-  return callApi(url);
+export function getCart() {
+  const url = `${BASE_URL}/api/v1/cart/user`;
+  const config = getConfig();
+  return callApi(url, config);
 }
 
 export function addToCart(cartParams) {
@@ -27,7 +29,7 @@ export function updateCart(cartParams) {
 }
 
 export function deleteProductFromCart(id) {
-  const url = `${BASE_URL}/api/v1/cart/${id}`;
+  const url = `${BASE_URL}/api/v1/cart/item/${id}`;
   const config = getPutConfig();
   return callApi(url, config);
 }

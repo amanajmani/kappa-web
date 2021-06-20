@@ -3,13 +3,13 @@ import * as cartServices from '../services/cart.services';
 
 const handleError = (error) => console.log(error);
 
-export function getCart(userId) {
+export function getCart() {
   return (dispatch) => {
     dispatch({
       type: 'FETCHING_CART',
     });
 
-    return cartServices.getCart(userId).then((data) => {
+    return cartServices.getCart().then((data) => {
       dispatch({
         type: 'FETCHED_CART',
         payload: data,
@@ -19,6 +19,7 @@ export function getCart(userId) {
 }
 
 export function addToCart(cartParams) {
+  console.log(cartParams, 'cartParams');
   return (dispatch) => {
     dispatch({
       type: 'ADD_PRODUCT_TO_CART',

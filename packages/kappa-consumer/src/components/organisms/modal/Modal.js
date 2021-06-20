@@ -41,6 +41,8 @@ const Modal = ({
   resetPasswordState,
   setResetPasswordState,
   resetTokenValue,
+  verificationCode,
+  verifyUser,
 }) => {
   const [loginDetails, setLoginDetails] = useState({
     password1: '',
@@ -71,6 +73,10 @@ const Modal = ({
       password1: '',
       password2: '',
     });
+
+    if (verificationCode) {
+      verifyUser(verificationCode);
+    }
   }, [isOpen]);
 
   const handleResetPass = () => {

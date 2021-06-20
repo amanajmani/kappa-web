@@ -52,7 +52,8 @@ const Cart = ({
   const isXtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
 
   useEffect(() => {
-    getCart('60b91c696807c4197c691214');
+    console.log('get cart -------- ');
+    getCart();
   }, []);
 
   const incrementProduct = (data) => {
@@ -60,7 +61,6 @@ const Cart = ({
 
     if (quantity < 10) {
       updateCart({
-        user: '60b91c696807c4197c691214',
         itemId: _id,
         type: 'inc',
       });
@@ -72,7 +72,6 @@ const Cart = ({
 
     if (quantity > 1) {
       updateCart({
-        user: '60b91c696807c4197c691214',
         itemId: _id,
         type: 'dec',
       });
@@ -152,8 +151,8 @@ const Cart = ({
                       decrementProduct={() => decrementProduct(cartData)}
                       fetching={fetching}
                     />
-                    <Button 
-                      label='REMOVE' 
+                    <Button
+                      label='REMOVE'
                       className={classes.removeButton}
                       onClick={() => deleteProduct(cartData._id)}
                     />

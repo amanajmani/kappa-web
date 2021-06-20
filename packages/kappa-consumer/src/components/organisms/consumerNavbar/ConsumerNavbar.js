@@ -32,7 +32,7 @@ import ActionCreators from '../../../actions';
 
 const ConsumerNavbar = ({
   categories,
-  
+
   user,
   fetchUser,
   isSignInOpen,
@@ -94,43 +94,41 @@ const ConsumerNavbar = ({
     setSearchText(event.target.value);
   };
 
-  const routeChange = () =>{ 
-    let path = `/${searchText}`; 
+  const routeChange = () => {
+    let path = `/${searchText}`;
     history.push(path);
-  }
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       routeChange();
     }
-  }
+  };
 
   return (
     <>
       <div className={classes.sectionDesktop}>
         <div className={classes.sectionLeftDesktop}>
-
-        <Link className={classes.logoContainer} to="/">
-          <img src={logo} className={classes.logo} alt="Mr-Nomad-Logo" />
-        </Link>
-        <Tabs value={value} onChange={handleChange} className={classes.tabs}>
-          <Tab
-            label='SHOP'
-            className={classes.tab}
-            ref={anchorRef}
-            onClick={handleToggle}
-          />
-        </Tabs>
+          <Link className={classes.logoContainer} to='/'>
+            <img src={logo} className={classes.logo} alt='Mr-Nomad-Logo' />
+          </Link>
+          <Tabs value={value} onChange={handleChange} className={classes.tabs}>
+            <Tab
+              label='SHOP'
+              className={classes.tab}
+              ref={anchorRef}
+              onClick={handleToggle}
+            />
+          </Tabs>
         </div>
 
-    
         <CategoriesListMenu
           setOpen={setOpen}
           open={open}
           anchorRef={anchorRef}
           categories={categories}
         />
-{/* <div className={classes.searchContainer}>
+        {/* <div className={classes.searchContainer}>
         <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -149,7 +147,7 @@ const ConsumerNavbar = ({
           </div>
       </div> */}
         <div className={classes.sectionRightDesktop}>
-        <div className={classes.search}>
+          <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -159,23 +157,24 @@ const ConsumerNavbar = ({
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              type="text" 
+              type='text'
               onKeyDown={handleKeyDown}
               value={searchText}
               onChange={handleSearch}
             />
           </div>
-        
 
           {user.name ? (
             <Button className={classes.button} label={user.name} />
           ) : (
-            <IconButton
-              className={classes.button}
-              onClick={() => setIsSignInOpen(true)}
-            >
-              <PersonIcon />
-            </IconButton>
+            <>
+              <IconButton
+                className={classes.button}
+                onClick={() => setIsSignInOpen(true)}
+              >
+                <PersonIcon />
+              </IconButton>
+            </>
           )}
 
           {user.name ? (
@@ -193,7 +192,6 @@ const ConsumerNavbar = ({
               <ShoppingCartIcon />
             </IconButton>
           )}
-
         </div>
       </div>
 
