@@ -61,29 +61,31 @@ const Checkout = ({ addOrder, cart, address }) => {
   const [sdkReady, setSdkReady] = useState(false);
 
   useEffect(() => {
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get(
-        `${BASE_URL}/api/v1/config/paypal`
-      );
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      };
-      document.body.appendChild(script);
-    };
+    // const addPayPalScript = async () => {
+    //   // const { data: clientId } = await axios.get(
+    //   //   `${BASE_URL}/api/v1/config/paypal`
+    //   // );
+    //   const script = document.createElement('script');
+    //   script.type = 'text/javascript';
+    //   script.src = `https://www.paypal.com/sdk/js?client-id=ARl9JFy8Cc-bc49YMZyEFizHNGaDqtQejkCvs1knPHirzwcrvBZMDnLJ5SdQFIi5rs8QXZaXQvYQPdq`;
+    //   script.async = true;
+    //   script.onload = () => {
+    //     setSdkReady(true);
+    //     console.log('append---------1');
+    //   };
+    //   document.body.appendChild(script);
+    // };
 
-    if (!window.paypal) {
-      addPayPalScript();
-    } else {
-      setSdkReady(true);
-      let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
-      let tempTotal = totalPrice + 100 + 5;
-      tempTotal = parseFloat(tempTotal).toFixed(2);
-      setCurrentOrderPayment(tempTotal);
-    }
+    // if (!window.paypal) {
+    //   console.log('append---------add');
+    //   addPayPalScript();
+    // } else {
+    setSdkReady(true);
+    let totalPrice = orderCalculation.subTotal - orderCalculation.discount;
+    let tempTotal = totalPrice + 100 + 5;
+    tempTotal = parseFloat(tempTotal).toFixed(2);
+    setCurrentOrderPayment(tempTotal);
+    // }
   }, []);
 
   const handleBack = () => {
