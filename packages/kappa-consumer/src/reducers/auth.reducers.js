@@ -124,6 +124,25 @@ export default function authReducer(
         verified: action.payload.verified,
       };
 
+    case 'UPDATE_PROFILE_START':
+      return {
+        ...state,
+        fetching: true,
+      };
+    case 'UPDATE_PROFILE_SUCCESS':
+      return {
+        ...state,
+        user: action.payload.user,
+        fetching: false,
+        message: '',
+      };
+    case 'UPDATE_PROFILE_FAILED':
+      return {
+        ...state,
+        message: action.payload.message,
+        fetching: false,
+      };
+
     default:
       return state;
   }

@@ -5,13 +5,16 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
   },
   title: {
     padding: '16px',
   },
-
   addAddressBtn: {
-    height: '24px',
-    // width: '100%',
+    borderRadius: '0px',
+  },
+  textCenter: {
+    textAlign: 'center',
+    marginTop: '16px',
   },
 }));

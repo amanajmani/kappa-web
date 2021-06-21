@@ -60,10 +60,6 @@ const SignUp = (props) => {
     return regex.test(email);
   };
 
-  // const handleChecked = (event) => {
-  //   setChecked(event.target.checked);
-  // };
-
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };

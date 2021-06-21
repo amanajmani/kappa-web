@@ -25,7 +25,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Loader from '@kappa/components/src/atoms/loader';
 import Link from '@material-ui/core/Link';
 
-import Address from './components/organisms/address';
+import Address from '../../components/organisms/address';
 import Total from './components/organisms/total';
 import Review from './components/organisms/review';
 
@@ -253,7 +253,7 @@ const Checkout = ({ addOrder, cart, address, user }) => {
                           variant='contained'
                           color='primary'
                           label='Home'
-                          className={classes.checkoutButton}
+                          className={classes.homeButton}
                         />
                       </Link>
                     ) : null}

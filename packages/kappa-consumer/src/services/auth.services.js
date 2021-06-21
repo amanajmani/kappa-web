@@ -45,3 +45,9 @@ export function forgotPassword(body) {
   const config = getPutConfig(body);
   return callApi(url, config);
 }
+
+export function updateUser(body) {
+  const url = `${BASE_URL}/api/v1/users/profile`;
+  const config = getPutConfig(body);
+  return callApi(url, config);
+}

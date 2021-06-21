@@ -85,4 +85,7 @@ export default makeStyles((theme) => ({
       color: 'white',
     },
   },
+  homeButton: {
+    width: '100%',
+  },
 }));

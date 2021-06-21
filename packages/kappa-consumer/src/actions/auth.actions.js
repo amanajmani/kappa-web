@@ -130,10 +130,9 @@ export function resetPassword(body) {
         'data-----  resetPassword resetPassword resetPassword '
       );
       if (data.success) {
-        
         dispatch({
           type: 'RESET_PASSWORD_SUCCESS',
-          payload: { ...data, verified : true},
+          payload: { ...data, verified: true },
         });
       } else {
         dispatch({
@@ -168,5 +167,29 @@ export function setUserRegFalse() {
     dispatch({
       type: 'SET_USER_REGISTER_FALSE',
     });
+  };
+}
+
+export function updateUser(body) {
+  return (dispatch) => {
+    dispatch({
+      type: 'UPDATE_PROFILE_START',
+    });
+
+    return authServices.updateUser(body).then((data) => {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      if (data.success) {
+        dispatch({
+          type: 'UPDATE_PROFILE_SUCCESS',
+          payload: data,
+        });
+      } else {
+        dispatch({
+          type: 'UPDATE_PROFILE_FAILED',
+          payload: data,
+        });
+      }
+    }, handleError);
   };
 }

@@ -21,10 +21,10 @@ export default makeStyles((theme) => ({
     overflowY: 'scroll',
     marginTop: '14px',
     padding: theme.spacing(1),
-    margin: '0 auto',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'start',
     // width: '100%',
   },
   deleteIconContainer: {
