@@ -12,6 +12,7 @@ import Homepage from '../pages/homepage';
 import ProductsContainer from '../pages/productsContainer';
 import Product from '../pages/product';
 import Checkout from '../pages/checkout';
+import Profile from '../pages/profile';
 import PrivateRoute from '../components/organisms/privateRoutes';
 
 function Routes() {
@@ -23,9 +24,13 @@ function Routes() {
             <Switch>
               <Route path='/' exact component={Homepage} />
               <PrivateRoute path='/checkout' component={Checkout} />
-              <Route path='/product/:id' component={Product} />
+              <PrivateRoute path='/profile' component={Profile} />
+              <Route path='/product/:id/' component={Product} />
               <Route path='/verify/:verificationCode' component={Homepage} />
-              <Route path='/:id?/:page?/:pageNo?' component={ProductsContainer} />
+              <Route
+                path='/:id?/:page?/:pageNo?'
+                component={ProductsContainer}
+              />
             </Switch>
           </PrimaryLayout>
         </MyThemeProvider>

@@ -32,7 +32,7 @@ import ActionCreators from '../../../actions';
 
 const ConsumerNavbar = ({
   categories,
-
+  getOrders,
   user,
   fetchUser,
   isSignInOpen,
@@ -52,6 +52,10 @@ const ConsumerNavbar = ({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const history = useHistory();
 

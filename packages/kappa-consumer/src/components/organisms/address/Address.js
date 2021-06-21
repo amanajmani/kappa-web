@@ -6,8 +6,8 @@ import axios from 'axios';
 /* COMPONENTS */
 import Button from '@kappa/components/src/atoms/button';
 import Typography from '@kappa/components/src/atoms/typography';
-import AddressCard from '../../../../../components/organisms/addressCard';
-import EditAddressModal from '../../../../../components/organisms/editAddressModal';
+import AddressCard from '../addressCard';
+import EditAddressModal from '../editAddressModal';
 
 // atoms
 
@@ -15,7 +15,7 @@ import EditAddressModal from '../../../../../components/organisms/editAddressMod
 import useStyles from './address.styles';
 
 /* SERVICES */
-import ActionCreators from '../../../../../actions';
+import ActionCreators from '../../../actions';
 
 const Address = ({
   getAddresses,
@@ -61,9 +61,12 @@ const Address = ({
   return (
     <>
       <div className={classes.root}>
-        <Typography variant='body2' color='error'>
-          {message}
-        </Typography>
+        {message ? (
+          <Typography variant='body2' color='error'>
+            {message}
+          </Typography>
+        ) : null}
+
         <div className={classes.root}>
           <Typography
             className={classes.title}
@@ -75,7 +78,6 @@ const Address = ({
           <Button
             label='Add Address'
             variant='contained'
-            color='dark'
             className={classes.addAddressBtn}
             onClick={handleClickOpen}
           />
@@ -89,8 +91,9 @@ const Address = ({
           cancelTitle='Cancel'
         />
       </div>
+
       {address && address.length ? null : (
-        <Typography variant='h6' color='error'>
+        <Typography className={classes.textCenter} variant='h6' color='error'>
           No Address found
         </Typography>
       )}

@@ -15,3 +15,9 @@ export function addOrder(body) {
   const config = getPostConfig(body);
   return callApi(url, config);
 }
+
+export function getOrders() {
+  const url = `${BASE_URL}/api/v1/order/myorders`;
+  const config = getConfig();
+  return callApi(url, config);
+}
