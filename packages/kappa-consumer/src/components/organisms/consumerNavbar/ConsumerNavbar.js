@@ -95,7 +95,7 @@ const ConsumerNavbar = ({
   };
 
   const routeChange = () => {
-    let path = `/${searchText}`;
+    let path = `/${searchText}/page/${1}`;
     history.push(path);
   };
 

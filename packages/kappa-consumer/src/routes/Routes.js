@@ -9,7 +9,7 @@ import MyThemeProvider from './routes.styles';
 // Components
 import PrimaryLayout from '../layout/primaryLayout';
 import Homepage from '../pages/homepage';
-import ProductsList from '../pages/productsList';
+import ProductsContainer from '../pages/productsContainer';
 import Product from '../pages/product';
 import Checkout from '../pages/checkout';
 import PrivateRoute from '../components/organisms/privateRoutes';
@@ -23,9 +23,9 @@ function Routes() {
             <Switch>
               <Route path='/' exact component={Homepage} />
               <PrivateRoute path='/checkout' component={Checkout} />
-              <Route path='/product/:id/' component={Product} />
+              <Route path='/product/:id' component={Product} />
               <Route path='/verify/:verificationCode' component={Homepage} />
-              <Route path='/:id' component={ProductsList} />
+              <Route path='/:id?/:page?/:pageNo?' component={ProductsContainer} />
             </Switch>
           </PrimaryLayout>
         </MyThemeProvider>
