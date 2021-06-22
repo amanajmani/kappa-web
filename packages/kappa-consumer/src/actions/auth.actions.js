@@ -193,3 +193,28 @@ export function updateUser(body) {
     }, handleError);
   };
 }
+
+export function logoutUser() {
+  return (dispatch) => {
+    dispatch({
+      type: 'LOGOUT_USER_START',
+    });
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    dispatch({
+      type: 'LOGOUT_USER_SUCCESS',
+    });
+  };
+}
+
+export function setProfileMenu(body) {
+  console.log(body, 'setProfileMeny');
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_PROFILE_MENU',
+      payload: body,
+    });
+  };
+}
