@@ -6,6 +6,7 @@ export default function authReducer(
     isSignInOpen: false,
     userRegistered: false,
     verified: false,
+    profileMenu: 0,
   },
   action
 ) {
@@ -141,6 +142,26 @@ export default function authReducer(
         ...state,
         message: action.payload.message,
         fetching: false,
+      };
+
+    case 'LOGOUT_USER_START':
+      return {
+        ...state,
+        fetching: true,
+      };
+    case 'LOGOUT_USER_SUCCESS':
+      return {
+        ...state,
+        user: {},
+        fetching: false,
+        message: '',
+      };
+    case 'SET_PROFILE_MENU':
+      return {
+        ...state,
+        fetching: false,
+        message: '',
+        profileMenu: action.payload,
       };
 
     default:

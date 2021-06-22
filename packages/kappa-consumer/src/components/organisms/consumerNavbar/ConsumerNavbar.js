@@ -22,6 +22,7 @@ import ForgetPass from './components/forgetPass';
 
 import CategoriesListMenu from './components/categoriesListMenu';
 import Cart from '../cart';
+import ProfileMenu from './components/profileMenu';
 
 /* STYLES */
 import useStyles from './consumerNavbar.styles';
@@ -38,6 +39,8 @@ const ConsumerNavbar = ({
   isSignInOpen,
   setIsSignInOpen,
   clearAuthMessage,
+  logoutUser,
+  setProfileMenu,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(2);
@@ -169,7 +172,11 @@ const ConsumerNavbar = ({
           </div>
 
           {user.name ? (
-            <Button className={classes.button} label={user.name} />
+            <ProfileMenu
+              data={user}
+              logoutUser={logoutUser}
+              setProfileMenu={setProfileMenu}
+            />
           ) : (
             <>
               <IconButton

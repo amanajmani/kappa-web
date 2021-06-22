@@ -90,19 +90,19 @@ function a11yProps(index) {
   };
 }
 
-const Profile = (props) => {
+const Profile = ({ profileMenu, setProfileMenu }) => {
+  console.log(profileMenu, 'profileMenu in profile');
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setProfileMenu(newValue);
   };
 
   return (
     <div className={classes.root}>
       <Tabs
         elevation={0}
-        value={value}
+        value={profileMenu}
         onChange={handleChange}
         aria-label='scrollable force tabs example'
       >
@@ -115,10 +115,10 @@ const Profile = (props) => {
         />
       </Tabs>
 
-      <TabPanel value={value} index={0}>
+      <TabPanel value={profileMenu} index={0}>
         <Account />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={profileMenu} index={1}>
         <div className={classes.root}>
           <Grid container direction='row' justify='center' alignItems='center'>
             <Grid container item xs={12} sm={10} md={8} spacing={3}>
@@ -127,7 +127,7 @@ const Profile = (props) => {
           </Grid>
         </div>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={profileMenu} index={2}>
         <Order />
       </TabPanel>
     </div>
@@ -143,6 +143,7 @@ function mapStateToProps(state) {
     products: state.productsList.productsList,
     fetching: state.productsList.fetching,
     categories: state.categories.categories,
+    profileMenu: state.auth.profileMenu,
   };
 }
 
