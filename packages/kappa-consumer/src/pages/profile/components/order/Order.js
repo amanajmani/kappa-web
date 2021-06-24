@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import clsx from 'clsx';
-
-// responsive
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 /* COMPONENTS */
 // atoms
 import Typography from '@kappa/components/src/atoms/typography';
 import Grid from '@kappa/components/src/atoms/grid';
-import Button from '@kappa/components/src/atoms/button';
-import ContentContainer from '@kappa/components/src/atoms/contentContainer';
-import Paper from '@kappa/components/src/atoms/paper';
-import Menu from '@kappa/components/src/atoms/menu';
-
-import MenuItem from '@kappa/components/src/atoms/menuItem';
-import IconButton from '@kappa/components/src/atoms/iconButton';
-import ProductCard from '@kappa/components/src/molecules/productCard';
-import Loader from '@kappa/components/src/atoms/loader';
 
 // molecules
 
@@ -51,6 +38,16 @@ const Order = ({ order, fetching }) => {
       </Grid>
     </div>
   );
+};
+
+Order.propTypes = {
+  fetching: PropTypes.bool,
+  order: PropTypes.array,
+};
+
+Order.defaultProps = {
+  order: [],
+  fetching: false,
 };
 
 function mapDispatchToProps(dispatch) {

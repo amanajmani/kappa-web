@@ -41,11 +41,11 @@ const ProductsContainer = ({
 
   const handlePagination = (event, value) => {
     setCurrentPage(value);
-    history.push(`/${id}/page/${value}`)
+    history.push(`/${id}/page/${value}`);
   };
-  
+
   useEffect(() => {
-    setTotalPages(getTotalPages(productsInfo, LIMIT))
+    setTotalPages(getTotalPages(productsInfo, LIMIT));
   }, [productsInfo]);
 
   const validateCategoryId = (categoryId) => {
@@ -86,4 +86,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsContainer);
-

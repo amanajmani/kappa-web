@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* COMPONENTS */
 import Grid from '@kappa/components/src/atoms/grid';
@@ -70,6 +71,10 @@ const Total = ({ orderCalculation }) => {
       </Grid>
     </Grid>
   );
+};
+
+Total.propTypes = {
+  orderCalculation: PropTypes.func,
 };
 
 export default Total;
