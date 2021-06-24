@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Loader from '@kappa/components/src/atoms/loader';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+import PropTypes from 'prop-types';
 
 import BASE_URL from '../../../constants/baseURL';
 
@@ -58,6 +58,20 @@ const DeliveryTimeline = ({ classes, isDelivered, isPaid }) => {
     </Timeline>
   );
 };
+
+DeliveryTimeline.propTypes = {
+  classes : PropTypes.object,
+  isDelivered : PropTypes.bool,
+  isPaid : PropTypes.bool
+};
+
+DeliveryTimeline.defaultProps = {
+  classes : {},
+  isDelivered : PropTypes.bool,
+  isPaid : PropTypes.bool
+};
+
+
 
 const OrderItem = ({ data, classes }) => {
   return (
@@ -122,6 +136,17 @@ const OrderItem = ({ data, classes }) => {
   );
 };
 
+OrderItem.propTypes = {
+  classes : PropTypes.object,
+  data : PropTypes.array,
+};
+
+OrderItem.defaultProps = {
+  data: [],
+  classes : {}
+};
+
+
 const Card = ({ classes, data }) => {
   return (
     <Paper className={classes.paper}>
@@ -171,6 +196,17 @@ const Card = ({ classes, data }) => {
   );
 };
 
+Card.propTypes = {
+  classes : PropTypes.object,
+  data : PropTypes.array,
+};
+
+Card.defaultProps = {
+  data: [],
+  classes : {}
+};
+
+
 const OrderCard = ({ data, fetching }) => {
   const classes = useStyles();
 
@@ -186,5 +222,16 @@ const OrderCard = ({ data, fetching }) => {
     </div>
   );
 };
+
+OrderCard.propTypes = {
+  fetching: PropTypes.bool,
+  data : PropTypes.array,
+};
+
+OrderCard.defaultProps = {
+  data: [],
+  fetching: false,
+};
+
 
 export default OrderCard;

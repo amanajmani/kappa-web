@@ -1,58 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
-// responsive
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-
-/* COMPONENTS */
-// atoms
-import Typography from '@kappa/components/src/atoms/typography';
 import Grid from '@kappa/components/src/atoms/grid';
 import Button from '@kappa/components/src/atoms/button';
-import ContentContainer from '@kappa/components/src/atoms/contentContainer';
-import Paper from '@kappa/components/src/atoms/paper';
-import Menu from '@kappa/components/src/atoms/menu';
-
-// import Typography from '@kappa/components/src/atoms/typography';
-// import Button from '@kappa/components/src/atoms/button';
 import TextField from '@kappa/components/src/atoms/textField';
-// import DialogActions from '@kappa/components/src/atoms/dialogActions';
-// import DialogContent from '@kappa/components/src/atoms/dialogContent';
-// import DialogTitle from '@kappa/components/src/atoms/dialogTitle';
-// import Checkbox from '@kappa/components/src/atoms/checkbox';
-import FormControlLabel from '@kappa/components/src/atoms/formControlLabel';
 import FormControl from '@kappa/components/src/atoms/formControl';
 import InputLabel from '@kappa/components/src/atoms/inputLabel';
 import Select from '@kappa/components/src/atoms/select';
-// import MenuItem from '@kappa/components/src/atoms/menuItem';
 import FormHelperText from '@kappa/components/src/atoms/formHelperText';
-// import Link from '@kappa/components/src/atoms/link';
-// import COUNTRIES from '@kappa/components/src/constants/countries';
-// import Popup from '../popup';
 import Loader from '@kappa/components/src/atoms/loader';
-import COUNTRIES from '@kappa/components/src/constants/countries';
-
 import MenuItem from '@kappa/components/src/atoms/menuItem';
-import IconButton from '@kappa/components/src/atoms/iconButton';
-import ProductCard from '@kappa/components/src/molecules/productCard';
-
-// External
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
-import Box from '@material-ui/core/Box';
 
 // molecules
 
@@ -64,7 +23,7 @@ import useStyles from './account.styles';
 /* ASSETS */
 
 /* CONSTANTS */
-import BASE_URL from '../../../../constants/baseURL';
+import COUNTRIES from '@kappa/components/src/constants/countries';
 
 /* SERVICES */
 import ActionCreators from '../../../../actions';
@@ -232,6 +191,17 @@ const Account = ({ user, fetching, updateUser }) => {
       </Grid>
     </div>
   );
+};
+
+Account.propTypes = {
+  user: PropTypes.object,
+  fetching: PropTypes.bool,
+  updateUser: PropTypes.func,
+};
+
+Account.defaultProps = {
+  user: {},
+  fetching: false,
 };
 
 function mapDispatchToProps(dispatch) {

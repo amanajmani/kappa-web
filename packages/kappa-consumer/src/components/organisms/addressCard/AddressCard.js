@@ -17,7 +17,7 @@ const AddressCard = ({
   handleUpdateAddress,
   handleSubmitAddress,
   deleteAddress,
-  isChecked,
+  
 }) => {
   const [open, setOpen] = useState(false);
   const [updateAddress, setUpdateAddress] = useState({});
@@ -55,25 +55,25 @@ const AddressCard = ({
               name='radio-button-demo'
             />
             <div>
-              <Typography color='textPrimary' variant='body2'>
-                Address Line : {address.address}
+              <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
+                 {address.address}
               </Typography>
 
               <div className={classes.flex}>
-                <Typography color='textPrimary' variant='body2'>
-                  City : {address.city}
+                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
+                  {address.city}
                 </Typography>
-                <Typography color='textPrimary' variant='body2'>
-                  State : {address.state}
+                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
+                  {address.state}
                 </Typography>
               </div>
 
               <div className={classes.flex}>
-                <Typography color='textPrimary' variant='body2'>
-                  Country : {address.country}
+                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
+                  {address.country}
                 </Typography>
-                <Typography color='textPrimary' variant='body2'>
-                  ZipCode : {address.postalCode}
+                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
+                 {address.postalCode}
                 </Typography>
               </div>
             </div>
@@ -82,7 +82,6 @@ const AddressCard = ({
               onClick={() => handleClickOpen(address)}
             />
 
-            {/* <DeleteIcon className={classes.deleteIcon} /> */}
           </Paper>
         ))}
       </List>

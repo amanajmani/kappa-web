@@ -15,7 +15,7 @@ export default function categoriesReducer(
     case 'ADD_ORDER_SUCCESS':
       return {
         ...state,
-        address: action.payload.data,
+        order: action.payload.data,
         fetching: false,
         message: '',
       };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import SwipeableViews from 'react-swipeable-views';
 import MobileStepper from '@material-ui/core/MobileStepper';
@@ -224,6 +225,22 @@ const Product = ({
       )}
     </>
   );
+};
+
+Product.propTypes = {
+  getAProduct: PropTypes.func,
+  addToCart: PropTypes.func,
+  product: PropTypes.array,
+  fetching: PropTypes.bool,
+  getCart: PropTypes.func,
+  setIsSignInOpen: PropTypes.func,
+  user: PropTypes.object,
+};
+
+Product.defaultProps = {
+  user: {},
+  page: 0,
+  fetching: false,
 };
 
 function mapDispatchToProps(dispatch) {

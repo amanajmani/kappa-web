@@ -60,12 +60,13 @@ const Address = ({
 
   return (
     <>
-      <div className={classes.root}>
-        {message ? (
+            {message ? (
           <Typography variant='body2' color='error'>
             {message}
           </Typography>
         ) : null}
+      <div className={classes.root}>
+
 
         <div className={classes.root}>
           <Typography

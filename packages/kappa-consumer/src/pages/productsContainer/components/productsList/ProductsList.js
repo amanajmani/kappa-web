@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
@@ -25,7 +26,7 @@ import useStyles from './productsList.styles';
 import FilterListIcon from '../../../../assets/images/filterList';
 
 /* UTILS */
-import isEmpty from '../../../../utils/isEmpty.utils'
+import isEmpty from '../../../../utils/isEmpty.utils';
 
 /* CONSTANTS */
 import FILTER_PRODUCTS from '../../constants/filterProducts.constants';
@@ -33,28 +34,31 @@ import INITIAL_LAYOUT from '../../constants/initialLayout.constants';
 import BASE_URL from '../../../../constants/baseURL';
 
 const renderImage = (images) => {
-   return `${BASE_URL}/api/v1/files/${images[0]}`
-}
+  return `${BASE_URL}/api/v1/files/${images[0]}`;
+};
 
-const renderProduct = (layout) => (product) => (
-  <Grid 
-    key={productsReader.id(product)}
-    item 
-    lg={layout.numberOfProducts} 
-    md={4} 
-    sm={6} 
-    xs={12}
-  >
-    <ProductCard
-      image={renderImage(!isEmpty(productsReader.images(product)) 
-        && productsReader.images(product))}
-      name={productsReader.name(product)}
-      height={layout.height}
-      price={productsReader.price(product)}
-      id={productsReader.id(product)}
-    />
-  </Grid>
-)
+const renderProduct = (layout) => (product) =>
+  (
+    <Grid
+      key={productsReader.id(product)}
+      item
+      lg={layout.numberOfProducts}
+      md={4}
+      sm={6}
+      xs={12}
+    >
+      <ProductCard
+        image={renderImage(
+          !isEmpty(productsReader.images(product)) &&
+            productsReader.images(product)
+        )}
+        name={productsReader.name(product)}
+        height={layout.height}
+        price={productsReader.price(product)}
+        id={productsReader.id(product)}
+      />
+    </Grid>
+  );
 
 const ProductsList = ({
   productsInfo,
@@ -65,7 +69,6 @@ const ProductsList = ({
   getTitle,
   pageType,
 }) => {
-
   const classes = useStyles();
 
   const [isFiltersPanelVisible, setIsFiltersPanelVisible] = useState(false);
@@ -90,7 +93,9 @@ const ProductsList = ({
     <div>
       <Paper className={classes.headerMenu} elevation={false}>
         <div className={classes.headerTitleContainer}>
-          <Typography color='textPrimary' variant='h5'
+          <Typography
+            color='textPrimary'
+            variant='h5'
             className={clsx(
               classes.title,
               scrolling > 20 && classes.fontShrink
@@ -124,7 +129,8 @@ const ProductsList = ({
 
         <div className={classes.content}>
           <Grid container spacing={3}>
-            {productsReader.data(productsInfo)
+            {productsReader
+              .data(productsInfo)
               .map(renderProduct(INITIAL_LAYOUT))}
           </Grid>
 
@@ -137,9 +143,23 @@ const ProductsList = ({
           />
         </div>
       </div>
-
     </div>
   );
+};
+
+ProductsList.propTypes = {
+  handlePagination: PropTypes.func,
+  productsInfo: PropTypes.object,
+  totalPages: PropTypes.number,
+  page: PropTypes.number,
+  handleFilters: PropTypes.func,
+  getTitle: PropTypes.func,
+};
+
+ProductsList.defaultProps = {
+  productsInfo: {},
+  totalPages: 0,
+  page: 0,
 };
 
 export default ProductsList;

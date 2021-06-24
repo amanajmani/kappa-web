@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 /* STYLES */
 import useStyles from './products.styles';
@@ -19,8 +20,8 @@ import productsReader from '../../../../readers/productsContainer.readers';
 import LIMIT from '../../constants/limit.constants';
 
 const getTitle = (info) => {
-  return `${get(info, 'category.categoryName')} Products (${info.total})`
-}
+  return `${get(info, 'category.categoryName')} Products (${info.total})`;
+};
 
 const Products = ({
   categoryId,
@@ -37,9 +38,8 @@ const Products = ({
   totalPages,
   pageType,
 }) => {
-
   const classes = useStyles();
- 
+
   useEffect(() => {
     getProductsInfo(pageType, categoryId, LIMIT, page);
   }, [pageType, currentPage, location.pathname]);
@@ -48,26 +48,26 @@ const Products = ({
     if (type === 'price') {
       const { min, max } = value;
       filterByPrice(pageType, categoryId, LIMIT, page, min, max);
-    } 
+    }
     if (type === 'discount') {
       filterByDiscount(pageType, categoryId, LIMIT, page, value);
-    } 
+    }
     if (type === 'sort') {
       sortProducts(pageType, categoryId, LIMIT, page, value);
-    } 
-  }
+    }
+  };
 
   if (fetching) {
-    return <Loader padding/>
+    return <Loader padding />;
   }
 
   if (isEmpty(productsReader.data(productsInfo))) {
-    return <NoProducts />
+    return <NoProducts />;
   }
 
   return (
     <div className={classes.root}>
-      <ProductsList 
+      <ProductsList
         productsInfo={productsInfo}
         handlePagination={handlePagination}
         page={parseInt(page, 10) ? parseInt(page, 10) : currentPage}
@@ -77,7 +77,26 @@ const Products = ({
         pageType={pageType}
       />
     </div>
-  )
-}
+  );
+};
+
+Products.propTypes = {
+  categoryId: PropTypes.string,
+  page: PropTypes.number,
+  getProductsInfo: PropTypes.func,
+  handlePagination: PropTypes.func,
+  productsInfo: PropTypes.object,
+  fetching: PropTypes.bool,
+  filterByPrice: PropTypes.func,
+  filterByDiscount: PropTypes.func,
+  sortProducts: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number,
+};
+
+Products.defaultProps = {
+  categoryId: '',
+  page: 0,
+};
 
 export default Products;

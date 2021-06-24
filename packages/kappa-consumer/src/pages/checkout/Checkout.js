@@ -3,22 +3,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Link as RouterLink } from 'react-router-dom';
-import BASE_URL from '../../constants/baseURL';
+import PropTypes from 'prop-types';
 
 /* COMPONENTS */
 // atoms
-import Radio from '@material-ui/core/Radio';
 import ContentContainer from '@kappa/components/src/atoms/contentContainer';
 import Button from '@kappa/components/src/atoms/button';
-import Card from '@kappa/components/src/atoms/card';
-import CardMedia from '@kappa/components/src/atoms/cardMedia';
 import Typography from '@kappa/components/src/atoms/typography';
-import CardContent from '@kappa/components/src/atoms/cardContent';
 import Grid from '@kappa/components/src/atoms/grid';
 import Paper from '@kappa/components/src/atoms/paper';
-import CustomDivider from '@kappa/components/src/atoms/divider';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -74,8 +67,6 @@ const Checkout = ({ addOrder, cart, address, user }) => {
   };
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult, 'paymentResult');
-
     if (paymentResult) {
       setPaymentStatus(true);
       if (address && address.length) {
@@ -147,14 +138,7 @@ const Checkout = ({ addOrder, cart, address, user }) => {
                   ) : (
                     <>
                       <PayPalButton
-                        onClick={() =>
-                          console.log(
-                            currentOrderPayment,
-                            'currentOrderPayment inside button'
-                          )
-                        }
                         createOrder={(data, actions) => {
-                          console.log(data, 'data n data n data n paypal');
                           return actions.order.create({
                             purchase_units: [
                               {
@@ -192,81 +176,92 @@ const Checkout = ({ addOrder, cart, address, user }) => {
   }
 
   return (
-    <>
-      <ContentContainer className={classes.root}>
-        <Typography variant='h4' className={classes.title}>
-          KAPPA
-        </Typography>
+    <ContentContainer className={classes.root}>
+      <Typography variant='h4' className={classes.title}>
+        KAPPA
+      </Typography>
 
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, i) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label, i) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
 
-        <Grid container className={classes.container} spacing={2}>
-          <Grid className={`${classes.stepperDiv}`} item lg={8} xs={12}>
-            {activeStep === steps.length ? null : (
-              <>
-                <div className={`${classes.stepperContent}`}>
-                  {getStepContent(activeStep)}
-                  <div className={classes.stepperControls}>
-                    {activeStep !== steps.length - 1 ? (
+      <Grid container className={classes.container} spacing={2}>
+        <Grid className={`${classes.stepperDiv}`} item lg={8} xs={12}>
+          {activeStep === steps.length ? null : (
+            <>
+              <div className={`${classes.stepperContent}`}>
+                {getStepContent(activeStep)}
+                <div className={classes.stepperControls}>
+                  {activeStep !== steps.length - 1 ? (
+                    <Button
+                      label='Back'
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
+                  ) : null}
+
+                  {activeStep !== steps.length - 1 ? (
+                    <Button
+                      startIcon={<ShoppingCartIcon />}
+                      label='Continue'
+                      variant='contained'
+                      disabled={
+                        activeStep === steps.length - 3
+                          ? cart && cart.length
+                            ? false
+                            : true
+                          : activeStep === steps.length - 2
+                          ? address && address.length
+                            ? false
+                            : true
+                          : ''
+                      }
+                      color='dark'
+                      className={classes.cartButton}
+                      onClick={handleNext}
+                    />
+                  ) : (
+                    ''
+                  )}
+                  {activeStep === steps.length - 1 ? (
+                    <Link underline='none' component={RouterLink} to={`/`}>
                       <Button
-                        label='Back'
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.backButton}
-                      >
-                        Back
-                      </Button>
-                    ) : null}
-
-                    {activeStep !== steps.length - 1 ? (
-                      <Button
-                        startIcon={<ShoppingCartIcon />}
-                        label='Continue'
                         variant='contained'
-                        disabled={
-                          activeStep === steps.length - 3
-                            ? cart && cart.length
-                              ? false
-                              : true
-                            : activeStep === steps.length - 2
-                            ? address && address.length
-                              ? false
-                              : true
-                            : ''
-                        }
-                        color='dark'
-                        className={classes.cartButton}
-                        onClick={handleNext}
+                        color='primary'
+                        label='Home'
+                        className={classes.homeButton}
                       />
-                    ) : (
-                      ''
-                    )}
-                    {activeStep === steps.length - 1 ? (
-                      <Link underline='none' component={RouterLink} to={`/`}>
-                        <Button
-                          variant='contained'
-                          color='primary'
-                          label='Home'
-                          className={classes.homeButton}
-                        />
-                      </Link>
-                    ) : null}
-                  </div>
+                    </Link>
+                  ) : null}
                 </div>
-              </>
-            )}
-          </Grid>
-          <Total orderCalculation={orderCalculation} />
+              </div>
+            </>
+          )}
         </Grid>
-      </ContentContainer>
-    </>
+        <Total orderCalculation={orderCalculation} />
+      </Grid>
+    </ContentContainer>
   );
+};
+
+Checkout.propTypes = {
+  addOrder: PropTypes.func,
+  user: PropTypes.object,
+  cart: PropTypes.array,
+  address: PropTypes.array,
+};
+
+Checkout.defaultProps = {
+  user: {},
+  cart: [],
+  address: [],
 };
 
 function mapDispatchToProps(dispatch) {

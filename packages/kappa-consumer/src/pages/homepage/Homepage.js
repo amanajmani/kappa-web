@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import Typography from '@kappa/components/src/atoms/typography';
 
@@ -13,7 +14,7 @@ import Modal from '../../components/organisms/modal';
 
 import ActionCreators from '../../actions';
 
-const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
+const App = ({ location, match, message, setIsSignInOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [verification, setVerification] = useState(false);
   const [resetPasswordState, setResetPasswordState] = useState(false);
@@ -63,6 +64,19 @@ const App = ({ location, match, verifyUser, message, setIsSignInOpen }) => {
       <Carousel data={carouselData} />
     </div>
   );
+};
+
+App.propTypes = {
+  location: PropTypes.object,
+  match: PropTypes.object,
+  message: PropTypes.string,
+  setIsSignInOpen: PropTypes.func,
+};
+
+App.defaultProps = {
+  location: {},
+  match: {},
+  message: '',
 };
 
 function mapDispatchToProps(dispatch) {

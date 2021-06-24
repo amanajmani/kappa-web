@@ -11,29 +11,12 @@ import { useTheme } from '@material-ui/core/styles';
 // atoms
 import Typography from '@kappa/components/src/atoms/typography';
 import Grid from '@kappa/components/src/atoms/grid';
-import Button from '@kappa/components/src/atoms/button';
-import ContentContainer from '@kappa/components/src/atoms/contentContainer';
-import Paper from '@kappa/components/src/atoms/paper';
 import Menu from '@kappa/components/src/atoms/menu';
-
-import MenuItem from '@kappa/components/src/atoms/menuItem';
-import IconButton from '@kappa/components/src/atoms/iconButton';
-import ProductCard from '@kappa/components/src/molecules/productCard';
-import Loader from '@kappa/components/src/atoms/loader';
 
 // External
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
 import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
@@ -52,7 +35,6 @@ import useStyles from './profile.styles';
 /* ASSETS */
 
 /* CONSTANTS */
-import BASE_URL from '../../constants/baseURL';
 
 /* SERVICES */
 import ActionCreators from '../../actions';
@@ -91,7 +73,6 @@ function a11yProps(index) {
 }
 
 const Profile = ({ profileMenu, setProfileMenu }) => {
-  console.log(profileMenu, 'profileMenu in profile');
   const classes = useStyles();
 
   const handleChange = (event, newValue) => {
@@ -134,16 +115,24 @@ const Profile = ({ profileMenu, setProfileMenu }) => {
   );
 };
 
+Profile.propTypes = {
+  profileMenu: PropTypes.number,
+  setProfileMenu: PropTypes.any.isRequired,
+};
+
+Profile.defaultProps = {
+  profileMenu: 0,
+};
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    products: state.productsList.productsList,
-    fetching: state.productsList.fetching,
     categories: state.categories.categories,
     profileMenu: state.auth.profileMenu,
+    fetching: state.auth.fetching,
   };
 }
 

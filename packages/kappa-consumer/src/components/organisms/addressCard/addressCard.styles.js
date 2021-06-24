@@ -1,19 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const borderRadius = 8;
+const borderRadius = 4;
 
 export default makeStyles((theme) => ({
   addressPaper: {
     minHeight: '80px',
     maxHeight: '120px',
-    // width: '350px',
-    padding: '16px',
     borderRadius,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: '1rem',
+    padding : '8px',
     [theme.breakpoints.down('sm')]: {
       // width: '100%',
     },
@@ -51,11 +50,17 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
   },
 
+  flexStart: {
+    display: 'flex',
+    justifyContent: 'start',
+    width : '100%'
+  },
+
   scrollable: {
     'max-height': '500px',
     overflowY: 'scroll',
     marginTop: '14px',
-    'max-width': '500px',
+    maxWidth: '500px',
     padding: '16px',
     margin: '0 auto',
   },
