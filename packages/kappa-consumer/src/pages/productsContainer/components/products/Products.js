@@ -11,7 +11,9 @@ import ProductsList from '../productsList';
 
 /* UTILS */
 import isEmpty from '../../../../utils/isEmpty.utils';
-import get from '../../../../utils/get.utils';
+
+/* HELPERS */
+import getCategoryName from '../../helpers/getCategoryName.helpers';
 
 /* READERS */
 import productsReader from '../../../../readers/productsContainer.readers';
@@ -19,9 +21,13 @@ import productsReader from '../../../../readers/productsContainer.readers';
 /* CONSTANTS */
 import LIMIT from '../../constants/limit.constants';
 
-const getTitle = (info) => {
-  return `${get(info, 'category.categoryName')} Products (${info.total})`;
-};
+const getTitle = (type, info) => {
+  if (type === 'category') {
+    return `${getCategoryName(info)} (${info.total})`
+  } if (type === 'search') {
+    return `Your searched Products (${info.total})`
+  }
+}
 
 const Products = ({
   categoryId,

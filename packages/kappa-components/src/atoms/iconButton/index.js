@@ -1,3 +1,3 @@
-import { IconButton } from '@material-ui/core';
+import IconButton from './IconButton';
 
 export default IconButton;

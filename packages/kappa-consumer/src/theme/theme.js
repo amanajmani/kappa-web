@@ -60,8 +60,8 @@ const theme = createMuiTheme({
       secondary: '#fff',
     },
     text: {
-      primary: '#212529',
-      secondary: '#444',
+      primary: '#111111',
+      secondary: '#757575',
       white: '#fff',
     },
     secondary: {

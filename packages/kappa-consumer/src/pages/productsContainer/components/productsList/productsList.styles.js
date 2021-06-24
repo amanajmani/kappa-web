@@ -13,30 +13,32 @@ export default makeStyles((theme) => ({
   headerTitleContainer: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(6),
   },
   title: {
     textTransform: 'capitalize',
-    transition: 'font 0.3s ease',
-    transform: 'translate(1px, 1px)'
+    // transition: 'font 0.3s ease',
+    // transform: 'translate(1px, 1px)',
+    paddingLeft: theme.spacing(6),
+    [theme.breakpoints.only('xs')]: {
+      // fontSize: 18,
+      paddingLeft: theme.spacing(2),
+    },
   },
   fontShrink: {
-    animation: 'fontShrink .2s forwards',
-    transition: 'all ease-in',
+    transition: 'transform 200ms ease 0s',
+    transform: 'scale(0.75)',
+    transformOrigin: 'left center',
   },
-  '@global': {
-    '@keyframes fontShrink': {
-        '100%': {
-        transform: 'scale(0.6)',
-        marginLeft: -50,
-      },
-    },
+  fontGrow: {
+    transition: 'transform 200ms ease 0s',
+    transform: 'scale(1)',
+    transformOrigin: 'left center',
   },
   filtersButtonContainer: {
     paddingRight: theme.spacing(6),
     display: 'flex',
     [theme.breakpoints.only('xs')]: {
-      width: '100%',
+      paddingRight: theme.spacing(2),
     },
   },
   contentContainer: {
@@ -45,12 +47,14 @@ export default makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    paddingLeft: theme.spacing(6),
-    paddingRight: theme.spacing(6),
+    padding: theme.spacing(0, 6),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    [theme.breakpoints.only('xs')]: {
+      padding: theme.spacing(0, 2),
+    },
   },
   pagination: {
     display: 'flex',
@@ -61,8 +65,8 @@ export default makeStyles((theme) => ({
     borderRadius: 'unset',
     fontWeight: 'bold',
     backgroundColor: 'transparent !important',
-    [theme.breakpoints.only('xs')]: {
-      flex: 1,
-    },
+    // [theme.breakpoints.only('xs')]: {
+    //   flex: 1,
+    // },
   },
 }));

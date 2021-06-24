@@ -11,7 +11,7 @@ import { useParams, useHistory, useLocation } from 'react-router-dom';
 import Products from './components/products';
 
 /* HELPERS */
-import getTotalPages from './getTotalPages.helpers';
+import getTotalPages from './helpers/getTotalPages.helpers';
 
 /* CONSTANTS */
 import LIMIT from './constants/limit.constants';

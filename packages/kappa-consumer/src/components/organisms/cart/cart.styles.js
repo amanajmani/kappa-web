@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
     right: 20,
     fontSize: 35,
   },
-  headerContainer: {
+  root: {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

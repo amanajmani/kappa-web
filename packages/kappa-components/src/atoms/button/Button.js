@@ -13,7 +13,7 @@ export default function PrimaryButton(props) {
   const classes = useStyles();
 
   return (
-    <Button {...props} className={clsx(classes.root, className)}>
+    <Button {...props} disableRipple className={clsx(classes.root, className)}>
       {label}
     </Button>
   );

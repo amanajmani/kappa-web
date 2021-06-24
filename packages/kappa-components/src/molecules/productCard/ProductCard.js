@@ -6,7 +6,6 @@ import Link from '@material-ui/core/Link';
 // atoms
 import Typography from '../../atoms/typography';
 import Card from '../../atoms/card';
-import CardMedia from '../../atoms/cardMedia';
 import CardContent from '../../atoms/cardContent';
 
 /* STYLES */
@@ -17,8 +16,8 @@ const ProductCard = (props) => {
     image,
     name,
     price,
-    height,
     id,
+    categoryName,
   } = props;
 
   const classes = useStyles();
@@ -26,17 +25,15 @@ const ProductCard = (props) => {
   return (
     <Link underline="none" component={RouterLink} to={`/product/${id}`}>
       <Card elevation={false} className={classes.card}>
-        <CardMedia
-          style={{
-            height,
-          }}
-          image={image}
-        />
+        <img src={image} className={classes.image} alt={name} />
         <CardContent className={classes.content}>
           <Typography color="textPrimary" variant="body1">
             {name}
           </Typography>
-          <Typography color="textPrimary" variant="h4">
+          <Typography color="textSecondary" variant="caption">
+            {categoryName}
+          </Typography>
+          <Typography color="textPrimary" variant="h5">
             ${price}
           </Typography>
         </CardContent>

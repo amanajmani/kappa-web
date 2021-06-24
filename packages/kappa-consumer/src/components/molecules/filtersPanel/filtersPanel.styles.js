@@ -7,7 +7,8 @@ export default makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-    width: 200,
+    maxWidth: 200,
+    width: '100%',
     maxHeight: 514,
     position: 'sticky',
     overflow: 'hidden scroll',
@@ -25,4 +26,13 @@ export default makeStyles((theme) => ({
     },
     padding: 'unset !important',
   },
+  popupContent: {
+    marginTop: theme.spacing(3),
+  },
+  popupIcon: {
+    position: 'fixed',
+    right: 10,
+    top: 10,
+    color: 'black',
+  }
 }));

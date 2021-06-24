@@ -2,19 +2,17 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   media: {
-    height: 300,
   },
   card: {
-   border: '1px solid #c8c8c8',
+   borderRadius: 0,
    position: 'relative',
    top: '0',
-   transition: 'top ease 0.2s',
+   transition: 'top ease 0.1s',
    '&:hover': {
-    top: '-6px',
-   }
+    top: '-10px'
+   },
   },
-  content: {
-    borderTop: '1px solid #c8c8c8',
-    background: theme.palette.text.ok,
+  image: {
+    maxWidth: '100%',
   },
 }));

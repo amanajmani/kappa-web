@@ -96,7 +96,7 @@ const Cart = ({
           onClick={() => setIsCartVisible(false)}
         />
       )}
-      <div className={classes.headerContainer}>
+      <div className={classes.root}>
         <div className={classes.header}>
           <Typography variant='h5' gutterBottom>
             CART

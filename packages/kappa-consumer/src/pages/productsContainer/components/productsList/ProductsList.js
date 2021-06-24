@@ -28,37 +28,42 @@ import FilterListIcon from '../../../../assets/images/filterList';
 /* UTILS */
 import isEmpty from '../../../../utils/isEmpty.utils';
 
+/* HELPERS */
+import getCategoryName from '../../helpers/getCategoryName.helpers'
+
 /* CONSTANTS */
 import FILTER_PRODUCTS from '../../constants/filterProducts.constants';
 import INITIAL_LAYOUT from '../../constants/initialLayout.constants';
 import BASE_URL from '../../../../constants/baseURL';
 
-const renderImage = (images) => {
-  return `${BASE_URL}/api/v1/files/${images[0]}`;
-};
+// responsive
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
-const renderProduct = (layout) => (product) =>
-  (
-    <Grid
-      key={productsReader.id(product)}
-      item
-      lg={layout.numberOfProducts}
-      md={4}
-      sm={6}
-      xs={12}
-    >
-      <ProductCard
-        image={renderImage(
-          !isEmpty(productsReader.images(product)) &&
-            productsReader.images(product)
-        )}
-        name={productsReader.name(product)}
-        height={layout.height}
-        price={productsReader.price(product)}
-        id={productsReader.id(product)}
-      />
-    </Grid>
-  );
+const renderImage = (images) => {
+   return `${BASE_URL}/api/v1/files/${images[0]}`
+}
+
+const renderProduct = (layout, categoryName) => (product) => (
+  <Grid 
+    key={productsReader.id(product)}
+    item 
+    // lg={layout.numberOfProducts} 
+    md={4} 
+    sm={6} 
+    xs={6}
+  >
+    <ProductCard
+      image={renderImage(!isEmpty(productsReader.images(product)) 
+        && productsReader.images(product))}
+      categoryName={categoryName}
+      name={productsReader.name(product)}
+      height={layout.height}
+      price={productsReader.price(product)}
+      id={productsReader.id(product)}
+    />
+  </Grid>
+)
 
 const ProductsList = ({
   productsInfo,
@@ -75,6 +80,10 @@ const ProductsList = ({
   const [scrolling, setScrolling] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
+  // responsive
+  const theme = useTheme();
+  const isXtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
+
   // Detect Scroll
   useEffect(() => {
     const onScroll = (e) => {
@@ -89,19 +98,22 @@ const ProductsList = ({
     setIsFiltersPanelVisible((prev) => !prev);
   };
 
+  console.log('dkwowkd', scrolling);
+
   return (
     <div>
       <Paper className={classes.headerMenu} elevation={false}>
         <div className={classes.headerTitleContainer}>
-          <Typography
-            color='textPrimary'
+          <Typography 
+            color='textPrimary' 
             variant='h5'
             className={clsx(
               classes.title,
-              scrolling > 20 && classes.fontShrink
+              scrolling > 100 && classes.fontShrink,
+              scrolling < 100 && classes.fontGrow
             )}
           >
-            {getTitle(productsInfo)}
+            {getTitle(pageType, productsInfo)}
           </Typography>
         </div>
 
@@ -128,10 +140,9 @@ const ProductsList = ({
         />
 
         <div className={classes.content}>
-          <Grid container spacing={3}>
-            {productsReader
-              .data(productsInfo)
-              .map(renderProduct(INITIAL_LAYOUT))}
+          <Grid container spacing={isXtraSmall ? 1 : 2}>
+            {productsReader.data(productsInfo)
+              .map(renderProduct(INITIAL_LAYOUT, getCategoryName(productsInfo)))}
           </Grid>
 
           <Pagination
