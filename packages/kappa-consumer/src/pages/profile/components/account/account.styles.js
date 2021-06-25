@@ -13,4 +13,11 @@ export default makeStyles((theme) => ({
     textAlign: 'start',
     width: '100%',
   },
+  message: {
+    textAlign: 'center',
+    margin: theme.spacing(2, 0),
+  },
+  accountUpdateForm: {
+    width: '100%',
+  },
 }));

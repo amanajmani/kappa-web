@@ -29,7 +29,7 @@ const Order = ({ order, fetching }) => {
   return (
     <div className={classes.root}>
       <Grid container direction='row' justify='center' alignItems='center'>
-        <Grid container item xs={12} sm={10} md={8} spacing={3}>
+        <Grid container item xs={12} sm={10} md={8} spacing={2}>
           <Typography gutterBottom variant='subtitle1'>
             Total Orders : {order.length}
           </Typography>

@@ -57,8 +57,8 @@ const ConsumerNavbar = ({
   };
 
   useEffect(() => {
-    getOrders();
-  }, []);
+    if (user && user.name) getOrders();
+  }, [user, getOrders]);
 
   const history = useHistory();
 
@@ -95,7 +95,7 @@ const ConsumerNavbar = ({
     if (token) {
       fetchUser();
     }
-  }, []);
+  }, [fetchUser]);
 
   const handleSearch = (event) => {
     setSearchText(event.target.value);

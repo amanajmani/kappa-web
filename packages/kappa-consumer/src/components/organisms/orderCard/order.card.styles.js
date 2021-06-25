@@ -11,7 +11,6 @@ export default makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: '16px auto',
-    maxWidth: 600,
   },
   image: {
     width: 128,

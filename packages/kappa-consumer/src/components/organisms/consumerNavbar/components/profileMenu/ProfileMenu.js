@@ -6,7 +6,12 @@ import { useHistory } from 'react-router-dom';
 
 import useStyles from './profile.menu.styles';
 
-export default function ProfileMenu({ data, logoutUser, setProfileMenu, profileMenuNumber }) {
+export default function ProfileMenu({
+  data,
+  logoutUser,
+  setProfileMenu,
+  profileMenuNumber,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
   const classes = useStyles();
@@ -37,7 +42,7 @@ export default function ProfileMenu({ data, logoutUser, setProfileMenu, profileM
         aria-controls='simple-menu'
         aria-haspopup='true'
         onClick={handleClick}
-        classes={classes.rootButton}
+        style={{ color: 'white' }}
       >
         {data.name}
       </Button>

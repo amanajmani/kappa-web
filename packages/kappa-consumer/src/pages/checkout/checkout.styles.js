@@ -71,7 +71,7 @@ export default makeStyles((theme) => ({
     margin: '16px 0px',
   },
   instructions: {
-    justifyContent: 'center',
+    textAlign: 'center',
   },
 
   cashOnDelivery: {
@@ -88,4 +88,5 @@ export default makeStyles((theme) => ({
   homeButton: {
     width: '100%',
   },
+  image: {},
 }));

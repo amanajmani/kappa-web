@@ -125,10 +125,6 @@ export function resetPassword(body) {
     });
 
     return authServices.resetPassword(body).then((data) => {
-      console.log(
-        data,
-        'data-----  resetPassword resetPassword resetPassword '
-      );
       if (data.success) {
         dispatch({
           type: 'RESET_PASSWORD_SUCCESS',
@@ -145,7 +141,6 @@ export function resetPassword(body) {
 }
 
 export function setIsSignInOpen(body) {
-  console.log(body, 'setIsSignInOpen');
   return (dispatch) => {
     dispatch({
       type: 'OPEN_LOGIN_MODAL',
@@ -177,13 +172,14 @@ export function updateUser(body) {
     });
 
     return authServices.updateUser(body).then((data) => {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      console.log(data, 'data in updateUser');
       if (data.success) {
         dispatch({
           type: 'UPDATE_PROFILE_SUCCESS',
           payload: data,
         });
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
       } else {
         dispatch({
           type: 'UPDATE_PROFILE_FAILED',
@@ -210,7 +206,6 @@ export function logoutUser() {
 }
 
 export function setProfileMenu(body) {
-  console.log(body, 'setProfileMeny');
   return (dispatch) => {
     dispatch({
       type: 'SET_PROFILE_MENU',

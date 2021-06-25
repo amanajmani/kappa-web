@@ -17,7 +17,6 @@ const AddressCard = ({
   handleUpdateAddress,
   handleSubmitAddress,
   deleteAddress,
-  
 }) => {
   const [open, setOpen] = useState(false);
   const [updateAddress, setUpdateAddress] = useState({});
@@ -55,25 +54,31 @@ const AddressCard = ({
               name='radio-button-demo'
             />
             <div>
-              <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
-                 {address.address}
+              <Typography
+                color='textPrimary'
+                className={`${classes.flexStart} ${classes.addressFont}`}
+                variant='body2'
+              >
+                {address.address}
               </Typography>
 
-              <div className={classes.flex}>
-                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
-                  {address.city}
-                </Typography>
-                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
-                  {address.state}
+              <div>
+                <Typography
+                  color='textPrimary'
+                  className={classes.flexStart}
+                  variant='body2'
+                >
+                  {address.city} - {address.postalCode}
                 </Typography>
               </div>
 
-              <div className={classes.flex}>
-                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
-                  {address.country}
-                </Typography>
-                <Typography color='textPrimary' className={classes.flexStart} variant='body2'>
-                 {address.postalCode}
+              <div>
+                <Typography
+                  color='textPrimary'
+                  className={classes.flexStart}
+                  variant='body2'
+                >
+                  {address.state}
                 </Typography>
               </div>
             </div>
@@ -81,7 +86,13 @@ const AddressCard = ({
               className={classes.EditIcon}
               onClick={() => handleClickOpen(address)}
             />
-
+            <Typography
+              color='textPrimary'
+              className={classes.countryName}
+              variant='body2'
+            >
+              {address.country}
+            </Typography>
           </Paper>
         ))}
       </List>

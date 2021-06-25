@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: '1rem',
-    padding : '8px',
+    padding: '12px',
     [theme.breakpoints.down('sm')]: {
       // width: '100%',
     },
@@ -53,15 +53,25 @@ export default makeStyles((theme) => ({
   flexStart: {
     display: 'flex',
     justifyContent: 'start',
-    width : '100%'
+    width: '100%',
   },
 
   scrollable: {
     'max-height': '500px',
     overflowY: 'scroll',
     marginTop: '14px',
-    maxWidth: '500px',
+    width: '100%',
     padding: '16px',
-    margin: '0 auto',
+    // margin: '0 auto',
+  },
+  countryName: {
+    fontWeight: '500',
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+  },
+  addressFont: {
+    fontSize: '1.1rem',
+    fontWeight: '500',
   },
 }));

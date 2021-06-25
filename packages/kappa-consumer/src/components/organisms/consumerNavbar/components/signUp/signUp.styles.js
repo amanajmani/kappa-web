@@ -30,4 +30,7 @@ export default makeStyles((theme) => ({
   country: {
     textAlign: 'start',
   },
+  resetBtn: {
+    marginLeft: 0,
+  },
 }));

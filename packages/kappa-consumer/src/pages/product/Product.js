@@ -46,7 +46,6 @@ const Product = ({
   match,
   product,
   fetching,
-  getCart,
   setIsSignInOpen,
   user,
 }) => {
@@ -232,7 +231,6 @@ Product.propTypes = {
   addToCart: PropTypes.func,
   product: PropTypes.array,
   fetching: PropTypes.bool,
-  getCart: PropTypes.func,
   setIsSignInOpen: PropTypes.func,
   user: PropTypes.object,
 };

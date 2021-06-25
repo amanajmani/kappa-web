@@ -37,12 +37,13 @@ const Review = ({
   cart,
   fetching,
   setOrderCalculation,
+  user,
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    getCart();
-  }, []);
+    if (user && user.name) getCart();
+  }, [user, getCart]);
 
   useEffect(() => {
     let subTotal = 0;
@@ -80,51 +81,54 @@ const Review = ({
     deleteProductFromCart(id);
   };
 
-  if (fetching) <Loader padding />;
-
-  if (isEmpty(cart)) {
-    return (
-      <>
-        <Typography gutterBottom>
-          You haven&apos;t added anything yet
-        </Typography>
-        <SadIcon fontSize='large' />
-      </>
-    );
-  }
-
   return (
-    <List width='100%' className={classes.scrollable} subheader={<li />}>
-      {cart.map((item) => (
-        <Card key={item._id} className={classes.root}>
-          <CardMedia
-            className={classes.media}
-            image={`${BASE_URL}/api/v1/files/${item.product.images[0]}`}
-          />
-          <CardContent>
-            <Typography gutterBottom variant='body1' display='block'>
-              {item.product.title}
-            </Typography>
-            <Typography variant='body1' display='block'>
-              Price: <b> ${item.product.price}</b>
-            </Typography>
-          </CardContent>
-          <QuantityButton
-            className={{ borderRadius: '2px' }}
-            quantity={item.quantity}
-            fetching={fetching}
-            incrementProduct={() => incrementProduct(item._id, item.quantity)}
-            decrementProduct={() => decrementProduct(item._id, item.quantity)}
-          />
-          <Box className={classes.deleteIconContainer}>
-            <DeleteIcon
-              className={classes.deleteIcon}
-              onClick={() => deleteProduct(item._id)}
-            />
-          </Box>
-        </Card>
-      ))}
-    </List>
+    <>
+      {isEmpty(cart) ? (
+        <>
+          <Typography gutterBottom>
+            You haven&apos;t added anything yet
+          </Typography>
+          <SadIcon fontSize='large' />
+        </>
+      ) : null}
+
+      <List width='100%' className={classes.scrollable} subheader={<li />}>
+        {!isEmpty(cart) &&
+          cart.map((item) => (
+            <Card key={item._id} className={classes.root}>
+              <CardMedia
+                className={classes.media}
+                image={`${BASE_URL}/api/v1/files/${item.product.images[0]}`}
+              />
+              <CardContent>
+                <Typography gutterBottom variant='body1' display='block'>
+                  {item.product.title}
+                </Typography>
+                <Typography variant='body1' display='block'>
+                  Price: <b> ${item.product.price}</b>
+                </Typography>
+              </CardContent>
+              <QuantityButton
+                className={{ borderRadius: '2px' }}
+                quantity={item.quantity}
+                fetching={fetching}
+                incrementProduct={() =>
+                  incrementProduct(item._id, item.quantity)
+                }
+                decrementProduct={() =>
+                  decrementProduct(item._id, item.quantity)
+                }
+              />
+              <Box className={classes.deleteIconContainer}>
+                <DeleteIcon
+                  className={classes.deleteIcon}
+                  onClick={() => deleteProduct(item._id)}
+                />
+              </Box>
+            </Card>
+          ))}
+      </List>
+    </>
   );
 };
 
@@ -135,7 +139,7 @@ Review.propTypes = {
 
 Review.defaultProps = {
   cart: [],
-  fetching: false,
+  fetching: true,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -144,6 +148,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
+    user: state.auth.user,
     cart: state.cart.cart,
     fetching: state.cart.fetching,
   };

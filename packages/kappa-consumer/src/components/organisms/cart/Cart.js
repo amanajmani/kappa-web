@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -45,6 +46,7 @@ const Cart = ({
   setIsCartVisible,
   deleteProductFromCart,
   updateCart,
+  user,
 }) => {
   const classes = useStyles();
   // responsive
@@ -52,9 +54,8 @@ const Cart = ({
   const isXtraSmall = useMediaQuery(theme.breakpoints.only('xs'));
 
   useEffect(() => {
-    console.log('get cart -------- ');
-    getCart();
-  }, []);
+    if (user && user.name) getCart();
+  }, [user, getCart]);
 
   const incrementProduct = (data) => {
     const { _id, quantity } = data;
@@ -181,12 +182,28 @@ const Cart = ({
   );
 };
 
+Cart.propTypes = {
+  user: PropTypes.object,
+  // getCart,
+  // cart,
+  // fetching,
+  // isCartVisible,
+  // setIsCartVisible,
+  // updateCart,
+  // deleteProductFromCart,
+};
+
+Cart.defaultProps = {
+  user: {},
+};
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
+    user: state.auth.user,
     cart: state.cart.cart,
     fetching: state.cart.fetching,
   };

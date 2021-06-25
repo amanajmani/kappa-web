@@ -20,20 +20,12 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 // Styles
 import useStyles from './order.card.styles';
 
+import getTime from '../../../utils/getTime';
+import getPrice from '../../../utils/getPrice';
+import getItemsCount from '../../../utils/getItemsCount';
+
 const truncate = (input) =>
   input.length > 30 ? `${input.substring(0, 30)}...` : input;
-
-const getPrice = (price, discount) => {
-  let res = (price / 100) * discount;
-  return price - res;
-};
-
-const getItemsCount = (arr) => {
-  console.log(arr, 'arr in get Items');
-  return arr.reduce(function (accumulator, currentValue) {
-    return accumulator + currentValue.quantity;
-  }, 0);
-};
 
 const DeliveryTimeline = ({ classes, isDelivered, isPaid }) => {
   return (
@@ -60,18 +52,16 @@ const DeliveryTimeline = ({ classes, isDelivered, isPaid }) => {
 };
 
 DeliveryTimeline.propTypes = {
-  classes : PropTypes.object,
-  isDelivered : PropTypes.bool,
-  isPaid : PropTypes.bool
+  classes: PropTypes.object,
+  isDelivered: PropTypes.bool,
+  isPaid: PropTypes.bool,
 };
 
 DeliveryTimeline.defaultProps = {
-  classes : {},
-  isDelivered : PropTypes.bool,
-  isPaid : PropTypes.bool
+  classes: {},
+  isDelivered: PropTypes.bool,
+  isPaid: PropTypes.bool,
 };
-
-
 
 const OrderItem = ({ data, classes }) => {
   return (
@@ -137,15 +127,14 @@ const OrderItem = ({ data, classes }) => {
 };
 
 OrderItem.propTypes = {
-  classes : PropTypes.object,
-  data : PropTypes.array,
+  classes: PropTypes.object,
+  data: PropTypes.array,
 };
 
 OrderItem.defaultProps = {
   data: [],
-  classes : {}
+  classes: {},
 };
-
 
 const Card = ({ classes, data }) => {
   return (
@@ -156,6 +145,9 @@ const Card = ({ classes, data }) => {
             <Grid item xs>
               <Typography gutterBottom variant='subtitle1'>
                 Order ID : # {data._id}
+              </Typography>
+              <Typography variant='body2' gutterBottom>
+                Purchased at : {getTime(data.createdAt)}
               </Typography>
               <Typography variant='body2' gutterBottom>
                 Total : ${data.totalPrice}
@@ -197,15 +189,14 @@ const Card = ({ classes, data }) => {
 };
 
 Card.propTypes = {
-  classes : PropTypes.object,
-  data : PropTypes.array,
+  classes: PropTypes.object,
+  data: PropTypes.array,
 };
 
 Card.defaultProps = {
   data: [],
-  classes : {}
+  classes: {},
 };
-
 
 const OrderCard = ({ data, fetching }) => {
   const classes = useStyles();
@@ -225,13 +216,12 @@ const OrderCard = ({ data, fetching }) => {
 
 OrderCard.propTypes = {
   fetching: PropTypes.bool,
-  data : PropTypes.array,
+  data: PropTypes.array,
 };
 
 OrderCard.defaultProps = {
   data: [],
   fetching: false,
 };
-
 
 export default OrderCard;

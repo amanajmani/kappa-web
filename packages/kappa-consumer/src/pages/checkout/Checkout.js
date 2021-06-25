@@ -29,6 +29,7 @@ import useStyles from './checkout.styles';
 import ActionCreators from '../../actions';
 
 /* ASSETS */
+import BASE_URL from '../../constants/baseURL';
 // images
 import ShoppingCartIcon from '../../assets/images/shoppingCart';
 
@@ -163,6 +164,12 @@ const Checkout = ({ addOrder, cart, address, user }) => {
               </>
             ) : (
               <>
+                <img
+                  src='https://cdn.dribbble.com/users/1787323/screenshots/11229539/media/01c540af896420a04964478735308306.png?compress=1&resize=1200x900'
+                  className={classes.image}
+                  alt='order gif'
+                />
+
                 <Typography className={classes.instructions}>
                   Order Received , Payment Successful.
                 </Typography>

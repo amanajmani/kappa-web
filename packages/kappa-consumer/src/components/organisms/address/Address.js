@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
 
 /* COMPONENTS */
 import Button from '@kappa/components/src/atoms/button';
 import Typography from '@kappa/components/src/atoms/typography';
 import AddressCard from '../addressCard';
 import EditAddressModal from '../editAddressModal';
-
 // atoms
+import Loader from '@kappa/components/src/atoms/loader';
 
 /* STYLES */
 import useStyles from './address.styles';
@@ -24,10 +23,9 @@ const Address = ({
   deleteAddress,
   address,
   message,
+  fetching,
 }) => {
   const classes = useStyles();
-  const URL = 'http://localhost:5000';
-
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -60,14 +58,12 @@ const Address = ({
 
   return (
     <>
-            {message ? (
-          <Typography variant='body2' color='error'>
-            {message}
-          </Typography>
-        ) : null}
+      {message ? (
+        <Typography variant='body2' color='error'>
+          {message}
+        </Typography>
+      ) : null}
       <div className={classes.root}>
-
-
         <div className={classes.root}>
           <Typography
             className={classes.title}
@@ -92,21 +88,22 @@ const Address = ({
           cancelTitle='Cancel'
         />
       </div>
-
-      {address && address.length ? null : (
+      {address && address.length ? (
+        <AddressCard
+          handleSubmitAddress={handleSubmitAddress}
+          handleUpdateAddress={(updatedAddress) =>
+            handleUpdateAddress(updatedAddress)
+          }
+          data={address}
+          deleteAddress={handleDeleteAddress}
+        />
+      ) : fetching ? (
+        <Loader padding />
+      ) : (
         <Typography className={classes.textCenter} variant='h6' color='error'>
           No Address found
         </Typography>
       )}
-
-      <AddressCard
-        handleSubmitAddress={handleSubmitAddress}
-        handleUpdateAddress={(updatedAddress) =>
-          handleUpdateAddress(updatedAddress)
-        }
-        data={address}
-        deleteAddress={handleDeleteAddress}
-      />
     </>
   );
 };

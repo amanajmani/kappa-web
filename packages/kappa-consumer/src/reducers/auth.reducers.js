@@ -135,7 +135,7 @@ export default function authReducer(
         ...state,
         user: action.payload.user,
         fetching: false,
-        message: '',
+        message: action.payload.message,
       };
     case 'UPDATE_PROFILE_FAILED':
       return {

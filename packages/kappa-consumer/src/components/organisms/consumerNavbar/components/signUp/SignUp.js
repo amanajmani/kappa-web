@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
+import { useForm, Form } from '../../../../../utils/useForm';
 
 /* COMPONENTS */
 // atoms
@@ -27,9 +27,17 @@ import Loader from '@kappa/components/src/atoms/loader';
 import useStyles from './signUp.styles';
 
 import ActionCreators from '../../../../../actions';
+import validateEmail from '../../../../../utils/validateEmail';
+
+const initialFValues = {
+  email: '',
+  password: '',
+  name: '',
+  country: '',
+  error: false,
+};
 
 const SignUp = (props) => {
-  const URL = 'http://localhost:5000';
   const {
     isOpen,
     setIsOpen,
@@ -44,87 +52,49 @@ const SignUp = (props) => {
 
   const classes = useStyles();
 
-  const [isValid, setIsValid] = useState(false);
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    if ('name' in fieldValues)
+      temp.name = fieldValues.name ? '' : 'Name is required.';
+    if ('email' in fieldValues)
+      temp.email = validateEmail(fieldValues.email)
+        ? ''
+        : 'Email is not valid.';
+    if ('password' in fieldValues)
+      temp.password =
+        fieldValues.password.length >= 6 ? '' : 'Minimum 6 length required.';
+    if ('country' in fieldValues)
+      temp.country =
+        fieldValues.country.length !== 0 ? '' : 'Country is required.';
+    setErrors({
+      ...temp,
+    });
 
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-    name: '',
-    country: '',
-    error: false,
-    errorMessage: {},
-  });
-
-  const validateEmail = (email) => {
-    const regex = /\S+@\S+\.\S+/;
-    return regex.test(email);
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === '');
   };
-
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-
-  useEffect(() => {
-    if (
-      Object.values(values.errorMessage).every((elem) => elem === '') &&
-      !(values.country.length === 0) &&
-      !(values.name.length < 3) &&
-      !(values.password.length < 6) &&
-      validateEmail(values.email)
-    ) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-  }, [values]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setValues((prev) => ({
-      ...prev,
-      errorMessage: {
-        ...prev.errorMessage,
-        email: !validateEmail(values.email)
-          ? 'Please enter a valid email address.'
-          : '',
-        password:
-          values.password.length < 6
-            ? 'Password should contain atleast 6 characters.'
-            : '',
-        name:
-          values.name.length < 3
-            ? 'Full name should contain atleast 3 characters.'
-            : '',
-        country:
-          values.country.length === 0 ? 'Please select your country' : '',
-      },
-    }));
-
-    const { name, email, password, country } = values;
-    if (isValid) {
-      console.log(values.errorMessage, 'error message nhi hai ');
-
+    if (validate()) {
+      const { name, email, password, country } = values;
       registerUser({
         name,
         email,
         password,
         country,
       });
-    } else {
-      console.log(values.errorMessage, 'error message  hai ');
+      console.log('handle SUbmit User');
+      resetForm();
     }
   };
 
+  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFValues, true, validate);
+
   useEffect(() => {
-    setValues({
-      email: '',
-      password: '',
-      name: '',
-      country: '',
-      error: false,
-      errorMessage: {},
-    });
+    resetForm();
     setUserRegFalse();
   }, [isOpen]);
 
@@ -135,7 +105,7 @@ const SignUp = (props) => {
           ? 'Thanks for becoming a Mr Nomad Member.'
           : 'Become a Mr Nomad Member.'}
       </DialogTitle>
-      <form noValidate autoComplete='off'>
+      <Form>
         <DialogContent className={classes.content}>
           {userRegistered ? (
             <></>
@@ -158,21 +128,22 @@ const SignUp = (props) => {
               ) : (
                 <>
                   <TextField
-                    required
-                    margin='dense'
-                    id='name'
                     label='Name'
+                    autoFocus
                     fullWidth
+                    name='name'
                     variant='outlined'
+                    margin='dense'
                     value={values.name}
-                    onChange={handleChange('name')}
-                    helperText={values.errorMessage.name}
-                    error={!!values.errorMessage.name}
+                    onChange={handleInputChange}
+                    error={!!errors.name}
+                    helperText={errors.name}
+                    type='text'
+                    required
                   />
 
                   <TextField
                     required
-                    autoFocus
                     margin='dense'
                     id='email'
                     label='Email Address'
@@ -180,9 +151,10 @@ const SignUp = (props) => {
                     fullWidth
                     variant='outlined'
                     value={values.email}
-                    onChange={handleChange('email')}
-                    helperText={values.errorMessage.email}
-                    error={!!values.errorMessage.email}
+                    name='email'
+                    onChange={handleInputChange}
+                    error={!!errors.email}
+                    helperText={errors.email}
                   />
 
                   <TextField
@@ -193,10 +165,11 @@ const SignUp = (props) => {
                     type='password'
                     fullWidth
                     variant='outlined'
+                    name='password'
                     value={values.password}
-                    onChange={handleChange('password')}
-                    helperText={values.errorMessage.password}
-                    error={!!values.errorMessage.password}
+                    onChange={handleInputChange}
+                    error={!!errors.password}
+                    helperText={errors.password}
                   />
 
                   <FormControl
@@ -204,24 +177,22 @@ const SignUp = (props) => {
                     className={classes.country}
                     variant='outlined'
                     margin='dense'
-                    error={!!values.errorMessage.country}
-                    helperText={values.errorMessage.country}
+                    error={!!errors.country}
                   >
                     <InputLabel>Country</InputLabel>
                     <Select
                       label='Country'
                       value={values.country}
-                      onChange={handleChange('country')}
+                      name='country'
+                      onChange={handleInputChange}
                     >
                       {COUNTRIES.map((country) => (
-                        <MenuItem value={country.label}>
+                        <MenuItem key={country.label} value={country.label}>
                           {country.label}
                         </MenuItem>
                       ))}
                     </Select>
-                    <FormHelperText>
-                      {values.errorMessage.country}
-                    </FormHelperText>
+                    <FormHelperText>{errors.country}</FormHelperText>
                   </FormControl>
                 </>
               )}
@@ -238,14 +209,25 @@ const SignUp = (props) => {
           {userRegistered ? (
             <></>
           ) : (
-            <Button
-              type='submit'
-              label='Sign Up'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-              onClick={(e) => handleSubmit(e)}
-            />
+            <>
+              <Button
+                type='submit'
+                label='Sign Up'
+                variant='contained'
+                color='primary'
+                className={classes.button}
+                onClick={(e) => handleSubmit(e)}
+              />
+
+              <Button
+                text='Reset'
+                color='default'
+                onClick={resetForm}
+                label='Reset Form'
+                variant='contained'
+                className={`${classes.button} ${classes.resetBtn}`}
+              />
+            </>
           )}
           <Typography variant='caption' gutterBottom>
             Already a member? <Link onClick={handleSignUp}>Sign In</Link>
@@ -255,7 +237,7 @@ const SignUp = (props) => {
             <Link onClick={handleForgetPass}>Forgot Password</Link>
           </Typography>
         </DialogActions>
-      </form>
+      </Form>
     </Popup>
   );
 };
