@@ -2,9 +2,9 @@ import React from 'react';
 
 /* COMPONENTS */
 import Navbar from '@kappa/components/src/organisms/navbar';
-import ConsumerNavbar from '../../../components/organisms/consumerNavbar';
+import ConsumerNavbar from '../consumerNavbar';
 
-import Footer from '../../../components/organisms/footer';
+import Footer from '../footer';
 
 /* STYLES */
 import useStyles from './primaryLayout.styles';

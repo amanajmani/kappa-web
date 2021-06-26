@@ -16,7 +16,7 @@ import ContentContainer from '@kappa/components/src/atoms/contentContainer';
 import productsReader from '../../../readers/productsList.readers';
 
 /* HELPERS */
-import getCategoryName from '../../../helpers/getCategoryName.helpers'
+import getCategoryName from '../../../helpers/getCategoryName.helpers';
 
 /* CONSTANTS */
 import BASE_URL from '../../../constants/baseURL';
@@ -31,21 +31,19 @@ import useStyles from './recommendedProducts.styles';
 /* SERVICES */
 import ActionCreators from '../../../actions';
 
-const renderImage = (images) => {
-  return `${BASE_URL}/api/v1/files/${images[0]}`
-}
+const renderImage = (images) => `${BASE_URL}/api/v1/files/${images[0]}`;
 
 const renderProduct = (layout, categoryName) => (product) => (
-  <Grid 
+  <Grid
     key={productsReader.id(product)}
     item
-    lg={layout} 
-    md={4} 
-    sm={6} 
-    xs={12}  
+    lg={layout}
+    md={4}
+    sm={6}
+    xs={12}
   >
     <ProductCard
-      image={renderImage(!isEmpty(productsReader.images(product)) 
+      image={renderImage(!isEmpty(productsReader.images(product))
         && productsReader.images(product))}
       categoryName={categoryName}
       name={productsReader.name(product)}
@@ -53,10 +51,10 @@ const renderProduct = (layout, categoryName) => (product) => (
       id={productsReader.id(product)}
     />
   </Grid>
-)
+);
 
-const RecommendedProducts = ({ 
-  title, 
+const RecommendedProducts = ({
+  title,
   data,
   getRecommendedProductsInfo,
   fetching,
@@ -68,10 +66,8 @@ const RecommendedProducts = ({
     getRecommendedProductsInfo(RECOMMENDED_PRODUCTS_QUERY);
   }, []);
 
-  console.log('wdkwdok', data);
-
-  if(fetching) {
-    return <Loader padding />
+  if (fetching) {
+    return <Loader padding />;
   }
 
   return (
@@ -79,10 +75,10 @@ const RecommendedProducts = ({
       <Divider color="#e5e5e5" />
 
       <div className={classes.container}>
-      <ContentContainer maxWidth="md">
-        <div className={classes.title}>
-          <Typography variant="h6" >{title}</Typography>
-        </div>
+        <ContentContainer maxWidth="md">
+          <div className={classes.title}>
+            <Typography variant="h6">{title}</Typography>
+          </div>
           <Grid container spacing={5} className={classes.content} justify="center">
             {productsReader.data(data)
               .map(renderProduct(layout, getCategoryName(data)))}

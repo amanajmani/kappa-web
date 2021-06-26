@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-use-before-define */
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { useForm, Form } from '../../../../../utils/useForm';
 
 /* COMPONENTS */
 // atoms
@@ -11,8 +12,6 @@ import TextField from '@kappa/components/src/atoms/textField';
 import DialogActions from '@kappa/components/src/atoms/dialogActions';
 import DialogContent from '@kappa/components/src/atoms/dialogContent';
 import DialogTitle from '@kappa/components/src/atoms/dialogTitle';
-import Checkbox from '@kappa/components/src/atoms/checkbox';
-import FormControlLabel from '@kappa/components/src/atoms/formControlLabel';
 import FormControl from '@kappa/components/src/atoms/formControl';
 import InputLabel from '@kappa/components/src/atoms/inputLabel';
 import Select from '@kappa/components/src/atoms/select';
@@ -20,8 +19,9 @@ import MenuItem from '@kappa/components/src/atoms/menuItem';
 import FormHelperText from '@kappa/components/src/atoms/formHelperText';
 import Link from '@kappa/components/src/atoms/link';
 import COUNTRIES from '@kappa/components/src/constants/countries';
-import Popup from '../popup';
 import Loader from '@kappa/components/src/atoms/loader';
+import Popup from '../popup';
+import { useForm, Form } from '../../../../../utils/useForm';
 
 // Styles
 import useStyles from './signUp.styles';
@@ -53,33 +53,31 @@ const SignUp = (props) => {
 
   const classes = useStyles();
 
+  // eslint-disable-next-line consistent-return
   const validate = (fieldValues = values) => {
-    let temp = { ...errors };
-    if ('name' in fieldValues)
-      temp.name = fieldValues.name ? '' : 'Name is required.';
-    if ('email' in fieldValues)
+    const temp = { ...errors };
+    if ('name' in fieldValues) temp.name = fieldValues.name ? '' : 'Name is required.';
+    if ('email' in fieldValues) {
       temp.email = validateEmail(fieldValues.email)
         ? ''
         : 'Email is not valid.';
-    if ('password' in fieldValues)
-      temp.password =
-        fieldValues.password.length >= 6 ? '' : 'Minimum 6 length required.';
-    if ('country' in fieldValues)
-      temp.country =
-        fieldValues.country.length !== 0 ? '' : 'Country is required.';
+    }
+    if ('password' in fieldValues) temp.password = fieldValues.password.length >= 6 ? '' : 'Minimum 6 length required.';
+    if ('country' in fieldValues) temp.country = fieldValues.country.length !== 0 ? '' : 'Country is required.';
     setErrors({
       ...temp,
     });
 
-    if (fieldValues === values)
-      return Object.values(temp).every((x) => x === '');
+    if (fieldValues === values) return Object.values(temp).every((x) => x === '');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validate()) {
-      const { name, email, password, country } = values;
+      const {
+        name, email, password, country,
+      } = values;
       registerUser({
         name,
         email,
@@ -91,8 +89,9 @@ const SignUp = (props) => {
     }
   };
 
-  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
-    useForm(initialFValues, true, validate);
+  const {
+    values, errors, setErrors, handleInputChange, resetForm,
+  } = useForm(initialFValues, true, validate);
 
   useEffect(() => {
     resetForm();
@@ -116,13 +115,13 @@ const SignUp = (props) => {
             {userRegistered ? (
               <></>
             ) : (
-              <Typography variant='caption' color='textSecondary' gutterBottom>
+              <Typography variant="caption" color="textSecondary" gutterBottom>
                 Create you Kappa Member profile and get first access to the very
                 best of Kappa products.
               </Typography>
             )}
 
-            <Typography variant={userRegistered ? 'h6' : 'body2'} color='error'>
+            <Typography variant={userRegistered ? 'h6' : 'body2'} color="error">
               {message}
             </Typography>
             {userRegistered ? (
@@ -134,30 +133,30 @@ const SignUp = (props) => {
                 ) : (
                   <>
                     <TextField
-                      label='Name'
+                      label="Name"
                       autoFocus
                       fullWidth
-                      name='name'
-                      variant='outlined'
-                      margin='dense'
+                      name="name"
+                      variant="outlined"
+                      margin="dense"
                       value={values.name}
                       onChange={handleInputChange}
                       error={!!errors.name}
                       helperText={errors.name}
-                      type='text'
+                      type="text"
                       required
                     />
 
                     <TextField
                       required
-                      margin='dense'
-                      id='email'
-                      label='Email Address'
-                      type='email'
+                      margin="dense"
+                      id="email"
+                      label="Email Address"
+                      type="email"
                       fullWidth
-                      variant='outlined'
+                      variant="outlined"
                       value={values.email}
-                      name='email'
+                      name="email"
                       onChange={handleInputChange}
                       error={!!errors.email}
                       helperText={errors.email}
@@ -165,13 +164,13 @@ const SignUp = (props) => {
 
                     <TextField
                       required
-                      margin='dense'
-                      id='password'
-                      label='Password'
-                      type='password'
+                      margin="dense"
+                      id="password"
+                      label="Password"
+                      type="password"
                       fullWidth
-                      variant='outlined'
-                      name='password'
+                      variant="outlined"
+                      name="password"
                       value={values.password}
                       onChange={handleInputChange}
                       error={!!errors.password}
@@ -181,15 +180,15 @@ const SignUp = (props) => {
                     <FormControl
                       required
                       className={classes.country}
-                      variant='outlined'
-                      margin='dense'
+                      variant="outlined"
+                      margin="dense"
                       error={!!errors.country}
                     >
                       <InputLabel>Country</InputLabel>
                       <Select
-                        label='Country'
+                        label="Country"
                         value={values.country}
-                        name='country'
+                        name="country"
                         onChange={handleInputChange}
                       >
                         {COUNTRIES.map((country) => (
@@ -203,10 +202,15 @@ const SignUp = (props) => {
                   </>
                 )}
 
-                <Typography variant='caption' gutterBottom>
-                  By logging in, you agree to Kappa&apos;s{' '}
-                  <Link href='/'>Privacy Policy</Link> and{' '}
-                  <Link href='/'>Terms of Use</Link>{' '}
+                <Typography variant="caption" gutterBottom>
+                  By logging in, you agree to Kappa&apos;s
+                  {' '}
+                  <Link href="/">Privacy Policy</Link>
+                  {' '}
+                  and
+                  {' '}
+                  <Link href="/">Terms of Use</Link>
+                  {' '}
                 </Typography>
               </>
             )}
@@ -217,29 +221,32 @@ const SignUp = (props) => {
             ) : (
               <>
                 <Button
-                  type='submit'
-                  label='Sign Up'
-                  variant='contained'
-                  color='primary'
+                  type="submit"
+                  label="Sign Up"
+                  variant="contained"
+                  color="primary"
                   className={classes.button}
                   onClick={(e) => handleSubmit(e)}
                 />
 
                 <Button
-                  text='Reset'
-                  color='default'
+                  text="Reset"
+                  color="default"
                   onClick={resetForm}
-                  label='Reset Form'
-                  variant='contained'
+                  label="Reset Form"
+                  variant="contained"
                   className={`${classes.button} ${classes.resetBtn}`}
                 />
               </>
             )}
-            <Typography variant='caption' gutterBottom>
-              Already a member? <Link onClick={handleSignUp}>Sign In</Link>
+            <Typography variant="caption" gutterBottom>
+              Already a member?
+              {' '}
+              <Link onClick={handleSignUp}>Sign In</Link>
             </Typography>
-            <Typography variant='caption' gutterBottom>
-              Reset Password{' '}
+            <Typography variant="caption" gutterBottom>
+              Reset Password
+              {' '}
               <Link onClick={handleForgetPass}>Forgot Password</Link>
             </Typography>
           </DialogActions>

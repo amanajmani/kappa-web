@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Route } from 'react-router-dom';
-
 /* COMPONENTS */
 import Loader from '@kappa/components/src/atoms/loader';
 // atoms
@@ -15,8 +13,6 @@ import TextField from '@kappa/components/src/atoms/textField';
 import DialogActions from '@kappa/components/src/atoms/dialogActions';
 import DialogContent from '@kappa/components/src/atoms/dialogContent';
 import DialogTitle from '@kappa/components/src/atoms/dialogTitle';
-import Checkbox from '@kappa/components/src/atoms/checkbox';
-import FormControlLabel from '@kappa/components/src/atoms/formControlLabel';
 import Link from '@kappa/components/src/atoms/link';
 
 import Popup from '../consumerNavbar/components/popup';
@@ -28,11 +24,8 @@ import ActionCreators from '../../../actions';
 import CloseIcon from '../../../assets/images/close';
 
 const Modal = ({
-  loginUser,
   isOpen,
   setIsOpen,
-  handleSignIn,
-  handleForgetPass,
   user,
   message,
   verified,
@@ -42,7 +35,6 @@ const Modal = ({
   clearAuthMessage,
   resetPassword,
   resetPasswordState,
-  setResetPasswordState,
   resetTokenValue,
   verificationCode,
   verifyUser,

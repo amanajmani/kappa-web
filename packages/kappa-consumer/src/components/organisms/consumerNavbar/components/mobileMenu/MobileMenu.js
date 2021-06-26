@@ -42,8 +42,8 @@ const MobileMenu = ({
       isDrawerVisible={isMobileMenuVisible}
       setIsDrawerVisible={setIsMobileMenuVisible}
       anchor="right"
-      // large={!isXtraSmall}
-      // full={isXtraSmall}
+    // large={!isXtraSmall}
+    // full={isXtraSmall}
     >
       {/* {isXtraSmall && (
         <CloseIcon

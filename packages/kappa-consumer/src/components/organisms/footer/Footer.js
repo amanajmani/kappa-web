@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 // Icons
 import {
@@ -46,11 +46,11 @@ const Footer = ({ categories }) => {
 
   return (
     <Box className={classes.root}>
-      <Container maxWidth='lg'>
+      <Container maxWidth="lg">
         <Grid container className={classes.header}>
           <Grid item className={classes.headerTitleContainer}>
             <Box>
-              <Typography gutterBottom variant='h6' className={classes.white}>
+              <Typography gutterBottom variant="h6" className={classes.white}>
                 Follow-us on social media!
               </Typography>
             </Box>
@@ -71,8 +71,8 @@ const Footer = ({ categories }) => {
 
       <Divider className={classes.divider} />
 
-      <Container maxWidth='lg' style={{ padding: matches && 'unset' }}>
-        <Grid container className={classes.body} justify='space-between'>
+      <Container maxWidth="lg" style={{ padding: matches && 'unset' }}>
+        <Grid container className={classes.body} justify="space-between">
           <Grid item xs={12} sm={4}>
             <Box
               style={{
@@ -81,12 +81,12 @@ const Footer = ({ categories }) => {
               }}
             >
               <Typography
-                variant='h6'
+                variant="h6"
                 className={clsx(classes.title, classes.white)}
               >
                 About the shop
               </Typography>
-              <Typography variant='caption' className={classes.white}>
+              <Typography variant="caption" className={classes.white}>
                 Mr Nomad is a Mens brand, created by Aman
                 <br />
                 and Deepanshu, which specializes in the production of
@@ -103,15 +103,15 @@ const Footer = ({ categories }) => {
               }}
             >
               <Typography
-                variant='h6'
+                variant="h6"
                 className={clsx(classes.title, classes.white)}
               >
                 Shop
               </Typography>
               <div className={classes.section}>
-                {category &&
-                  category.length &&
-                  category.map((cat) => (
+                {category
+                  && category.length
+                  && category.map((cat) => (
                     <Button
                       key={cat._id}
                       className={classes.buttonText}
@@ -132,7 +132,7 @@ const Footer = ({ categories }) => {
               }}
             >
               <Typography
-                variant='h6'
+                variant="h6"
                 className={clsx(classes.title, classes.white)}
               >
                 About
@@ -158,12 +158,12 @@ const Footer = ({ categories }) => {
               }}
             >
               <Typography
-                variant='h6'
+                variant="h6"
                 className={clsx(classes.title, classes.white)}
               >
                 Newsletter
               </Typography>
-              <Typography variant='caption' className={classes.white}>
+              <Typography variant="caption" className={classes.white}>
                 Subscribe to receive updates, access to exclusive deals, and
                 more.
               </Typography>
