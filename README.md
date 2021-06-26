@@ -163,6 +163,7 @@ npm run start
 - [Trello](https://trello.com/)
 - [DigitalOcean](https://cloud.digitalocean.com/projects)
 - [Github](https://github.com/)
+- [Github Actions](https://github.com/features/actions)
 
 ### For Security
 
@@ -189,7 +190,7 @@ npm run start
 
 ## Resources
 
-- [Design Files]()
+- [Design Files](https://xd.adobe.com/view/7919cad2-8ec3-4427-9058-e21ec1edbdb4-2c4a/?fullscreen)
 - [PRD]()
 - [High Level Design](https://drive.google.com/file/d/1V3scaK84cyghzRfraft4ELtlWIMqx-Bh/view?usp=sharing)
 

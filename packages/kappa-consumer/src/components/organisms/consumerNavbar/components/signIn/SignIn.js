@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import { Route } from 'react-router-dom';
 
 /* COMPONENTS */
 import Loader from '@kappa/components/src/atoms/loader';

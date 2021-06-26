@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import axios from 'axios';
-import { Route } from 'react-router-dom';
-
 /* COMPONENTS */
 // atoms
 import { Typography } from '@material-ui/core';
