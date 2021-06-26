@@ -42,7 +42,7 @@ We believe that becoming a gentleman is a journey rather than a destination. And
 
 <br/>
 
-`Mr Nomad is an ecommerce platform which can be customized by utilizing an Admin Panel. <br/> The responsive nature of Kappa allows customers to shop from any and every device they own, with ease. <br/> A dedicated Admin Panel comes in handy for inventory management and to control the platform’s look and feel. <br/> It is equipped with the ability to create personal accounts that enables customers to have a profile section of their own, which also allows them to save a product to their cart, and shop anytime they find suitable. `
+Mr Nomad is an ecommerce platform which can be customized by utilizing an Admin Panel. <br/> The responsive nature of Kappa allows customers to shop from any and every device they own, with ease. <br/> A dedicated Admin Panel comes in handy for inventory management and to control the platform’s look and feel. <br/> It is equipped with the ability to create personal accounts that enables customers to have a profile section of their own, which also allows them to save a product to their cart, and shop anytime they find suitable.
 
 ## Features
 

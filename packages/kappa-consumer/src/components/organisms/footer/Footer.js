@@ -87,10 +87,11 @@ const Footer = ({ categories }) => {
                 About the shop
               </Typography>
               <Typography variant='caption' className={classes.white}>
-                Mr Nomad is a Mens brand, created by Aman
-                <br />
-                and Deepanshu, which specializes in the production of
-                all-natural mens products.
+                Mr Nomad is an ecommerce platform which can be customized by
+                utilizing an Admin Panel. It is equipped with the ability to
+                create personal accounts that enables customers to have a
+                profile section of their own, which also allows them to save a
+                product to their cart, and shop anytime they find suitable.
               </Typography>
             </Box>
             {matches && <Divider className={classes.divider} />}
