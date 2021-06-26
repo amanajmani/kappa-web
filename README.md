@@ -66,7 +66,7 @@ Mr Nomad is an ecommerce platform which can be customized by utilizing an Admin 
 
 ## Live Link
 
-Consumer App Link: [MR NOMAD]()
+Consumer App Link: [MR NOMAD](https://mrnomad.netlify.app/)
 
 Admin App Link: [Contact US]()
 
