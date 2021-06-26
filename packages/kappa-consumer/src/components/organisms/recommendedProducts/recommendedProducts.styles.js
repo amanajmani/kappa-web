@@ -18,5 +18,5 @@ export default makeStyles((theme) => ({
     textTransform: 'uppercase',
     textAlign: 'center',
     marginTop: theme.spacing(4),
-  }
+  },
 }));

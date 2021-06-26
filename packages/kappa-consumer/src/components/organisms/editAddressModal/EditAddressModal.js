@@ -91,8 +91,6 @@ const EditAddressModal = ({
     }
   };
 
-  if (address) console.log(typeof address.default, 'address.default');
-
   return (
     <div>
       <Dialog

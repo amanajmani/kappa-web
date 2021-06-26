@@ -15,7 +15,7 @@ const NoProduct = () => {
         THE PRODUCT YOU ARE LOOKING FOR IS NO LONGER AVAILABLE
       </Typography>
     </div>
-  )
-}
+  );
+};
 
 export default NoProduct;
