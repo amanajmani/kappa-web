@@ -29,7 +29,7 @@ import FilterListIcon from '../../../../assets/images/filterList';
 import isEmpty from '../../../../utils/isEmpty.utils';
 
 /* HELPERS */
-import getCategoryName from '../../../../helpers/getCategoryName.helpers'
+import getCategoryName from '../../../../helpers/getCategoryName.helpers';
 
 /* CONSTANTS */
 import FILTER_PRODUCTS from '../../constants/filterProducts.constants';
@@ -41,27 +41,24 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 const renderImage = (images) => {
-   return `${BASE_URL}/api/v1/files/${images[0]}`
-}
+  return `${BASE_URL}/api/v1/files/${images[0]}`;
+};
 
-const renderProduct = (layout, categoryName) => (product) => (
-  <Grid 
-    key={productsReader.id(product)}
-    item 
-    md={4} 
-    sm={6} 
-    xs={6}
-  >
-    <ProductCard
-      image={renderImage(!isEmpty(productsReader.images(product)) 
-        && productsReader.images(product))}
-      categoryName={categoryName}
-      name={productsReader.name(product)}
-      price={productsReader.price(product)}
-      id={productsReader.id(product)}
-    />
-  </Grid>
-)
+const renderProduct = (layout, categoryName) => (product) =>
+  (
+    <Grid key={productsReader.id(product)} item md={4} sm={6} xs={6}>
+      <ProductCard
+        image={renderImage(
+          !isEmpty(productsReader.images(product)) &&
+            productsReader.images(product)
+        )}
+        categoryName={categoryName}
+        name={productsReader.name(product)}
+        price={productsReader.price(product)}
+        id={productsReader.id(product)}
+      />
+    </Grid>
+  );
 
 const ProductsList = ({
   productsInfo,
@@ -96,14 +93,12 @@ const ProductsList = ({
     setIsFiltersPanelVisible((prev) => !prev);
   };
 
-  console.log('dkwowkd', scrolling);
-
   return (
     <div>
       <Paper className={classes.headerMenu} elevation={false}>
         <div className={classes.headerTitleContainer}>
-          <Typography 
-            color='textPrimary' 
+          <Typography
+            color='textPrimary'
             variant='h5'
             className={clsx(
               classes.title,
@@ -139,8 +134,11 @@ const ProductsList = ({
 
         <div className={classes.content}>
           <Grid container spacing={isXtraSmall ? 1 : 2}>
-            {productsReader.data(productsInfo)
-              .map(renderProduct(INITIAL_LAYOUT, getCategoryName(productsInfo)))}
+            {productsReader
+              .data(productsInfo)
+              .map(
+                renderProduct(INITIAL_LAYOUT, getCategoryName(productsInfo))
+              )}
           </Grid>
 
           <Pagination

@@ -76,6 +76,15 @@ const Account = ({ user, fetching, updateUser, message }) => {
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(initialFValues, true, validate);
 
+  useEffect(() => {
+    setValues({
+      email: user ? user.email : '',
+      name: user ? user.name : '',
+      country: user ? user.country : '',
+      error: false,
+    });
+  }, [setValues, user]);
+
   if (fetching) <Loader />;
 
   return (

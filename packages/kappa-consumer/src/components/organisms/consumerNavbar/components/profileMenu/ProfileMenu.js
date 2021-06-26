@@ -42,7 +42,7 @@ export default function ProfileMenu({
         aria-controls='simple-menu'
         aria-haspopup='true'
         onClick={handleClick}
-        style={{ color: 'white' }}
+        style={{ color: 'white', background: '#281659' }}
       >
         {data.name}
       </Button>

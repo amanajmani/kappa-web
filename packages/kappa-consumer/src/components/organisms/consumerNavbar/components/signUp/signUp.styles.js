@@ -33,4 +33,10 @@ export default makeStyles((theme) => ({
   resetBtn: {
     marginLeft: 0,
   },
+  closeIcon: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    fontSize: 35,
+  },
 }));

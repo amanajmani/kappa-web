@@ -27,4 +27,10 @@ export default makeStyles((theme) => ({
     width: '100%',
     marginBottom: theme.spacing(1),
   },
+  closeIcon: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    fontSize: 35,
+  },
 }));

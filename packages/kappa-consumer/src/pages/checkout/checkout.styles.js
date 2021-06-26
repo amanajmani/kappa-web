@@ -27,34 +27,21 @@ export default makeStyles((theme) => ({
   },
 
   cartButton: {
-    borderRadius: 12,
+    borderRadius: 0,
     minWidth: '100px',
     marginTop: '12px',
-    background: 'black',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#fff',
-      color: '#3c52b2',
-    },
   },
 
   backButton: {
-    borderRadius: 12,
+    borderRadius: 0,
     minWidth: '100px',
     marginTop: '12px',
     marginRight: '12px',
-    backgroundColor: '#fff',
     border: '1px solid gray',
-    color: '#3c52b2',
-    '&:hover': {
-      background: 'black',
-      color: 'white',
-    },
   },
 
   stepperDiv: {
     flexDirection: 'column',
-
     [theme.breakpoints.down('md')]: {
       order: 2,
       justifyContent: 'center',

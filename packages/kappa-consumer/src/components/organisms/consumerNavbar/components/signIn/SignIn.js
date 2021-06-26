@@ -23,6 +23,7 @@ import Popup from '../popup';
 import useStyles from './signIn.styles';
 
 import ActionCreators from '../../../../../actions';
+import CloseIcon from '../../../../../assets/images/close';
 
 const SignIn = ({
   loginUser,
@@ -78,6 +79,10 @@ const SignIn = ({
 
   return (
     <Popup isOpen={isOpen} setIsOpen={setIsOpen}>
+      <CloseIcon
+        className={classes.closeIcon}
+        onClick={() => setIsOpen(false)}
+      />
       <DialogTitle className={classes.title}>
         Your Account for everything Kappa
       </DialogTitle>

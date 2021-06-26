@@ -12,6 +12,7 @@ export default makeStyles((theme) => ({
   },
   addAddressBtn: {
     borderRadius: '0px',
+    width: '40%',
   },
   textCenter: {
     textAlign: 'center',

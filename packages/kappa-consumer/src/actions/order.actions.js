@@ -11,15 +11,15 @@ export function getOrders(body) {
     });
 
     return orderServices.getOrders(body).then((data) => {
-      if (data && data.data.success) {
+      if (data.success) {
         dispatch({
           type: 'GET_ORDERS_SUCCESS',
-          payload: data.data,
+          payload: data,
         });
       } else {
         dispatch({
           type: 'GET_ORDERS_FAILED',
-          payload: data.data,
+          payload: data,
         });
       }
     }, handleError);
@@ -33,7 +33,6 @@ export function addOrder(body) {
     });
 
     return orderServices.addOrder(body).then((data) => {
-      console.log(data, 'data in order add');
       if (data.success) {
         dispatch({
           type: 'ADD_ORDER_SUCCESS',

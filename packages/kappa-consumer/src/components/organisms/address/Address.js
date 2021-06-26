@@ -43,7 +43,6 @@ const Address = ({
   const handleSubmitAddress = (newAddress) => {
     addAddress(newAddress);
     setOpen(false);
-    console.log(message, 'message');
   };
 
   const handleUpdateAddress = (address) => {
@@ -75,6 +74,7 @@ const Address = ({
           <Button
             label='Add Address'
             variant='contained'
+            color='primary'
             className={classes.addAddressBtn}
             onClick={handleClickOpen}
           />

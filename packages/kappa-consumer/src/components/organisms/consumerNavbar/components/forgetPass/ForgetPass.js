@@ -20,7 +20,7 @@ import Link from '@kappa/components/src/atoms/link';
 
 // Styles
 import useStyles from './forgetPass.styles';
-
+import CloseIcon from '../../../../../assets/images/close';
 import ActionCreators from '../../../../../actions';
 
 const ForgetPass = (props) => {
@@ -57,6 +57,10 @@ const ForgetPass = (props) => {
 
   return (
     <Popup isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)}>
+      <CloseIcon
+        className={classes.closeIcon}
+        onClick={() => setIsOpen(false)}
+      />
       <DialogTitle className={classes.title}>Forget Password</DialogTitle>
 
       <DialogContent className={classes.content}>

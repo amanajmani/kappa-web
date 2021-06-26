@@ -23,6 +23,7 @@ import Popup from '../../organisms/consumerNavbar/components/popup';
 import useStyles from './modal.styles';
 
 import ActionCreators from '../../../actions';
+import CloseIcon from '../../../assets/images/close';
 
 const Modal = ({
   loginUser,
@@ -69,6 +70,10 @@ const Modal = ({
   }, [user]);
 
   useEffect(() => {
+    clearAuthMessage();
+  }, []);
+
+  useEffect(() => {
     setLoginDetails({
       password1: '',
       password2: '',
@@ -106,10 +111,13 @@ const Modal = ({
     <Popup
       isOpen={isOpen}
       setIsOpen={() => {
-        clearAuthMessage();
         setIsOpen(!isOpen);
       }}
     >
+      <CloseIcon
+        className={classes.closeIcon}
+        onClick={() => setIsOpen(false)}
+      />
       <DialogTitle className={classes.title}>Welcome</DialogTitle>
       <DialogContent className={classes.content}>
         {resetPasswordState ? (

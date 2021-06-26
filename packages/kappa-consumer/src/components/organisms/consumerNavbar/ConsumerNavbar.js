@@ -36,12 +36,10 @@ const renderTabs = (classes, enterTab, leaveTab) => (
       onMouseEnter={enterTab}
       onMouseLeave={leaveTab}
     >
-      <Typography className={classes.tab}>
-        Shop
-      </Typography>
+      <Typography className={classes.tab}>Shop</Typography>
     </div>
   </div>
-)
+);
 
 const timeoutLength = 200;
 
@@ -69,28 +67,29 @@ const ConsumerNavbar = ({
 
   const enterTab = () => {
     setMouseOverTab(true);
-  }
+  };
 
   const leaveTab = () => {
     // Set a timeout so that the menu doesn't close before the user has time to
     // move their mouse over it
     setTimeout(() => {
-      setMouseOverTab(false)
+      setMouseOverTab(false);
     }, timeoutLength);
-  }
+  };
 
   const enterMenu = () => {
     setMouseOverMenu(true);
-  }
+  };
 
   const leaveMenu = () => {
     setTimeout(() => {
-      setMouseOverMenu(false)
+      setMouseOverMenu(false);
     }, timeoutLength);
-  }
+  };
 
   useEffect(() => {
-    if (user && user.name) getOrders();
+    let token = localStorage.getItem('token');
+    if (user && user.name && token) getOrders();
   }, [user, getOrders]);
 
   const history = useHistory();
@@ -176,15 +175,15 @@ const ConsumerNavbar = ({
                 setProfileMenu={setProfileMenu}
               />
             ) : (
-                <>
-                  <IconButton
-                    className={classes.button}
-                    onClick={() => setIsSignInOpen(true)}
-                  >
-                    <PersonIcon />
-                  </IconButton>
-                </>
-              )}
+              <>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => setIsSignInOpen(true)}
+                >
+                  <PersonIcon />
+                </IconButton>
+              </>
+            )}
 
             {user.name ? (
               <IconButton
@@ -194,64 +193,71 @@ const ConsumerNavbar = ({
                 <ShoppingCartIcon />
               </IconButton>
             ) : (
-                <IconButton
-                  className={classes.button}
-                  onClick={() => setIsSignInOpen(true)}
-                >
-                  <ShoppingCartIcon />
-                </IconButton>
-              )}
+              <IconButton
+                className={classes.button}
+                onClick={() => setIsSignInOpen(true)}
+              >
+                <ShoppingCartIcon />
+              </IconButton>
+            )}
           </div>
         </div>
 
         <div className={classes.sectionMobile}>
           <div className={classes.sectionLeftMobile}>
-          <Link className={classes.logoContainer} to='/'>
+            <Link className={classes.logoContainer} to='/'>
               <img src={logo} className={classes.logo} alt='Mr-Nomad-Logo' />
             </Link>
           </div>
           <div>
-            
-            {
-              mobileSearchVisible 
-              ? (
-                <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+            {mobileSearchVisible ? (
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  autoFocus
+                  onBlur={() => setMobileSearchVisible(false)}
+                  placeholder='Search…'
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInputMobile,
+                  }}
+                  type='text'
+                  onKeyDown={handleKeyDown}
+                  value={searchText}
+                  onChange={handleSearch}
+                />
               </div>
-              <InputBase
-                autoFocus
-                onBlur={() => setMobileSearchVisible(false)}
-                placeholder='Search…'
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInputMobile,
-                }}
-                type='text'
-                onKeyDown={handleKeyDown}
-                value={searchText}
-                onChange={handleSearch}
-              />
-            </div>
-           
-              ) : (
-                <>
-            <IconButton onClick={() => setMobileSearchVisible(true)} className={classes.iconButton}>
-              <SearchIcon />
-            </IconButton>
-             <IconButton  onClick={() => setIsCartVisible(true)} className={classes.iconButton}>
-             <ShoppingCartIcon />
-           </IconButton>
- 
-           <IconButton onClick={() => setIsMobileMenuVisible(true)} className={classes.iconButton}>
-             <MenuIcon />
-           </IconButton>
-           </>
-              )
-            }
+            ) : (
+              <>
+                <IconButton
+                  onClick={() => setMobileSearchVisible(true)}
+                  className={classes.iconButton}
+                >
+                  <SearchIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => setIsCartVisible(true)}
+                  className={classes.iconButton}
+                >
+                  <ShoppingCartIcon />
+                </IconButton>
+
+                <IconButton
+                  onClick={() => setIsMobileMenuVisible(true)}
+                  className={classes.iconButton}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </>
+            )}
           </div>
         </div>
-        <Cart isCartVisible={isCartVisible} setIsCartVisible={setIsCartVisible} />
+        <Cart
+          isCartVisible={isCartVisible}
+          setIsCartVisible={setIsCartVisible}
+        />
         <SignIn
           isOpen={isSignInOpen}
           setIsOpen={() => {
@@ -288,6 +294,10 @@ const ConsumerNavbar = ({
         open={open}
       />
       <MobileMenu
+        user={user}
+        setProfileMenu={setProfileMenu}
+        logoutUser={logoutUser}
+        setIsSignInOpen={setIsSignInOpen}
         categories={categories}
         isMobileMenuVisible={isMobileMenuVisible}
         setIsMobileMenuVisible={setIsMobileMenuVisible}

@@ -206,6 +206,7 @@ const Checkout = ({ addOrder, cart, address, user }) => {
                   {activeStep !== steps.length - 1 ? (
                     <Button
                       label='Back'
+                      color='secondary'
                       disabled={activeStep === 0}
                       onClick={handleBack}
                       className={classes.backButton}
@@ -219,6 +220,7 @@ const Checkout = ({ addOrder, cart, address, user }) => {
                       startIcon={<ShoppingCartIcon />}
                       label='Continue'
                       variant='contained'
+                      color='primary'
                       disabled={
                         activeStep === steps.length - 3
                           ? cart && cart.length
@@ -230,7 +232,6 @@ const Checkout = ({ addOrder, cart, address, user }) => {
                             : true
                           : ''
                       }
-                      color='dark'
                       className={classes.cartButton}
                       onClick={handleNext}
                     />

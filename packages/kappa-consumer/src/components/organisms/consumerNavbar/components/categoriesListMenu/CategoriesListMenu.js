@@ -61,39 +61,49 @@ const CategoriesListMenu = ({
   const classes = useStyles();
 
   return (
-    <Paper 
-      elevation={1} 
+    <Paper
+      elevation={1}
       style={{
-        opacity: open ? 1 : 0, 
-        visibility: open ? 'visible' : 'hidden' ,
+        opacity: open ? 1 : 0,
+        visibility: open ? 'visible' : 'hidden',
         transition: 'all .2s ease-in-out',
       }}
       onMouseEnter={enterMenu}
       onMouseLeave={leaveMenu}
       className={classes.menuPanel}
     >
-      <List style={{
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        display: 'flex',
-      }}>
-        {
-          categoriesReaders.data(categories).map((category) =>
-            <ListItem 
+      <List
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          flexDirection: 'column',
+          display: 'flex',
+        }}
+      >
+        {categoriesReaders.data(categories).map((category, i) => (
+          <ListItem
+            key={i}
             component={Link}
             to={`/${categoriesReaders.id(category)}/page/${1}`}
             onClick={leaveMenu}
-            className={classes.list}>
-              <ListItemText primary={categoriesReaders.categoryName(category)} />
-            </ListItem>
-          )
-        }
+            className={classes.list}
+          >
+            <ListItemText primary={categoriesReaders.categoryName(category)} />
+          </ListItem>
+        ))}
       </List>
-      <div style={{flex: 3}}>
-        <Grid container spacing={5} className={classes.content} justify="center">
-            {!isEmpty(productsReader.data(navbarProducts))
-              && productsReader.data(navbarProducts).slice(0, 2).map(renderProduct(leaveMenu))}
+      <div style={{ flex: 3 }}>
+        <Grid
+          container
+          spacing={5}
+          className={classes.content}
+          justify='center'
+        >
+          {!isEmpty(productsReader.data(navbarProducts)) &&
+            productsReader
+              .data(navbarProducts)
+              .slice(0, 2)
+              .map(renderProduct(leaveMenu))}
         </Grid>
       </div>
     </Paper>
