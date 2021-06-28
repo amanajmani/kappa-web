@@ -38,6 +38,6 @@ export function getRecommendedProductsInfo(limit) {
 }
 
 export function getAllProducts() {
-  const url = `${BASE_URL}/${PRODUCTS_BASE_URL}`;
+  const url = `${BASE_URL}/${PRODUCTS_BASE_URL}?priority=true`;
   return callApi(url);
 }

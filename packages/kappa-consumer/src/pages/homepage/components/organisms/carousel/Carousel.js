@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { Link } from 'react-router-dom';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -57,6 +58,8 @@ function Carousel(props) {
             className={classes.button}
             elevation={0}
             variant="contained"
+            component={Link}
+            to="60cf3d9747c214054126257c/page/1"
             // component=""
           >
             {data[activeStep].buttonLabel}

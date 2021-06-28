@@ -79,7 +79,7 @@ const RecommendedProducts = ({
           <div className={classes.title}>
             <Typography variant="h6">{title}</Typography>
           </div>
-          <Grid container spacing={5} className={classes.content} justify="center">
+          <Grid container spacing={2} className={classes.content} justify="center">
             {productsReader.data(data)
               .map(renderProduct(layout, getCategoryName(data)))}
           </Grid>
