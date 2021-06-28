@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
   container: {
     margin: theme.spacing(8, 'auto'),
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0,
+    },
   },
   slideImageContainer: {
     maxWidth: 450,
@@ -25,16 +28,20 @@ export default makeStyles((theme) => ({
     alignContent: 'center',
   },
   productDetailsContainer: {
-    height: '90%',
-    [theme.breakpoints.only('xs')]: {
-      height: 380,
-      alignItems: 'center',
-      textAlign: 'center',
+    height: '100%',
+    // [theme.breakpoints.down('sm')]: {
+    //   height: 380,
+    //   alignItems: 'center',
+    //   textAlign: 'center',
+    // },
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'unset !important',
+      textAlign: 'center !important',
     },
   },
   quantityGridContainer: {
-    [theme.breakpoints.only('xs')]: {
-      width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(2),
     },
   },
   productActionsContainer: {
@@ -50,8 +57,9 @@ export default makeStyles((theme) => ({
     borderRadius: 12,
     width: '60%',
     padding: theme.spacing(2),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
+      marginTop: theme.spacing(2),
     },
   },
   description: {
