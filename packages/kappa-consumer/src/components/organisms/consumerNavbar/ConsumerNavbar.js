@@ -129,7 +129,7 @@ const ConsumerNavbar = ({
         logoutUser={logoutUser}
         setProfileMenu={setProfileMenu}
         setIsSignInOpen={setIsSignInOpen}
-        setIsCartVisible={setIsSignInOpen}
+        setIsCartVisible={setIsCartVisible}
       />
 
       <SectionMobile
