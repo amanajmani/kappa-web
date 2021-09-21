@@ -1,5 +1,5 @@
 module.exports.Endpoint = {
   base: {
-    local: 'https://codersadhu.tech',
+    local: 'https://www.wewantchurros.com',
   },
 };
