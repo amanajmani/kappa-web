@@ -134,6 +134,7 @@ const ProductsList = ({
           <Grid container spacing={isXtraSmall ? 1 : 2}>
             {productsReader
               .data(productsInfo)
+              .slice(0).reverse()
               .map(
                 renderProduct(INITIAL_LAYOUT, getCategoryName(productsInfo)),
               )}
